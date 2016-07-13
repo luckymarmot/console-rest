@@ -1,0 +1,16 @@
+@require '../../atoms/forms/minified-text-area'
+@require '../../atoms/buttons/button'
+@require '../../atoms/borders/mixins'
+@require '../layout/mixins'
+
+.text-area-with-suffix
+    margin-top: 3rem
+    row()
+    round-border()
+    stretch-center()
+    overflow: hidden;
+    .minified-text-area
+        flex-basis: 95%
+    .button-small
+        flex-basis: 5%
+        flex-shrink:0

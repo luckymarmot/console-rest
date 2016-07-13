@@ -1,0 +1,21 @@
+@require '../../atoms/colors/brand'
+@require '../../atoms/images/logo'
+@require '../../atoms/borders/mixins'
+@require '../../molecules/layout/mixins'
+@require '../../molecules/navigation/primary'
+
+$headerHeight = 5
+
+.header
+    row()
+    center-between()
+    border-bottom()
+    height: $headerHeight rem
+    .logo
+        flex-basis: 10%
+        padding-left: ($headerHeight/2) rem
+        padding-top: ($headerHeight/5) rem
+        padding-bottom: ($headerHeight/5) rem
+        height: (3*$headerHeight/5) rem
+    .nav
+        padding-right: ($headerHeight/2) rem
