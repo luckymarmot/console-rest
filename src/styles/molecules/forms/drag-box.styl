@@ -1,7 +1,12 @@
 @require '../../atoms/depth/mixins'
 @require '../../atoms/borders/mixins'
+@require '../../molecules/layout/mixins'
 
 .drag-box
-    inset-depth(5)
+    inset-depth(3)
     round-border()
-    min-height: 60%
+    col()
+    center-around()
+    border(neutral, 700)
+    min-height: 30rem
+    padding: 2rem

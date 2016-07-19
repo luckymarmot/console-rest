@@ -1,7 +1,13 @@
 @require './mixins'
 
 .row
+    width: 100%
     row()
     &__centered
+        width: 100%
         row()
         stretch-center()
+    &__filled
+        width: 100%
+        row()
+        center-around()

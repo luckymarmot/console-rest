@@ -1,0 +1,40 @@
+@require '../../atoms/colors/brand'
+@require '../../atoms/depth/mixins'
+@require './mixins'
+
+.bottom-sheet
+    row()
+    stretch-center()
+    width: 100%
+    position: absolute
+    height: 100%
+    bottom: 0
+    left: 0
+    background-color: rgba(0,0,0,0)
+    transition: all 0.25s ease-in
+    .sheet-container
+        position: absolute
+        bottom: -100%
+        height: 70%
+        left: 10%
+        width: 80%
+        background-color: $primary-700
+        depth(5)
+        transition: all 0.25s ease-in
+        padding: 0.5rem
+        box-sizing: border-box
+        .close
+            position: relative
+            &:after
+                user-select: none
+                cursor: pointer
+                position: absolute
+                content: "⌄"
+                font-size: 3rem
+                right: 0
+                top: -2.5rem
+
+    &.active
+        background-color: rgba(0,0,0,0.3)
+        .sheet-container
+            bottom: 0

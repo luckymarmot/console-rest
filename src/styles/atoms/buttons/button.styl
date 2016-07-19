@@ -1,9 +1,31 @@
 @require '../colors/neutral'
+@require '../borders/mixins'
+
+clearButtonClass()
+    color: inherit
+    padding: inherit
+    border-width: inherit
+    border-style: inherit
+    border-color:inherit
+    align-items: inherit
+    font: inherit
 
 .button-small
+    clearButtonClass()
     display: flex
     flex-direction: column
     justify-content: center
     background-color: $neutral-700
     text-align: center
     cursor: pointer
+
+.button
+    clearButtonClass()
+    display: flex
+    flex-direction: column
+    justify-content: center
+    background-color: $neutral-700
+    text-align: center
+    cursor: pointer
+    padding: 0.5rem
+    round-border()
