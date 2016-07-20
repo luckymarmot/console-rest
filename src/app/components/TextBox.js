@@ -31,10 +31,10 @@ export default class TextBox extends Component {
         if (ev.keyCode === 13) {
             try {
                 let url = new URL(this.refs.inputText.value)
+                url = url
                 this.getFile()
                 ev.preventDefault()
             } catch (e) {
-                console.log(e)
                 return
             }
         }

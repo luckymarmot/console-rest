@@ -107,26 +107,23 @@ export default class FlowInput extends Component {
     }
 
     updateTargetFile(file) {
-        this.setState({
+        this.props.onFileReady({
             file: file
         })
-        this.props.onFileReady(file)
     }
 
     renderSelectedFile() {
-        if (!this.state.file) {
+        if (!this.props.file) {
             return null
         }
-        return <div className="row__filled">{this.state.file.name}</div>
+        return <div className="row__filled">{this.props.file.name}</div>
     }
 
     handleQuery(content) {
-
         try {
             let url = new URL(content)
 
             let cb = (ev) => {
-                console.log('ev _>>', ev)
                 let file = new File([ ev.target.response ], url.hostname)
                 this.updateTargetFile(file)
             }
@@ -142,8 +139,7 @@ export default class FlowInput extends Component {
     }
 
     render() {
-        return <div className="content-block">
-            <h3>Your Input</h3>
+        return <section className="content-block">
             <DragBox onFileDrop={::this.updateTargetFile}>
                 <h3>Drag any file from these formats</h3>
                 {this.renderAll()}
@@ -156,6 +152,6 @@ export default class FlowInput extends Component {
                 {this.renderDescription()}
             </DragBox>
             <TextBox onQuery={::this.handleQuery}/>
-        </div>
+        </section>
     }
 }

@@ -6,7 +6,7 @@ require('styles/molecules/media/postman-icon.styl')
 export default class PostmanIcon extends BaseIcon {
     render() {
         /* eslint-disable max-len */
-        return <svg viewBox="0 0 173 173" version="1.1" width="100%" height="auto" className="postman-icon">
+        return <svg viewBox="0 0 173 173" version="1.1" width="100%" preserveAspectRatio="xMidYMid meet" className="postman-icon">
             <g id="Postman-squared" fillRule="evenodd">
                 <g id="postman-logo-2" transform="translate(17.000000, 15.000000)">
                     <polygon id="Fill-16" points="25.05 139.432705 6.99147771e-16 140.300705 12.841 127.244705"></polygon>

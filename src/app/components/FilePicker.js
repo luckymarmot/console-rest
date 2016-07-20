@@ -30,7 +30,10 @@ export default class FilePicker extends Component {
             classes += this.props.className
         }
         return <label className={classes} htmlFor="file-input">
-            <input id="file-input" type="file" onClick={::this.clearInputFiles} onChange={::this.readFile}/>
+            <input id="file-input"
+                type="file"
+                onClick={::this.clearInputFiles}
+                onChange={::this.readFile}/>
             <span>Pick a file</span>
         </label>
     }

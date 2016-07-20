@@ -6,7 +6,7 @@ require('styles/molecules/media/paw-icon.styl')
 export default class PawIcon extends BaseIcon {
     render() {
         /* eslint-disable max-len */
-        return <svg viewBox="0 0 28 28" version="1.1" width="100%" height="auto" className="paw-icon">
+        return <svg viewBox="0 0 28 28" version="1.1" width="100%" preserveAspectRatio="xMidYMid meet" className="paw-icon">
             <g id="Page-1" fillRule="evenodd">
                 <g id="paw-squared">
                     <g id="paw-footer-icon" transform="translate(4.000000, 3.000000)">

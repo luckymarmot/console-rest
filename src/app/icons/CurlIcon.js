@@ -6,7 +6,7 @@ require('styles/molecules/media/curl-icon.styl')
 export default class CurlIcon extends BaseIcon {
     render() {
         /* eslint-disable max-len */
-        return <svg viewBox="0 0 114 114" version="1.1" width="100%" height="auto" className="paw-icon">
+        return <svg viewBox="0 0 114 114" version="1.1" width="100%" preserveAspectRatio="xMidYMid meet" className="paw-icon">
             <g fillRule="evenodd">
                 <g id="curl-square-icon">
                     <g id="curl-icon" transform="translate(7.000000, 46.000000)">

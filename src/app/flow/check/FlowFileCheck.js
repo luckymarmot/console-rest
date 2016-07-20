@@ -1,54 +1,62 @@
 import React, { Component } from 'react'
 
 export default class FlowFileCheck extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state = {
-            editing: false
-        }
     }
 
-    edit() {
-        this.setState({
-            editing: true
+    updateFileName(ev) {
+        let name = ev.target.value
+        let blob
+
+        if (this.props.file) {
+            blob = this.props.file.slice(0)
+        } else {
+            blob = ''
+        }
+        this.props.onChangeFileSettings({
+            file: new File([ blob ], name),
+            format: this.props.format
         })
     }
 
-    detectFormat(file) {
-        if (!file) {
-            return ''
-        }
-
-        let types = [
-            'Paw',
-            'Postman',
-            'Curl',
-            'Raml',
-            'Swagger'
-        ]
-        let index = Math.floor(Math.random() * types.length)
-        return types[index]
+    updateFileFormat(ev) {
+        let format = ev.target.value
+        this.props.onChangeFileSettings({
+            file: this.props.file,
+            format: format
+        })
     }
 
     render() {
         let name = (this.props.file || {}).name || ''
-        let type = this.detectFormat(this.props.file)
-        return <div className="content-block">
+        let type = this.props.format || ''
+        return <section className="content-block">
             <h3>Your File</h3>
-            <label>
-                <span>Name: </span>
-                <input type="text" disabled={!this.state.editing} value={name}/>
-            </label>
-            <label>
-                <span>Detected format: </span>
-                <select type="text" disabled={!this.state.editing} value={type}>
-                    <option value="Paw">Paw</option>
-                    <option value="Postman">Postman</option>
-                    <option value="Swagger">Swagger</option>
-                    <option value="Raml">RAML</option>
-                    <option value="Curl">CURL</option>
-                </select>
-            </label>
-        </div>
+            <div className="row">
+                <div className="block-50">
+                    <span>Name:</span>
+                    <input
+                        type="text"
+                        ref="nameInput"
+                        value={name}
+                        onChange={::this.updateFileName}/>
+                </div>
+                <div className="block-50">
+                    <span>Detected format:</span>
+                    <select
+                        type="text"
+                        ref="formatInput"
+                        value={type}
+                        onChange={::this.updateFileFormat}>
+                        <option value="Paw">Paw</option>
+                        <option value="Postman">Postman</option>
+                        <option value="Swagger">Swagger</option>
+                        <option value="Raml">RAML</option>
+                        <option value="Curl">CURL</option>
+                    </select>
+                </div>
+            </div>
+        </section>
     }
 }
