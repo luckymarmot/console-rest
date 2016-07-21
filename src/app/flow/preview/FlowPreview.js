@@ -11,7 +11,8 @@ export default class FlowPreview extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (this.props.content && this.props.format) {
+        window.openInConsole.setTheme(props.theme)
+        if (props.content && props.format) {
             window.openInConsole.setSource(
                 props.content,
                 props.format.toLowerCase(), true

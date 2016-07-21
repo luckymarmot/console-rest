@@ -14,8 +14,11 @@ export default class FlowManager extends Component {
         super(props)
         this.state = {
             file: null,
+            url: null,
             format: null,
-            content: null
+            content: null,
+            theme: '#00AAFF',
+            text: 'Open In Console'
         }
     }
 
@@ -34,9 +37,27 @@ export default class FlowManager extends Component {
             }
             reader.readAsText(props.file)
         }
+
+        let url = null
+        if (props.url) {
+            url = props.url
+        }
         this.setState({
             file: props.file,
-            format: format
+            format: format,
+            url: url
+        })
+    }
+
+    updateTheme(color) {
+        this.setState({
+            theme: color
+        })
+    }
+
+    updateText(text) {
+        this.setState({
+            text: text
         })
     }
 
@@ -61,12 +82,24 @@ export default class FlowManager extends Component {
             <div className="container">
                 <FlowInput file={this.state.file} format={this.state.format}
                     onFileReady={::this.onFileReady}/>
-                <FlowFileCheck file={this.state.file} format={this.state.format}
+                <FlowFileCheck
+                    file={this.state.file}
+                    format={this.state.format}
+                    url={this.state.url}
                     onChangeFileSettings={::this.onFileReady}/>
                 <FlowPreview
-                    content={this.state.content} format={this.state.format}/>
-                <FlowButtonSettings/>
-                <FlowSnippet/>
+                    content={this.state.content}
+                    format={this.state.format}
+                    theme={this.state.theme}/>
+                <FlowButtonSettings
+                    onTextChange={::this.updateText}
+                    onThemeChange={::this.updateTheme}/>
+                <FlowSnippet
+                    url={this.state.url}
+                    content={this.state.content}
+                    format={this.state.format}
+                    theme={this.state.theme}
+                    text={this.state.text}/>
             </div>
         </div>
     }

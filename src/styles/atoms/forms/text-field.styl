@@ -1,0 +1,15 @@
+@require '../depth/mixins'
+@require '../borders/mixins'
+
+.text-field
+    margin: 0.5rem
+    padding: 0.5rem
+    color: inherit
+    background: inherit
+    font-size: inherit
+    resize: vertical
+    round-border()
+    border(neutral, 700)
+    inset-depth(3)
+    overflow: scroll
+    height: 1rem

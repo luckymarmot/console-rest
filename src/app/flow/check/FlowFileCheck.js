@@ -16,7 +16,8 @@ export default class FlowFileCheck extends Component {
         }
         this.props.onChangeFileSettings({
             file: new File([ blob ], name),
-            format: this.props.format
+            format: this.props.format,
+            url: this.props.url
         })
     }
 
@@ -24,7 +25,8 @@ export default class FlowFileCheck extends Component {
         let format = ev.target.value
         this.props.onChangeFileSettings({
             file: this.props.file,
-            format: format
+            format: format,
+            url: this.props.url
         })
     }
 

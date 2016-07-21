@@ -3,10 +3,11 @@
 @require '../../molecules/layout/mixins'
 
 .drag-box
-    inset-depth(3)
-    round-border()
     col()
     center-around()
-    border(neutral, 700)
+    dashed-border()
     min-height: 30rem
     padding: 2rem
+
+    &.active
+        border-color: #eceff1

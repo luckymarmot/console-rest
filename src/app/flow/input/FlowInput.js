@@ -106,9 +106,10 @@ export default class FlowInput extends Component {
         })
     }
 
-    updateTargetFile(file) {
+    updateTargetFile(file, url = null) {
         this.props.onFileReady({
-            file: file
+            file: file,
+            url: url
         })
     }
 
@@ -125,7 +126,7 @@ export default class FlowInput extends Component {
 
             let cb = (ev) => {
                 let file = new File([ ev.target.response ], url.hostname)
-                this.updateTargetFile(file)
+                this.updateTargetFile(file, url)
             }
 
             let request = new XMLHttpRequest()

@@ -1,5 +1,6 @@
 @require '../colors/neutral'
 @require '../borders/mixins'
+@require '../depth/mixins'
 
 clearButtonClass()
     color: inherit
@@ -29,3 +30,8 @@ clearButtonClass()
     cursor: pointer
     padding: 0.5rem
     round-border()
+    depth(1)
+
+.oic-button
+    padding-left: 2rem
+    padding-right: 2rem
