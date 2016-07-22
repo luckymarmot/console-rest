@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Tab from 'app/components/Tab'
+import Clipboard from 'clipboard'
 
 require('styles/molecules/layout/padding.styl')
 require('styles/molecules/layout/center-end.styl')
@@ -10,7 +11,8 @@ export default class FlowSnippet extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            view: 'html'
+            view: 'html',
+            expanded: false
         }
     }
 
@@ -20,33 +22,61 @@ export default class FlowSnippet extends Component {
         })
     }
 
+    toggleExpand() {
+        this.setState({
+            expanded: !this.state.expanded
+        })
+    }
+
     renderHTML() {
         // TODO
+        let target = this.generateTarget()
+        let ellipse = this.generateEllipse(target)
+        let copy = this.generateSnippet(target)
+
+        let action = this.state.expanded ? 'collapse' : 'expand'
+
+        return <div className="col__stretched">
+            <div className="row center-end">
+                <a className="padding-small" className="copy">Copy full snippet</a>
+                <a className="padding-small" onClick={::this.toggleExpand}>{action} snippet</a>
+            </div>
+            <textarea id="snippet" readOnly="readonly" value=
+            {this.generateSnippet(ellipse)}>
+            </textarea>
+        </div>
+    }
+
+    generateTarget() {
         let url = this.props.url
         let content = this.props.content
 
         let target
         if (url) {
-            target = url
+            return url
+        }
+        return btoa(content || '')
+    }
+
+    generateEllipse(target) {
+        let ellipse = null
+        if (!this.state.expanded && target.length > 50) {
+            ellipse = target.slice(0, 50) + '...'
         }
         else {
-            target = encodeURIComponent(content)
+            ellipse = target
         }
+        return ellipse
+    }
 
+    generateSnippet(content) {
         let format = this.props.format
         let text = this.props.text
-        return <div className="col__stretched">
-            <div className="row center-end">
-                <a className="padding-small">Copy snippet</a>
-                <a className="padding-small">See full snippet</a>
-            </div>
-            <pre>
-            {`<script src="esv98c0e9.cloudflare.com/90u32f02309/console-rest.js"></script>
-<a class="oic-runner oic-theme"
-    data-target="` + target + `"
-    data-source="` + format + '">' + text + '</a>'}
-            </pre>
-        </div>
+
+        return '<script src="esv98c0e9.cloudflare.com/90u32f02309/console-rest.js"></script>\n' +
+            '<a class="oic-runner oic-theme"\n' +
+            '   data-target="' + content + '"\n' +
+            '   data-source="' + format + '">' + text + '</a>'
     }
 
     renderJS() {
@@ -57,6 +87,18 @@ export default class FlowSnippet extends Component {
     renderMarkdown() {
         // TODO
         return <span>MD</span>
+    }
+
+    copy() {
+        let target = this.generateTarget()
+        let copy = this.generateSnippet(target)
+        return copy
+    }
+
+    componentDidMount() {
+        this.clipboard = new Clipboard('.copy', {
+            text: ::this.copy
+        })
     }
 
     render() {

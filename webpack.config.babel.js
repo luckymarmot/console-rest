@@ -56,7 +56,8 @@ class WebPackConfig {
     vendor: [
       'babel-polyfill',
       'immutable',
-      'react-dom'
+      'react-dom',
+      'clipboard'
     ]
   })
   static output = Im(

@@ -7,6 +7,7 @@
   "homepage": "https://github.com/luckymarmot/console-rest",
   "dependencies": {
     "babel-polyfill": "6.7.4",
+    "clipboard": "1.5.12",
     "immutable": "3.7.6",
     "javascript-decorators": "0.7.1",
     "js-cookie": "2.1.0",

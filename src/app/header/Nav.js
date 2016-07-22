@@ -6,6 +6,7 @@ export default class Nav extends Component {
     render() {
         return <nav className="nav">
             <ul>
+                <li><a href="#about">Privacy Statement</a></li>
                 <li>
                     <a href="https://github.com/luckymarmot/API-Flow">
                         GitHub

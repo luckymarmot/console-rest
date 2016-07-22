@@ -142,7 +142,7 @@ export default class FlowInput extends Component {
     render() {
         return <section className="content-block">
             <DragBox onFileDrop={::this.updateTargetFile}>
-                <h3>Drag any file from these formats</h3>
+                <h3>Drag in any file from these formats</h3>
                 {this.renderAll()}
                 or
                 <div className="row__filled">
