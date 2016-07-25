@@ -73,9 +73,17 @@ export default class FlowSnippet extends Component {
         let format = this.props.format
         let text = this.props.text
 
+        let raw = ''
+        if (!this.props.url) {
+            raw = '   data-raw="true"\n'
+        }
+
         return '<script src="esv98c0e9.cloudflare.com/90u32f02309/console-rest.js"></script>\n' +
             '<a class="oic-runner oic-theme"\n' +
+            '   data-theme="' + this.props.theme + '"\n' +
             '   data-target="' + content + '"\n' +
+            raw +
+            '   data-name="' + this.props.name + '"\n' +
             '   data-source="' + format + '">' + text + '</a>'
     }
 

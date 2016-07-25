@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+require('styles/atoms/forms/text-field.styl')
+
 export default class FlowFileCheck extends Component {
     constructor(props) {
         super(props)
@@ -39,14 +41,16 @@ export default class FlowFileCheck extends Component {
                 <div className="block-50">
                     <span>Name:</span>
                     <input
+                        className="text-field"
                         type="text"
                         ref="nameInput"
                         value={name}
                         onChange={::this.updateFileName}/>
                 </div>
-                <div className="block-50">
+                <div className="block-50 no-wrap">
                     <span>Detected format:</span>
                     <select
+                        className="text-field"
                         type="text"
                         ref="formatInput"
                         value={type}

@@ -16,6 +16,7 @@ import PostmanDescription from 'app/components/descriptions/PostmanDescription'
 require('styles/molecules/layout/row.styl')
 require('styles/molecules/layout/blocks.styl')
 require('styles/molecules/layout/center-between.styl')
+require('styles/molecules/messaging/error.styl')
 
 export default class FlowInput extends Component {
 
@@ -23,7 +24,10 @@ export default class FlowInput extends Component {
         super(props)
         this.state = {
             description: null,
-            file: null
+            file: null,
+            error: false,
+            errorStatus: null,
+            errorMsg: null
         }
     }
 
@@ -107,6 +111,7 @@ export default class FlowInput extends Component {
     }
 
     updateTargetFile(file, url = null) {
+        console.log('updating target file ->', file, url)
         this.props.onFileReady({
             file: file,
             url: url
@@ -120,7 +125,17 @@ export default class FlowInput extends Component {
         return <div className="row__filled">{this.props.file.name}</div>
     }
 
+    showError(status, msg) {
+        console.log('got there', msg)
+        this.setState({
+            error: true,
+            errorStatus: status,
+            errorMsg: msg
+        })
+    }
+
     handleQuery(content) {
+        this.dismissError()
         try {
             let url = new URL(content)
 
@@ -130,13 +145,58 @@ export default class FlowInput extends Component {
             }
 
             let request = new XMLHttpRequest()
-            request.addEventListener('load', cb)
+            request.onreadystatechange = (e) => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+
+                if (request.status === 200) {
+                    cb(e)
+                } else {
+                    let file = new File([ '' ], url.hostname)
+                    this.updateTargetFile(file, url)
+                    this.showError(request.status, request.statusText)
+                }
+            }
+
             request.open('GET', url)
             request.send()
         } catch (e) {
+            console.log('error ->', e)
             let file = new File([ content ], 'manual-input')
             this.updateTargetFile(file)
         }
+    }
+
+    renderError() {
+        if (!this.state.error) {
+            return null
+        }
+
+        if (this.state.errorStatus === 0) {
+            return <div className="error">
+                    <div className="msg"><strong>Failed to connect.</strong>
+                    It is possible that the resource you linked to does not
+                    allow Cross-Origin requests. Console.rest will not be able
+                    to render your preview, but the button will work as expected
+                    from allowed origins.
+                    </div>
+                    <div className="close" onClick={::this.dismissError}>&times;</div>
+                </div>
+        }
+
+        return <div className="error">
+                <div className="msg">{this.state.errorMsg}</div>
+                <div className="close" onClick={::this.dismissError}>&times;</div>
+            </div>
+    }
+
+    dismissError() {
+        this.setState({
+            error: false,
+            errorMsg: null,
+            errorStatus: null
+        })
     }
 
     render() {
@@ -153,6 +213,7 @@ export default class FlowInput extends Component {
                 {this.renderDescription()}
             </DragBox>
             <TextBox onQuery={::this.handleQuery}/>
+            {this.renderError()}
         </section>
     }
 }

@@ -90,6 +90,7 @@ export default class FlowManager extends Component {
                 <FlowPreview
                     content={this.state.content}
                     format={this.state.format}
+                    name={(this.state.file || {}).name || ''}
                     theme={this.state.theme}/>
                 <FlowButtonSettings
                     onTextChange={::this.updateText}
@@ -97,6 +98,7 @@ export default class FlowManager extends Component {
                 <FlowSnippet
                     url={this.state.url}
                     content={this.state.content}
+                    name={(this.state.file || {}).name || ''}
                     format={this.state.format}
                     theme={this.state.theme}
                     text={this.state.text}/>
