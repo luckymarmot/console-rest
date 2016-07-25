@@ -1,0 +1,31 @@
+@require './colors'
+
+$radius = 0.375rem
+
+@border-round()
+    border-radius: $radius
+
+@border-dashed()
+    border-style: dashed
+
+@border-sm()
+    border-width: 1px
+
+@border-med()
+    border-width: 2px
+
+@border-lg()
+    border-width: 5px
+
+@border-show(bottom, top, left, right)
+    if (bottom)
+        border-bottom-style: solid
+    if (top)
+        border-top-style: solid
+    if (left)
+        border-left-style: solid
+    if (right)
+        border-right-style: solid
+
+@border-color(color)
+    border-color: color
