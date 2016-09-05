@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-require('styles/atoms/images/logo.styl')
+require('./logo.styl')
 
 export default class Logo extends Component {
     render() {

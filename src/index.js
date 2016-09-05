@@ -27,6 +27,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './Root'
 
-require('styles/molecules/layout/column.styl')
+require('./basics/body.styl')
 
 ReactDOM.render(<Root className="col"/>, document.getElementById('root'))

@@ -1,0 +1,19 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+
+.notification
+    background-color: $background700
+    paddingAll()
+    display: none
+    &.active
+        display: flex
+        flex-direction: row
+        flex-wrap: nowrap
+        justify-content: space-between
+        align-items: center
+
+    .status
+        paddingRight()
+
+    .message
+        color: $background200

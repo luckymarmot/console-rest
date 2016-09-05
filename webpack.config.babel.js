@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import autoprefixer from 'autoprefixer'
 import precss from 'precss'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
