@@ -4,16 +4,30 @@
 .notification
     background-color: $background700
     paddingAll()
-    display: none
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    justify-content: space-between
+    align-items: center
+    position: absolute
+    bottom: -64px
+    max-height: 64px
+    min-height: 64px
+    width: 100%
+    transition-property: all
+    transition-timing-function: ease-in-out
+    transition-duration: 0.3s
     &.active
-        display: flex
-        flex-direction: row
-        flex-wrap: nowrap
-        justify-content: space-between
-        align-items: center
+        bottom: 0
 
     .status
+        flex-basis: 0
+        flex-grow: 0
+        flex-shrink: 0
         paddingRight()
 
     .message
+        flex-grow: 1
+        flex-shrink: 1
+        text-align: left
         color: $background200

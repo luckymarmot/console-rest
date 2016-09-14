@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-require('../button/button.styl')
 require('./file-picker.styl')
-
 
 export default class FilePicker extends Component {
     static propTypes = {
@@ -23,7 +21,7 @@ export default class FilePicker extends Component {
     }
 
     render() {
-        let classes = 'button '
+        let classes = 'file-picker '
         if (this.props.className) {
             classes += this.props.className
         }
@@ -32,7 +30,7 @@ export default class FilePicker extends Component {
                 type="file"
                 onClick={::this.clearInputFiles}
                 onChange={::this.readFile}/>
-            <span>Pick a file</span>
+            <span>{this.props.text}</span>
         </label>
     }
 }

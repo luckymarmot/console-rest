@@ -1,0 +1,32 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+@require '../../principles/gutter-mixins'
+
+.collapsible
+    gutterAll()
+    > .header
+        cursor: pointer
+        display: flex
+        flex-direction: row
+        align-items: center
+        max-height: 64px
+        min-height: 64px
+        paddingAll()
+        background-color: $background700
+        color: $background200
+        font-weight: 400
+        justify-content: space-between
+
+        > .arrow
+            fill: $background200
+            &:hover
+                fill: $primary
+
+    > .content
+        display: none
+        paddingAll()
+        background-color: $background500
+        color: $background200
+
+    &.active > .content
+        display: flex

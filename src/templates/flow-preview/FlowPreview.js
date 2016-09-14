@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+require('./preview.styl')
+
 export default class FlowPreview extends Component {
 
     constructor(props) {
@@ -17,7 +19,7 @@ export default class FlowPreview extends Component {
 
     componentDidMount() {
         window.openInConsole.generateDOM('preview', 'paw')
-        window.openInConsole.setGlobalCallback((error, data) => {
+        window.openInConsole.setGlobalCallback((error) => {
             console.log('@@@error', error)
             this.updateState(error)
         })
@@ -63,7 +65,9 @@ export default class FlowPreview extends Component {
                     The generated file was recognized as being of poor quality.
                     This may be due to a wrong source format.
                 </div>
-                <div className="close" onClick={::this.dismissError}>&times;</div>
+                <div className="close" onClick={::this.dismissError}>
+                    &times;
+                </div>
             </div>
         }
 
@@ -73,13 +77,20 @@ export default class FlowPreview extends Component {
                     This may be due to a corrupted source file, a wrong source
                     format, or invalid format type.
                 </div>
-                <div className="close" onClick={::this.dismissError}>&times;</div>
+                <div className="close" onClick={::this.dismissError}>
+                    &times;
+                </div>
             </div>
     }
 
     render() {
-        return <section className="content-block">
-            <h3>Your Preview</h3>
+        let classes = ''
+        if (this.props.className) {
+            classes += ' ' + this.props.className
+        }
+
+        return <section className={classes}>
+            <h2>Your Preview</h2>
             {this.renderError()}
             <div id="preview"></div>
         </section>

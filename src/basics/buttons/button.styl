@@ -1,0 +1,12 @@
+@require '../../principles/colors'
+@require '../../principles/gutter-mixins'
+
+.button
+    cursor: pointer
+    gutterHorizontal()
+
+    &:hover
+        fill: $primary !important
+
+    &.empty
+        cursor: auto

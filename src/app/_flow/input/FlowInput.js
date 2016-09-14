@@ -147,7 +147,7 @@ export default class FlowInput extends Component {
             let request = new XMLHttpRequest()
             request.onreadystatechange = (e) => {
                 if (request.readyState !== 4) {
-                    return;
+                    return
                 }
 
                 if (request.status === 200) {

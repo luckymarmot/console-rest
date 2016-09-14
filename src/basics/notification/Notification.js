@@ -1,78 +1,36 @@
 import React, { Component } from 'react'
 
+import SuccessImg from 'crest/basics/media/SuccessImg'
+import FailureImg from 'crest/basics/media/FailureImg'
+import WarnImg from 'crest/basics/media/WarnImg'
+
 require('./notification.styl')
 
 export default class Notification extends Component {
-    static defaultProps = {
-        dismissAfter: 2000
-    }
-
     constructor(props) {
         super(props)
-
-        this.state = {
-            active: !!props.message,
-            message: props.message,
-            status: props.status
-        }
-
-        if (this.state.active) {
-            this.dismissTimeout = setTimeout(
-                props.onDismiss,
-                props.dismissAfter
-            )
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            active: !!nextProps.message,
-            message: nextProps.message,
-            status: nextProps.status
-        })
-
-        if (this.state.active) {
-            clearTimeout(this.dismissTimeout)
-            this.dismissTimeout = setTimeout(
-                nextProps.onDismiss,
-                nextProps.dismissAfter
-            )
-        } else {
-            this.onDismiss()
-        }
-    }
-
-    componentWillUnmount() {
-        clearTimeout(this.dismissTimeout)
-    }
-
-    onDismiss() {
-        this.setState({
-            active: false,
-            message: null,
-            status: null
-        })
-        this.props.onDismiss()
     }
 
     renderStatus() {
-        if (this.state.status === 200) {
-            return 'OK'
+        if (this.props.status === 200) {
+            return <SuccessImg title="Success"/>
+        } else if (this.props.status === 800) {
+            return <WarnImg title="Warning"/>
         } else {
-            return 'NO'
+            return <FailureImg title="Error"/>
         }
     }
 
     render() {
         let className = 'notification'
 
-        if (this.state.active) {
+        if (this.props.status && !this.props.hide) {
             className += ' active'
         }
 
         return <div className={className}>
             <div className="status">{this.renderStatus()}</div>
-            <div className="message">this.state.message</div>
+            <div className="message">{this.props.message}</div>
         </div>
     }
 }

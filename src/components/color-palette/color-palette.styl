@@ -1,0 +1,29 @@
+@require '../../principles/colors'
+@require '../../principles/gutter-mixins'
+@require '../../principles/padding-mixins'
+
+.palette
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+    align-items: center
+    justify-content: flex-start
+    margin-left: -8px
+    margin-right: -8px
+    .block
+        cursor: pointer
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        outline: none
+        border: 0
+        min-width: 32px
+        max-width: 32px
+        min-height: 32px
+        max-height: 32px
+        gutterVerticalSmall()
+        gutterHorizontalSmall()
+
+        .white
+            fill: $background200
