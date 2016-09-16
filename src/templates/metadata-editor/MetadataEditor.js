@@ -25,9 +25,47 @@ export default class MetadataEditor extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (
+            nextProps &&
+            nextProps.file &&
+            nextProps.file.content &&
+            !nextProps.file.format
+        ) {
+            window.openInConsole.detect(
+                nextProps.file.content, ::this.updateFormatFromScores
+            )
+        }
         this.setState({
             ...nextProps.file
         })
+    }
+
+    updateFormatFromScores(error, scores) {
+        if (error) {
+            this.updateFormat(null, null)
+        }
+
+        let best = null
+        let bestScore = -1
+        let conflictingFormat = null
+
+        Object.keys(scores).forEach(format => {
+            if (scores[format] === bestScore) {
+                conflictingFormat = format
+            }
+            if (scores[format] > bestScore) {
+                best = format
+                bestScore = scores[format]
+            }
+        })
+
+        if (conflictingFormat && scores[conflictingFormat] === bestScore) {
+            // TODO conflicting formats
+        } else if (bestScore < 1) {
+            // TODO not super confident
+        } else {
+            this.updateFormat(null, best)
+        }
     }
 
     updateFormat(ev, format) {
@@ -157,7 +195,7 @@ export default class MetadataEditor extends Component {
         } else if (status === 800) {
             return <WarnImg title="No File To Name"/>
         }
-        return <EmptyButton title="No File Yet"/>
+        return null
     }
 
     render() {

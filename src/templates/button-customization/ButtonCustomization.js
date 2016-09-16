@@ -40,6 +40,10 @@ export default class ButtonCustomization extends Component {
         this.setState({
             text: text
         })
+
+        if (typeof this.props.onTextChange === 'function') {
+            this.props.onTextChange(text)
+        }
     }
 
     render() {

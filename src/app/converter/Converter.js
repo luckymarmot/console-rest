@@ -8,6 +8,7 @@ import FlowPreview from 'crest/templates/flow-preview/FlowPreview'
 import
     ButtonCustomization
 from 'crest/templates/button-customization/ButtonCustomization'
+import FlowSnippet from 'crest/templates/flow-snippet/FlowSnippet'
 
 require('../../basics/layout/content.styl')
 
@@ -26,7 +27,8 @@ export default class Converter extends Component {
                 target: null,
                 message: null
             },
-            theme: null
+            theme: '00AAFF',
+            text: 'Open In Console'
         }
     }
 
@@ -127,6 +129,12 @@ export default class Converter extends Component {
         })
     }
 
+    updateText(text) {
+        this.setState({
+            text: text
+        })
+    }
+
     render() {
         return <div className="container">
             <Notifier
@@ -157,7 +165,16 @@ export default class Converter extends Component {
                 <div data-future="FileConverter" className="section"/>
                 <ButtonCustomization
                     className="section"
+                    onTextChange={::this.updateText}
                     onThemeChange={::this.updateTheme}/>
+                <FlowSnippet
+                    className="section"
+                    name={this.state.file.name}
+                    content={this.state.file.content}
+                    url={this.state.file.url}
+                    format={this.state.file.format}
+                    theme={this.state.theme}
+                    text={this.state.text}/>
             </div>
             <Helper className="aside"/>
         </div>

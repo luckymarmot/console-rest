@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 
+import UpArrowImg from 'crest/basics/media/UpArrowImg'
+import DownArrowImg from 'crest/basics/media/DownArrowImg'
+
 require('./input.styl')
 
 export default class SelectField extends Component {
@@ -17,9 +20,24 @@ export default class SelectField extends Component {
     }
 
     toggle() {
+        if (!this.state.expanded) {
+            this.clickEventListener = ::this.close
+            setImmediate(() => {
+                window.addEventListener('click', this.clickEventListener)
+            })
+        }
+
         this.setState({
             expanded: !this.state.expanded
         })
+    }
+
+    close() {
+        this.setState({
+            expanded: false
+        })
+
+        window.removeEventListener('click', this.clickEventListener)
     }
 
     updateSelect(ev) {
@@ -36,6 +54,22 @@ export default class SelectField extends Component {
             expanded: nextProps.expanded,
             value: nextProps.value
         })
+    }
+
+    componentWillUnMount() {
+        window.removeEventListener('click', this.clickEventListener)
+    }
+
+    renderIcon() {
+        if (!this.props.children) {
+            if (this.state.expanded) {
+                return <UpArrowImg onClick={::this.toggle}/>
+            }
+
+            return <DownArrowImg onClick={::this.toggle}/>
+        }
+
+        return this.props.children
     }
 
     render() {
@@ -80,7 +114,7 @@ export default class SelectField extends Component {
             </div>
             <button className="input-button"
                 onClick={::this.toggle}
-                tabIndex="1">{this.props.children}</button>
+                tabIndex="1">{this.renderIcon()}</button>
         </div>
     }
 }

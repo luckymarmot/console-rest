@@ -45,7 +45,7 @@ export default class Uploader extends Component {
             let content = reader.result
             this.setState({
                 local: {
-                    name: file.name,
+                    name: this.removeExtension(file.name),
                     content: content,
                     status: 200
                 },
@@ -53,7 +53,7 @@ export default class Uploader extends Component {
             })
 
             this.props.onFileAndStatusChange(
-                file.name, content, null,
+                this.removeExtension(file.name), content, null,
                 200, file.name, {
                     message: 'file was successfully loaded'
                 }
@@ -63,7 +63,7 @@ export default class Uploader extends Component {
         reader.onerror = (ev) => {
             this.setState({
                 local: {
-                    name: file.name,
+                    name: this.removeExtension(file.name),
                     content: null,
                     status: 400
                 }
@@ -75,7 +75,7 @@ export default class Uploader extends Component {
         reader.onabort = (ev) => {
             this.setState({
                 local: {
-                    name: file.name,
+                    name: this.removeExtension(file.name),
                     content: null,
                     status: 600
                 }
@@ -197,7 +197,11 @@ export default class Uploader extends Component {
 
     parseURLForName(url) {
         let name = url.split('/').slice(-1)[0].split('?')[0].split('#')[0]
-        return name || null
+        return this.removeExtension(name) || null
+    }
+
+    removeExtension(name) {
+        return name.split('.', 1)[0]
     }
 
     onFileLoaded(ev) {

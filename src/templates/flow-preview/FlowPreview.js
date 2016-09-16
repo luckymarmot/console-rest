@@ -20,7 +20,6 @@ export default class FlowPreview extends Component {
     componentDidMount() {
         window.openInConsole.generateDOM('preview', 'paw')
         window.openInConsole.setGlobalCallback((error) => {
-            console.log('@@@error', error)
             this.updateState(error)
         })
     }
@@ -34,7 +33,10 @@ export default class FlowPreview extends Component {
             paw: 'paw'
         }
 
-        window.openInConsole.setTheme(props.theme)
+        if (props.theme) {
+            window.openInConsole.setTheme(props.theme)
+        }
+
         if (props.content && props.format) {
             let format = formatMap[props.format.toLowerCase()]
             window.openInConsole.setSource(

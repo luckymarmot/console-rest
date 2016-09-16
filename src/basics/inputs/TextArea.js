@@ -26,11 +26,15 @@ export default class TextArea extends Component {
     }
 
     keyPressed(ev) {
-        this.props.onKeyDown(ev, this.refs.inputText.value)
+        if (typeof this.props.onKeyDown === 'function') {
+            this.props.onKeyDown(ev, this.refs.inputText.value)
+        }
     }
 
     submit(ev) {
-        this.props.onSubmit(ev, this.refs.inputText.value)
+        if (typeof this.props.onSubmit === 'function') {
+            this.props.onSubmit(ev, this.refs.inputText.value)
+        }
     }
 
     render() {
