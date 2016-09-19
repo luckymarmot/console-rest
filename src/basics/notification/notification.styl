@@ -1,0 +1,33 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+
+.notification
+    background-color: $background700
+    paddingAll()
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    justify-content: space-between
+    align-items: center
+    position: fixed
+    bottom: -64px
+    max-height: 64px
+    min-height: 64px
+    width: inherit
+    transition-property: all
+    transition-timing-function: ease-in-out
+    transition-duration: 0.3s
+    &.active
+        bottom: 0
+
+    .status
+        flex-basis: 0
+        flex-grow: 0
+        flex-shrink: 0
+        paddingRight()
+
+    .message
+        flex-grow: 1
+        flex-shrink: 1
+        text-align: left
+        color: $background200

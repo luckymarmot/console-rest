@@ -1,0 +1,30 @@
+@require '../principles/colors'
+@require '../principles/font-mixins'
+
+html
+body
+    SourceSansPro(200)
+    background-color: $background200
+    color: $background700
+    margin: 0
+    width: 100%
+    height: 100%
+    display flex
+    flex-direction column
+    flex-wrap wrap
+    align-items stretch
+    justify-content flex-start
+
+div
+    flex-grow: 1
+    display flex
+    flex-direction column
+    flex-wrap nowrap
+    align-items stretch
+    justify-content flex-start
+
+a
+    cursor: pointer
+    text-decoration: underline
+    &:hover
+        color: $primary

@@ -1,0 +1,18 @@
+row(shouldWrap)
+    $wrap = shouldWrap ? wrap : nowrap
+    display flex
+    flex-direction row
+    flex-wrap: $wrap
+
+col(shouldWrap)
+    $wrap = shouldWrap ? wrap : nowrap
+    display flex
+    flex-direction column
+    flex-wrap: $wrap
+
+block(value)
+    flex-basis: (value)%
+
+children(align, justify)
+    align-items: align
+    justify-content: justify

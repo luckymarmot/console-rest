@@ -1,0 +1,22 @@
+@require '../../principles/colors'
+@require '../../principles/gutter-mixins'
+@require '../../principles/padding-mixins'
+
+.helper
+        justify-content: flex-start
+        > *
+            min-height: min-content
+            max-height: min-content
+
+        .controls
+            display: flex
+            flex-direction: row
+            justify-content: flex-end
+            align-items: center
+            gutterAll()
+            max-height: 64px
+            min-height: 64px
+            color: $background700
+            paddingHorizontal()
+            .img
+                fill: $background700

@@ -1,0 +1,25 @@
+@require '../../principles/colors'
+@require '../../principles/gutter-mixins'
+
+.button
+    cursor: pointer
+    gutterHorizontal()
+
+    &:hover
+        fill: $primary !important
+
+    &.empty
+        cursor: auto
+
+.large-button
+    cursor: pointer
+    gutterVerticalSmall()
+    background-color: $background700
+    color: $background200
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+    &:hover
+        color: $primary !important

@@ -1,0 +1,85 @@
+@require '../../principles/colors'
+@require '../../principles/gutter-mixins'
+@require '../../principles/padding-mixins'
+
+.container
+    width: 100%
+    height: 100%
+    display: flex
+    flex-direction: row
+    align-items: stretch
+    justify-content: center
+    overflow-y: scroll
+
+    > .aside
+        gutterHorizontal()
+        display: flex
+        flex-direction: column
+        align-items: stretch
+        flex-grow: 0
+        @media (min-width: 960px) and (max-width: 1280px)
+            width: 224px
+        @media (min-width: 1280px) and (max-width: 1600px)
+            // 4 64px blocks + 16px gutter L/R
+            width: 288px
+        @media (min-width: 1600px)
+            // 5 64px blocks + 16px gutter L/R
+            width: 352px
+
+    > .content
+        justify-content: flex-start
+        > *
+            min-height: min-content
+            max-height: min-content
+        paddingHorizontal()
+        display: flex
+        flex-direction: column
+        align-items: stretch
+        flex-grow: 0
+        @media (max-width: 960px)
+            width: 100%
+        @media (min-width: 960px) and (max-width: 1280px)
+            width: 512px
+        @media (min-width: 1280px) and (max-width: 1600px)
+            // useable width: 672px
+            width: 704px
+        @media (min-width: 1600px)
+            // useable width: 864px
+            width: 896px
+
+    .section
+        h1
+            noGutter()
+            noPadding()
+            paddingVertical()
+            text-align: center
+            font-size: 4rem
+            font-weight: 200
+        h2
+            noGutter()
+            noPadding()
+            paddingVertical()
+            font-size: 2rem
+            font-weight: 200
+            color: $primary
+
+        .row
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+
+        .row-inline
+            display: inline-block
+
+.row
+    .row-item
+        flex-basis: 0
+        flex-grow: 1
+        justify-content: center
+        box-sizing: border-box
+        margin-left: 16px
+        margin-right: 16px
+        &:first-of-type
+            margin-left: 0
+        &:last-of-type
+            margin-right: 0
