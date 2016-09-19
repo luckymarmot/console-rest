@@ -12,6 +12,7 @@ export default class ButtonCustomization extends Component {
         '#D84315',
         '#C62828',
         '#AD1457',
+        '#303F9F',
         '#1565C0',
         '#00838F',
         '#558B2F'

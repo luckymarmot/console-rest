@@ -307,12 +307,12 @@ export default class Uploader extends Component {
                 <img src="basics/media/drop-area-img.svg"/>
                 {this.renderDropHelper()}
             </DropArea>
-            <div className="row">
-                console.rest supports file from the following formats:&nbsp;
-                <a>Paw</a>,&nbsp;
-                <a>RAML</a>,&nbsp;
-                <a>Swagger/OAI</a>,&nbsp;
-                <a>Postman</a>,&nbsp;and&nbsp;
+            <div className="row-inline">
+                console.rest supports file from the following formats: {' '}
+                <a>Paw</a>, {' '}
+                <a>RAML</a>, {' '}
+                <a>Swagger/OAI</a>, {' '}
+                <a>Postman</a>, and {' '}
                 <a>curl</a>
             </div>
             <TextField

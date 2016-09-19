@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import Clipboard from 'clipboard'
+
 import HTMLSnippet from './HTMLSnippet'
 import SelectField from 'crest/basics/inputs/SelectField'
 import GenericButton from 'crest/basics/buttons/GenericButton'
@@ -21,6 +23,17 @@ export default class FlowSnippet extends Component {
         }
     }
 
+    copy() {
+        let copy = this.refs.rendered
+        return copy.renderCode()
+    }
+
+    componentDidMount() {
+        this.clipboard = new Clipboard('.copy', {
+            text: ::this.copy
+        })
+    }
+
     updateView(ev, view) {
         this.setState({
             view: view
@@ -29,7 +42,7 @@ export default class FlowSnippet extends Component {
 
     renderView() {
         if (this.state.view === 'as HTML') {
-            return <HTMLSnippet
+            return <HTMLSnippet ref="rendered"
                 name={this.props.name}
                 content={this.props.content}
                 url={this.props.url}
@@ -56,7 +69,7 @@ export default class FlowSnippet extends Component {
                     placeholder="Generate Snippet As"
                     onSubmit={::this.updateView}/>
                 <div className="row-item row">
-                    <GenericButton className="row-item">
+                    <GenericButton className="row-item copy">
                         Copy
                     </GenericButton>
                     <GenericButton className="row-item">

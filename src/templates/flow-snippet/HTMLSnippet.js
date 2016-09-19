@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-export default class SelectField extends Component {
+export default class HTMLSnippet extends Component {
     static propTypes = {
         className: PropTypes.string
     }

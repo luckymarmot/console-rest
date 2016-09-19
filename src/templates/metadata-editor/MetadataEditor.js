@@ -19,7 +19,8 @@ export default class MetadataEditor extends Component {
         } else {
             this.state = {
                 name: null,
-                format: null
+                format: null,
+                isFormatOk: null
             }
         }
     }
@@ -61,26 +62,32 @@ export default class MetadataEditor extends Component {
 
         if (conflictingFormat && scores[conflictingFormat] === bestScore) {
             // TODO conflicting formats
+            let msg = 'Multiple formats were detected as valid. ' +
+                'Check that the format is correct'
+            this.updateFormat(null, best, [ 800, null, msg ])
         } else if (bestScore < 1) {
             // TODO not super confident
+            let msg = 'Detection score is too low. ' +
+                'Check that the format is correct'
+            this.updateFormat(null, best, [ 800, null, msg ])
         } else {
             this.updateFormat(null, best)
         }
     }
 
-    updateFormat(ev, format) {
+    updateFormat(ev, format, _status) {
         this.setState({
             format: format
         })
+
+        let status = _status ? _status : [ null, null, null ]
 
         if (format && this.state.content) {
             this.props.onFileAndStatusChange(
                 this.state.name,
                 this.state.content,
                 this.state.uri,
-                null,
-                null,
-                null,
+                ...status,
                 format
             )
         } else {
