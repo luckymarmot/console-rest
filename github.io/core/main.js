@@ -6109,7 +6109,7 @@ webpackJsonp([1],[
 	                _react2.default.createElement(
 	                    _DropArea2.default,
 	                    { onFileDrop: this.uploadFile.bind(this) },
-	                    _react2.default.createElement('img', { src: 'console-rest/github.io/libs/drop-area-img.svg' }),
+	                    _react2.default.createElement('img', { src: 'console-rest/github.io/assets/drop-area-img.svg' }),
 	                    this.renderDropHelper()
 	                ),
 	                _react2.default.createElement(
