@@ -60,9 +60,9 @@ export default class TextField extends Component {
                 value={this.state.value || ''}
                 tabIndex="1" onKeyDown={::this.keyPressed}
                 onChange={::this.handleChange}/>
-            <button className="input-button"
+            <div className="input-button"
                 onClick={::this.submit}
-                tabIndex="1">{this.props.children}</button>
+                tabIndex="1">{this.props.children}</div>
         </div>
     }
 }

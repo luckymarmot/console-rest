@@ -42,7 +42,7 @@ export default class FlowPreview extends Component {
             window.openInConsole.setSource(
                 props.content,
                 format,
-                true
+                'text'
             )
             window.openInConsole.setName(props.name)
             window.openInConsole.generateContent()
