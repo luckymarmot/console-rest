@@ -125,7 +125,7 @@ export default class Converter extends Component {
     }
 
     render() {
-        return <div className="col">
+        return <div className="col fill">
             <Header/>
             <div className="container">
                 <div className="aside">
