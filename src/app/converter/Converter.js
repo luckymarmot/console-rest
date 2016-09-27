@@ -135,7 +135,6 @@ export default class Converter extends Component {
                         message={this.state.status.get('message')}/>
                 </div>
                 <div className="content">
-                    <div className="header"/>
                     <div className="section">
                         <h1>Run any API anywhere</h1>
                     </div>
