@@ -316,7 +316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'validateArguments',
 	        value: function validateArguments(args) {
-	            var isValid = args.content && ['remote', 'raw'].indexOf((args.contentType || '').toLowerCase()) >= 0 && ['swagger', 'raml', 'postman', 'curl'].indexOf((args.sourceFormat || '').toLowerCase()) >= 0 && ['paw', 'swagger', 'raml', 'postman', 'curl'].indexOf((args.sourceFormat || '').toLowerCase()) >= 0;
+	            var isValid = args.content && ['remote', 'raw'].indexOf((args.contentType || '').toLowerCase()) >= 0 && ['swagger', 'raml', 'postman-1', 'postman-2', 'curl'].indexOf((args.sourceFormat || '').toLowerCase()) >= 0 && ['paw', 'swagger', 'raml', 'postman', 'curl'].indexOf((args.targetFormat || '').toLowerCase()) >= 0;
 	            return isValid;
 	        }
 
@@ -118885,13 +118885,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            if ((typeof postman === 'undefined' ? 'undefined' : (0, _typeof3.default)(postman)) === 'object') {
 	                var score = 0;
+	                /* eslint-disable no-extra-paren */
 	                score += postman.collections ? 1 / 2 : 0;
 	                score += postman.environments ? 1 / 2 : 0;
-	                score += postman.id && postman.name && postman.timestamp ? 1 / 2 : 0;
+	                score += postman.id && postman.name && typeof postman.timestamp !== 'undefined' ? 1 / 2 : 0;
 	                score += postman.requests ? 1 / 2 : 0;
 	                score += postman.values ? 1 / 2 : 0;
 	                score = score < 1 ? score : 1;
 	                return score;
+	                /* eslint-enable no-extra-paren */
 	            }
 	            return 0;
 	        }
@@ -118999,7 +119001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (this.references) {
 	                var keys = envs.keySeq();
 
-	                if (keys.length === 0) {
+	                if (keys.size === 0) {
 	                    envs = envs.set('defpostmanenv', new _Container2.default({
 	                        name: 'Default Postman Environment'
 	                    }).create(this.references));
