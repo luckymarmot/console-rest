@@ -61,12 +61,20 @@ export default class Uploader extends Component {
         }
 
         let { uri, name, content, format } = setup
+
+        let status = {}
+        if (content) {
+            status = {
+                code: 200,
+                message: 'file was successfully loaded from hash'
+            }
+        }
         setTimeout(() => {
             this.props.onFileAndStatusChange({
                 // file
                 uri, name, content, format,
                 // status
-                code: 200, message: 'file was successfully loaded from hash'
+                ...status
             })
         }, 100)
         return new Immutable.Map({ uri, name, content, format })

@@ -1,4 +1,3 @@
-/* eslint-disable */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -317,7 +316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'validateArguments',
 	        value: function validateArguments(args) {
-	            var isValid = args.content && ['remote', 'raw'].indexOf((args.contentType || '').toLowerCase()) >= 0 && ['swagger', 'raml', 'postman', 'curl'].indexOf((args.sourceFormat || '').toLowerCase()) >= 0 && ['paw', 'swagger', 'raml', 'postman', 'curl'].indexOf((args.sourceFormat || '').toLowerCase()) >= 0;
+	            var isValid = args.content && ['remote', 'raw'].indexOf((args.contentType || '').toLowerCase()) >= 0 && ['swagger', 'raml', 'postman-1', 'postman-2', 'curl'].indexOf((args.sourceFormat || '').toLowerCase()) >= 0 && ['paw', 'swagger', 'raml', 'postman', 'curl'].indexOf((args.targetFormat || '').toLowerCase()) >= 0;
 	            return isValid;
 	        }
 
@@ -1432,7 +1431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 63 */
 /***/ function(module, exports) {
 
-
+	
 
 /***/ },
 /* 64 */
@@ -3189,7 +3188,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            if (param.type === 'array') {
-	                value = this._extractParam(param.items, externals);
+	                if (param.items) {
+	                    value = this._extractParam(param.items, externals);
+	                } else {
+	                    value = new _immutable2.default.List();
+	                }
 	                format = param.collectionFormat || null;
 	            }
 
@@ -3873,7 +3876,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var array = this._array;
 	      var maxIndex = array.length - 1;
 	      var ii = 0;
-	      return new Iterator(function()
+	      return new Iterator(function() 
 	        {return ii > maxIndex ?
 	          iteratorDone() :
 	          iteratorValue(type, ii, array[reverse ? maxIndex - ii++ : ii++])}
@@ -4344,7 +4347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    Repeat.prototype.__iterator = function(type, reverse) {var this$0 = this;
 	      var ii = 0;
-	      return new Iterator(function()
+	      return new Iterator(function() 
 	        {return ii < this$0.size ? iteratorValue(type, ii++, this$0._value) : iteratorDone()}
 	      );
 	    };
@@ -6528,7 +6531,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return flipSequence;
 	      };
 	    }
-	    reversedSequence.get = function(key, notSetValue)
+	    reversedSequence.get = function(key, notSetValue) 
 	      {return iterable.get(useKeys ? key : -1 - key, notSetValue)};
 	    reversedSequence.has = function(key )
 	      {return iterable.has(useKeys ? key : -1 - key)};
@@ -6723,7 +6726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.cacheResult().__iterate(fn, reverse);
 	      }
 	      var iterations = 0;
-	      iterable.__iterate(function(v, k, c)
+	      iterable.__iterate(function(v, k, c) 
 	        {return predicate.call(context, v, k, c) && ++iterations && fn(v, k, this$0)}
 	      );
 	      return iterations;
@@ -6914,7 +6917,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    interposedSequence.size = iterable.size && iterable.size * 2 -1;
 	    interposedSequence.__iterateUncached = function(fn, reverse) {var this$0 = this;
 	      var iterations = 0;
-	      iterable.__iterate(function(v, k)
+	      iterable.__iterate(function(v, k) 
 	        {return (!iterations || fn(separator, iterations++, this$0) !== false) &&
 	        fn(v, iterations++, this$0) !== false},
 	        reverse
@@ -23021,7 +23024,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/**
-	 * expands a token to a DiscontinuousRange of characters which has a
+	 * expands a token to a DiscontinuousRange of characters which has a 
 	 * length and an index function (for random selecting)
 	 *
 	 * @param {Object} token
@@ -23524,7 +23527,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.strToChars = function(str) {
 	  var chars_regex = /(\[\\b\])|(\\)?\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;
 	  str = str.replace(chars_regex, function(s, b, lbs, a16, b16, c8, dctrl, eslsh) {
-
+	    
 	    if (lbs) {
 	      return s;
 	    }
@@ -23535,7 +23538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	               c8    ? parseInt(c8,   8) :
 	               dctrl ? CTRL.indexOf(dctrl) :
 	               eslsh ? SLSH[eslsh] : undefined;
-
+	    
 	    var c = String.fromCharCode(code);
 
 	    // Escape special regex characters.
@@ -27644,15 +27647,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            text, word_array = this.n(this.word, words);
 
 	        text = word_array.join(' ');
-
+	        
 	        // Capitalize first letter of sentence
 	        text = this.capitalize(text);
-
+	        
 	        // Make sure punctuation has a usable value
 	        if (punctuation !== false && !/^[\.\?;!:]$/.test(punctuation)) {
 	            punctuation = '.';
 	        }
-
+	        
 	        // Add punctuation mark
 	        if (punctuation) {
 	            text += punctuation;
@@ -27811,7 +27814,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        options = initOptions(options, {nationality: 'en'});
 	        return this.pick(this.get("lastNames")[options.nationality.toLowerCase()]);
 	    };
-
+	    
 	    Chance.prototype.israelId=function(){
 	        var x=this.string({pool: '0123456789',length:8});
 	        var y=0;
@@ -28142,11 +28145,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * -> 0x
 	     * -> named color
 	     *
-	     * #Examples:
+	     * #Examples: 
 	     * ===============================================
 	     * * Geerate random hex color
 	     * chance.color() => '#79c157' / 'rgb(110,52,164)' / '0x67ae0b' / '#e2e2e2' / '#29CFA7'
-	     *
+	     * 
 	     * * Generate Hex based color value
 	     * chance.color({format: 'hex'})    => '#d67118'
 	     *
@@ -28154,14 +28157,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * chance.color({format: 'rgb'})    => 'rgb(110,52,164)'
 	     *
 	     * * Generate Ox based color value
-	     * chance.color({format: '0x'})     => '0x67ae0b'
+	     * chance.color({format: '0x'})     => '0x67ae0b' 
 	     *
 	     * * Generate graiscale based value
 	     * chance.color({grayscale: true})  => '#e2e2e2'
 	     *
 	     * * Return valide color name
 	     * chance.color({format: 'name'})   => 'red'
-	     *
+	     * 
 	     * * Make color uppercase
 	     * chance.color({casing: 'upper'})  => '#29CFA7'
 	     *
@@ -28176,7 +28179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        function rgb(hasAlpha) {
 
-	            var rgbValue    = (hasAlpha)    ? 'rgba' : 'rgb';
+	            var rgbValue    = (hasAlpha)    ? 'rgba' : 'rgb'; 
 	            var alphaChanal = (hasAlpha)    ? (',' + this.floating({min:0, max:1})) : "";
 	            var colorValue  = (isGrayscale) ? (gray(this.natural({max: 255}), ',')) : (this.natural({max: 255}) + ',' + this.natural({max: 255}) + ',' + this.natural({max: 255}));
 
@@ -28186,7 +28189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        function hex(start, end, withHash) {
 
 	            var simbol = (withHash) ? "#" : "";
-	            var expression  = (isGrayscale ? gray(this.hash({length: start})) : this.hash({length: end}));
+	            var expression  = (isGrayscale ? gray(this.hash({length: start})) : this.hash({length: end})); 
 	            return simbol + expression;
 	        }
 
@@ -28204,16 +28207,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else if (options.format === 'shorthex') {
 	            colorValue = hex.call(this, 1, 3, true);
-	        }
+	        } 
 	        else if (options.format === 'rgb') {
 	            colorValue = rgb.call(this, false);
-	        }
+	        } 
 	        else if (options.format === 'rgba') {
 	            colorValue = rgb.call(this, true);
-	        }
+	        } 
 	        else if (options.format === '0x') {
 	            colorValue = '0x' + hex.call(this, 2, 6);
-	        }
+	        } 
 	        else if(options.format === 'name') {
 	            return this.pick(this.get("colorNames"));
 	        }
@@ -28901,7 +28904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    if (temp.length > 3) {
 	                        if (isLast) {
 	                            temp = temp.substr(0,3);
-	                        } else {
+	                        } else {                        
 	                            temp = temp[0] + temp.substr(2,2);
 	                        }
 	                    }
@@ -28919,7 +28922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            date_generator = function(birthday, gender, that) {
 	                var lettermonths = ['A', 'B', 'C', 'D', 'E', 'H', 'L', 'M', 'P', 'R', 'S', 'T'];
 
-	                return  birthday.getFullYear().toString().substr(2) +
+	                return  birthday.getFullYear().toString().substr(2) + 
 	                        lettermonths[birthday.getMonth()] +
 	                        that.pad(birthday.getDate() + ((gender.toLowerCase() === "female") ? 40 : 0), 2);
 	            },
@@ -29112,71 +29115,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * =====================================================
 	     * Generate random file name with extention
 	     *
-	     * The argument provide extention type
-	     * -> raster
+	     * The argument provide extention type 
+	     * -> raster 
 	     * -> vector
 	     * -> 3d
 	     * -> document
 	     *
-	     * If noting is provided the function return random file name with random
+	     * If noting is provided the function return random file name with random 
 	     * extention type of any kind
 	     *
-	     * The user can validate the file name length range
+	     * The user can validate the file name length range 
 	     * If noting provided the generated file name is radom
 	     *
 	     * #Extention Pool :
-	     * * Currently the supported extentions are
+	     * * Currently the supported extentions are 
 	     *  -> some of the most popular raster image extentions
 	     *  -> some of the most popular vector image extentions
 	     *  -> some of the most popular 3d image extentions
 	     *  -> some of the most popular document extentions
-	     *
+	     * 
 	     * #Examples :
 	     * =====================================================
 	     *
 	     * Return random file name with random extention. The file extention
 	     * is provided by a predifined collection of extentions. More abouth the extention
 	     * pool can be fond in #Extention Pool section
-	     *
-	     * chance.file()
+	     * 
+	     * chance.file()                        
 	     * => dsfsdhjf.xml
 	     *
-	     * In order to generate a file name with sspecific length, specify the
+	     * In order to generate a file name with sspecific length, specify the 
 	     * length property and integer value. The extention is going to be random
-	     *
-	     * chance.file({length : 10})
+	     *  
+	     * chance.file({length : 10})           
 	     * => asrtineqos.pdf
 	     *
 	     * In order to geerate file with extention form some of the predifined groups
 	     * of the extention pool just specify the extenton pool category in fileType property
-	     *
-	     * chance.file({fileType : 'raster'})
+	     *  
+	     * chance.file({fileType : 'raster'})   
 	     * => dshgssds.psd
 	     *
 	     * You can provide specific extention for your files
-	     * chance.file({extention : 'html'})
+	     * chance.file({extention : 'html'})    
 	     * => djfsd.html
 	     *
 	     * Or you could pass custom collection of extentons bt array or by object
-	     * chance.file({extentions : [...]})
+	     * chance.file({extentions : [...]})    
 	     * => dhgsdsd.psd
-	     *
+	     *  
 	     * chance.file({extentions : { key : [...], key : [...]}})
 	     * => djsfksdjsd.xml
-	     *
-	     * @param  [collection] options
+	     * 
+	     * @param  [collection] options 
 	     * @return [string]
-	     *
+	     * 
 	     */
 	    Chance.prototype.file = function(options) {
-
+	        
 	        var fileOptions = options || {};
 	        var poolCollectionKey = "fileExtension";
 	        var typeRange   = Object.keys(this.get("fileExtension"));//['raster', 'vector', '3d', 'document'];
 	        var fileName;
 	        var fileExtention;
 
-	        // Generate random file name
+	        // Generate random file name 
 	        fileName = this.word({length : fileOptions.length});
 
 	        // Generate file by specific extention provided by the user
@@ -29195,7 +29198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return (fileName + '.' + fileExtention);
 	            }
 	            else if(fileOptions.extentions.constructor === Object) {
-
+	                
 	                var extentionObjectCollection = fileOptions.extentions;
 	                var keys = Object.keys(extentionObjectCollection);
 
@@ -29204,7 +29207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            throw new Error("Expect collection of type Array or Object to be passed as an argument ");
-	        }
+	        } 
 
 	        // Generate file extention based on specific file type
 	        if(fileOptions.fileType) {
@@ -29222,7 +29225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Generate random file name if no extenton options are passed
 	        fileExtention = this.pickone(this.get(poolCollectionKey)[this.pickone(typeRange)]);
 	        return (fileName + '.' + fileExtention);
-	    };
+	    };     
 
 	    var data = {
 
@@ -29378,7 +29381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                { name: "Verona", abbreviation: "VR", code: 23 },
 	                { name: "Vibo-Valentia", abbreviation: "VV", code: 102 },
 	                { name: "Vicenza", abbreviation: "VI", code: 24 },
-	                { name: "Viterbo", abbreviation: "VT", code: 56 }
+	                { name: "Viterbo", abbreviation: "VT", code: 56 }   
 	            ]
 	        },
 
@@ -29528,7 +29531,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	           {name: 'Polish'},
 	           {name: 'Portuguese'},
 	           {name: 'Qatari'},
-	           {name: 'Romani'},
+	           {name: 'Romani'},          
 	           {name: 'Russian'},
 	           {name: 'Rwandan'},
 	           {name: 'Saint Lucian'},
@@ -29987,7 +29990,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            {'code' : 'ZMW', 'name' : 'Zambia Kwacha'},
 	            {'code' : 'ZWD', 'name' : 'Zimbabwe Dollar'}
 	        ],
-
+	        
 	        // return the names of all valide colors
 	        colorNames : [  "AliceBlue", "Black", "Navy", "DarkBlue", "MediumBlue", "Blue", "DarkGreen", "Green", "Teal", "DarkCyan", "DeepSkyBlue", "DarkTurquoise", "MediumSpringGreen", "Lime", "SpringGreen",
 	            "Aqua", "Cyan", "MidnightBlue", "DodgerBlue", "LightSeaGreen", "ForestGreen", "SeaGreen", "DarkSlateGray", "LimeGreen", "MediumSeaGreen", "Turquoise", "RoyalBlue", "SteelBlue", "DarkSlateBlue", "MediumTurquoise",
@@ -29998,7 +30001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            "Crimson", "Gainsboro", "Plum", "BurlyWood", "LightCyan", "Lavender", "DarkSalmon", "Violet", "PaleGoldenRod", "LightCoral", "Khaki", "AliceBlue", "HoneyDew", "Azure", "SandyBrown", "Wheat", "Beige", "WhiteSmoke",
 	            "MintCream", "GhostWhite", "Salmon", "AntiqueWhite", "Linen", "LightGoldenRodYellow", "OldLace", "Red", "Fuchsia", "Magenta", "DeepPink", "OrangeRed", "Tomato", "HotPink", "Coral", "DarkOrange", "LightSalmon", "Orange",
 	            "LightPink", "Pink", "Gold", "PeachPuff", "NavajoWhite", "Moccasin", "Bisque", "MistyRose", "BlanchedAlmond", "PapayaWhip", "LavenderBlush", "SeaShell", "Cornsilk", "LemonChiffon", "FloralWhite", "Snow", "Yellow", "LightYellow"
-	        ],
+	        ],        
 
 	        fileExtension : {
 	            "raster"    : ["bmp", "gif", "gpl", "ico", "jpeg", "psd", "png", "psp", "raw", "tiff"],
@@ -30775,7 +30778,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 
 	function Fake (faker) {
-
+	  
 	  /**
 	   * Generator method for combining faker methods based on string input
 	   *
@@ -30868,12 +30871,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    res = str.replace('{{' + token + '}}', result);
 
 	    // return the response recursively until we are done finding all tags
-	    return fake(res);
+	    return fake(res);    
 	  }
-
+	  
 	  return this;
-
-
+	  
+	  
 	}
 
 	module['exports'] = Fake;
@@ -31750,7 +31753,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      faker.name.jobArea() + " " +
 	      faker.name.jobType();
 	  };
-
+	  
 	  /**
 	   * prefix
 	   *
@@ -31870,7 +31873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * order to build the city name.
 	   *
 	   * If no format string is provided one of the following is randomly used:
-	   *
+	   * 
 	   * * `{{address.cityPrefix}} {{name.firstName}}{{address.citySuffix}}`
 	   * * `{{address.cityPrefix}} {{name.firstName}}`
 	   * * `{{name.firstName}}{{address.citySuffix}}`
@@ -31969,7 +31972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.streetSuffix = function () {
 	      return faker.random.arrayElement(faker.definitions.address.street_suffix);
 	  }
-
+	  
 	  /**
 	   * streetPrefix
 	   *
@@ -32056,7 +32059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.longitude = function () {
 	      return (faker.random.number(360 * 10000) / 10000.0 - 180.0).toFixed(4);
 	  }
-
+	  
 	  return this;
 	}
 
@@ -32073,10 +32076,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @namespace faker.company
 	 */
 	var Company = function (faker) {
-
+	  
 	  var self = this;
 	  var f = faker.fake;
-
+	  
 	  /**
 	   * suffixes
 	   *
@@ -32188,7 +32191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.bsNoun = function () {
 	      return faker.random.arrayElement(faker.definitions.company.bs_noun);
 	  }
-
+	  
 	}
 
 	module['exports'] = Company;
@@ -32554,7 +32557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  self.transport = function (width, height, randomize) {
 	    return faker.image.imageUrl(width, height, 'transport', randomize);
-	  }
+	  }  
 	}
 
 	module["exports"] = Image;
@@ -32704,7 +32707,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var Hacker = function (faker) {
 	  var self = this;
-
+	  
 	  /**
 	   * abbreviation
 	   *
@@ -32778,7 +32781,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   return faker.helpers.mustache(phrase, data);
 
 	  };
-
+	  
 	  return self;
 	};
 
@@ -33469,7 +33472,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self.phoneFormats = function () {
 	    return faker.random.arrayElement(faker.definitions.phone_number.formats);
 	  };
-
+	  
 	  return self;
 
 	};
@@ -33608,9 +33611,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      return faker.random.arrayElement(source);
 	  };
-
+	  
 	  return self;
-
+	  
 	};
 
 	module['exports'] = _Date;
@@ -74925,7 +74928,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 654 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {module["exports"] = [
+	/* WEBPACK VAR INJECTION */(function(module) {module["exports"] = [  
 	  "##",
 	  "#"
 	];
@@ -106588,11 +106591,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      '-', '?', ':', ',', '[', ']', '{', '}',
 	      '#', '&', '*', '!', '|', '>', '\'', '"',
 	      '%', '@', '`'.
-
+	    
 	    It may also start with
 	      '-', '?', ':'
 	    if it is followed by a non-space character.
-
+	    
 	    Note that we limit the last rule to the block context (except the '-'
 	    character) because we want the flow context to be space independent.
 	    */
@@ -106611,7 +106614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    The byte order mark is stripped if it's the first character in the stream.
 	    We do not yet support BOM inside the stream as the specification requires.
 	    Any such mark will be considered as a part of the document.
-
+	    
 	    TODO: We need to make tab handling rules more sane.  A good rule is
 	      Tabs cannot precede tokens BLOCK-SEQUENCE-START, BLOCK-MAPPING-START,
 	      BLOCK-END, KEY (block context), VALUE (block context), BLOCK-ENTRY
@@ -112873,15 +112876,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function isString (value) {
 	        return Object.prototype.toString.apply(value) === '[object String]';
 	    }
-
+	    
 	    function isNumber (value) {
 	        return Object.prototype.toString.apply(value) === '[object Number]';
 	    }
-
+	    
 	    function isBoolean (value) {
 	        return Object.prototype.toString.apply(value) === '[object Boolean]';
 	    }
-
+	    
 	    function join (arr, separator) {
 	        var
 	            result = '',
@@ -115186,7 +115189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1192 */
 /***/ function(module, exports) {
 
-
+	
 	// This is autogenerated with esprima tools, see:
 	// https://github.com/ariya/esprima/blob/master/esprima.js
 	//
@@ -118383,7 +118386,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1201 */
 /***/ function(module, exports) {
 
-
+	
 
 /***/ },
 /* 1202 */
@@ -118882,13 +118885,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            if ((typeof postman === 'undefined' ? 'undefined' : (0, _typeof3.default)(postman)) === 'object') {
 	                var score = 0;
+	                /* eslint-disable no-extra-paren */
 	                score += postman.collections ? 1 / 2 : 0;
 	                score += postman.environments ? 1 / 2 : 0;
-	                score += postman.id && postman.name && postman.timestamp ? 1 / 2 : 0;
+	                score += postman.id && postman.name && typeof postman.timestamp !== 'undefined' ? 1 / 2 : 0;
 	                score += postman.requests ? 1 / 2 : 0;
 	                score += postman.values ? 1 / 2 : 0;
 	                score = score < 1 ? score : 1;
 	                return score;
+	                /* eslint-enable no-extra-paren */
 	            }
 	            return 0;
 	        }
@@ -118996,7 +119001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (this.references) {
 	                var keys = envs.keySeq();
 
-	                if (keys.length === 0) {
+	                if (keys.size === 0) {
 	                    envs = envs.set('defpostmanenv', new _Container2.default({
 	                        name: 'Default Postman Environment'
 	                    }).create(this.references));
