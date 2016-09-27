@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Immutable from 'immutable'
 
 import DropArea from 'crest/basics/dragdrop/DropArea'
 import FilePicker from 'crest/basics/filepicker/FilePicker'
@@ -21,67 +22,119 @@ export default class Uploader extends Component {
         super(props)
 
         this.state = {
-            local: {
+            local: new Immutable.Map({
                 name: null,
                 content: null,
                 status: null
-            },
-            query: {
+            }),
+            query: new Immutable.Map({
                 url: null,
                 name: null,
                 content: null,
                 status: null
-            },
-            paste: {
+            }),
+            paste: new Immutable.Map({
                 content: null
-            },
+            }),
+            location: this.loadHashData(),
             current: null
         }
+    }
+
+    loadHashData() {
+        let setup = {}
+        let hash = window.location.hash.slice(2)
+        let kvPairs = hash.split('&')
+        kvPairs.forEach(kv => {
+            let [ key, value ] = kv.split('=')
+            let cleanKey = decodeURIComponent(key).toLowerCase()
+            setup[cleanKey] = decodeURIComponent(value)
+        })
+
+        if (setup.content) {
+            setup.content = atob(setup.content)
+        }
+
+        if (setup.name) {
+            // remove extension
+            setup.name = this.removeExtension(setup.name)
+        }
+
+        let { uri, name, content, format } = setup
+        setTimeout(() => {
+            this.props.onFileAndStatusChange({
+                // file
+                uri, name, content, format,
+                // status
+                code: 200, message: 'file was successfully loaded from hash'
+            })
+        }, 100)
+        return new Immutable.Map({ uri, name, content, format })
     }
 
     uploadFile(file) {
         let reader = new FileReader()
         reader.onload = () => {
             let content = reader.result
+            let name = this.removeExtension(file.name)
+
             this.setState({
-                local: {
-                    name: this.removeExtension(file.name),
+                local: new Immutable.Map({
+                    name: name,
                     content: content,
                     status: 200
-                },
+                }),
                 current: 'local'
             })
 
-            this.props.onFileAndStatusChange(
-                this.removeExtension(file.name), content, null,
-                200, file.name, {
-                    message: 'file was successfully loaded'
-                }
-            )
+            let props = {
+                name: name,
+                content: content,
+                code: 200,
+                target: name,
+                message: 'file was successfully loaded'
+            }
+
+            this.props.onFileAndStatusChange(props)
         }
 
         reader.onerror = (ev) => {
+            let name = this.removeExtension(file.name)
             this.setState({
-                local: {
-                    name: this.removeExtension(file.name),
+                local: new Immutable.Map({
+                    name: name,
                     content: null,
                     status: 400
-                }
+                })
             })
 
-            this.props.onStatusChange(400, file.name, ev.target.error)
+            let props = {
+                code: 400,
+                target: name,
+                message: ev.target.error.message || ev.target.error.name || null
+            }
+
+            this.props.onStatusChange(props)
         }
 
         reader.onabort = (ev) => {
+            let name = this.removeExtension(file.name)
+
             this.setState({
-                local: {
-                    name: this.removeExtension(file.name),
+                local: new Immutable.Map({
+                    name: name,
                     content: null,
                     status: 600
-                }
+                })
             })
 
-            this.props.onStatusChange(600, file.name, ev.target.error)
+            let props = {
+                code: 600,
+                target: name,
+                message: ev.target.error.message || ev.target.error.name
+            }
+
+            this.props.onStatusChange(props)
         }
 
         reader.readAsText(file)
@@ -89,24 +142,25 @@ export default class Uploader extends Component {
 
     deleteFile() {
         if (this.state.current === 'local') {
-            this.props.onFileChange(null, null, null)
+            this.props.onFileChange({})
             this.setState({
                 current: null
             })
         }
 
         this.setState({
-            local: {
+            local: new Immutable.Map({
                 name: null,
                 content: null,
                 status: null
-            }
+            })
         })
     }
 
     // TODO Support state.local.status to trigger status information in FileInfo
     renderDropHelper() {
-        if (!this.state.local.name) {
+        let name = this.state.local.get('name')
+        if (!name) {
             return <div className="drop-helper">
                     <h4>Drag &amp; Drop your file here</h4>
                     <FilePicker onFileUpload={::this.uploadFile}
@@ -116,7 +170,7 @@ export default class Uploader extends Component {
             // return <FileInfo file={this.state.file}/>
             return <div className="drop-helper">
                 <FileInfo
-                    file={this.state.local.name}
+                    file={name}
                     className="row"
                     onDeleteFile={::this.deleteFile}/>
             </div>
@@ -124,11 +178,12 @@ export default class Uploader extends Component {
     }
 
     renderQueryStatus() {
-        if (this.state.query.status === 200) {
+        let status = this.state.query.get('status')
+        if (status === 200) {
             return <SuccessImg title="Request completed"/>
-        } else if (this.state.query.status === 400) {
+        } else if (status === 400) {
             return <FailureImg title="Request Failed"/>
-        } else if (this.state.query.status === 600) {
+        } else if (status === 600) {
             return <FailureImg title="Request Aborted"/>
         }
 
@@ -137,11 +192,11 @@ export default class Uploader extends Component {
 
     resetQueryStatus(url) {
         this.setState({
-            query: {
+            query: new Immutable.Map({
                 status: null,
                 url: url,
                 content: null
-            }
+            })
         })
     }
 
@@ -170,29 +225,29 @@ export default class Uploader extends Component {
             ev.preventDefault()
         } catch (e) {
             this.setState({
-                query: {
-                    url: this.state.query.url,
-                    status: 400,
-                    content: null
-                }
+                query: this.state.query
+                    .set('status', 400)
+                    .set('content', null)
             })
 
-            this.props.onStatusChange(400, null, {
-                name: 'Invalid URL',
+            let props = {
+                code: 400,
                 message: 'URL could not be parsed'
-            })
+            }
+
+            this.props.onStatusChange(props)
         }
     }
 
     checkContent(ev, content) {
         this.setState({
-            paste: {
+            paste: new Immutable.Map({
                 content: content
-            },
+            }),
             current: 'paste'
         })
 
-        this.props.onFileChange(null, content, null)
+        this.props.onFileChange({ content })
     }
 
     parseURLForName(url) {
@@ -209,36 +264,42 @@ export default class Uploader extends Component {
         let url = ev.target.responseURL
         let name = this.parseURLForName(url)
         if (ev.target.status >= 200 && ev.target.status < 400) {
+            let content = ev.target.responseText
             this.setState({
-                query: {
-                    url: url,
-                    name: name,
-                    status: 200,
-                    content: ev.target.responseText
-                },
+                query: new Immutable.Map({
+                    url,
+                    name,
+                    content,
+                    status: 200
+                }),
                 current: 'query'
             })
 
-            this.props.onFileAndStatusChange(
-                name, ev.target.responseText, url,
-                200, name, {
-                    message: 'file was successfully downloaded'
-                }
-            )
+            let props = {
+                name,
+                content,
+                url,
+                code: 200,
+                target: name,
+                message: 'file was successfully downloaded'
+            }
+            this.props.onFileAndStatusChange(props)
         } else if (ev.target.status >= 400) {
             this.setState({
-                query: {
+                query: new Immutable.Map({
                     url: this.state.query.url,
                     status: 400,
                     content: null
-                }
+                })
             })
 
-            this.props.onStatusChange(
-                ev.target.status, name, {
-                    name: ev.target.statusText
-                }
-            )
+            let props = {
+                code: 400,
+                target: name,
+                message: ev.target.statusText
+            }
+
+            this.props.onStatusChange(props)
         }
     }
 
@@ -246,22 +307,24 @@ export default class Uploader extends Component {
         let name = this.parseURLForName(this.state.query.url || '')
         this.request = null
         this.setState({
-            query: {
+            query: new Immutable.Map({
                 url: this.state.query.url,
                 status: 400,
                 content: null
-            }
+            })
         })
 
-        let status = null
+        let props
         if (ev.target.status === 0 && !ev.target.statusText) {
-            status = {
-                name: 'Access-Control-Allow-Origin',
+            props = {
+                code: 400,
+                target: name,
                 message: 'This resource is not accessible from console.rest'
             }
         } else {
-            status = {
-                name: ev.target.statusText,
+            props = {
+                code: 400,
+                target: name,
                 message: 'The request failed for an unknown reason'
             }
             /* eslint-disable no-console */
@@ -269,24 +332,24 @@ export default class Uploader extends Component {
             /* eslint-enable no-console */
         }
 
-        this.props.onStatusChange(400, name, status)
+        this.props.onStatusChange(props)
     }
 
     onFileAborted() {
         this.request = null
         this.setState({
-            query: {
+            query: new Immutable.Map({
                 status: 600,
                 content: null
-            }
+            })
         })
 
-        let status = {
-            name: 'Abort',
+        let props = {
+            code: 600,
             message: 'Request was cancelled by user'
         }
 
-        this.props.onStatusChange(600, name, status)
+        this.props.onStatusChange(props)
     }
 
     componentWillUnmount() {
@@ -326,8 +389,6 @@ export default class Uploader extends Component {
                 onSubmit={::this.checkContent}>
                 GO
             </TextArea>
-            <div data-future="SearchField"/>
-            <div data-future="TextArea"/>
         </div>
     }
 }

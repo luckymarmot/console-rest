@@ -14,7 +14,7 @@ export default class MetadataEditor extends Component {
 
         if (props.file) {
             this.state = {
-                ...props.file
+                ...props.file.toJS()
             }
         } else {
             this.state = {
@@ -29,15 +29,15 @@ export default class MetadataEditor extends Component {
         if (
             nextProps &&
             nextProps.file &&
-            nextProps.file.content &&
-            !nextProps.file.format
+            nextProps.file.get('content') &&
+            !nextProps.file.get('format')
         ) {
             window.openInConsole.detect(
-                nextProps.file.content, ::this.updateFormatFromScores
+                nextProps.file.get('content'), ::this.updateFormatFromScores
             )
         }
         this.setState({
-            ...nextProps.file
+            ...nextProps.file.toJS()
         })
     }
 
@@ -62,14 +62,14 @@ export default class MetadataEditor extends Component {
 
         if (conflictingFormat && scores[conflictingFormat] === bestScore) {
             // TODO conflicting formats
-            let msg = 'Multiple formats were detected as valid. ' +
+            let message = 'Multiple formats were detected as valid. ' +
                 'Check that the format is correct'
-            this.updateFormat(null, best, [ 800, null, msg ])
+            this.updateFormat(null, best, { code: 800, message })
         } else if (bestScore < 1) {
             // TODO not super confident
-            let msg = 'Detection score is too low. ' +
+            let message = 'Detection score is too low. ' +
                 'Check that the format is correct'
-            this.updateFormat(null, best, [ 800, null, msg ])
+            this.updateFormat(null, best, { code: 800, message })
         } else {
             this.updateFormat(null, best)
         }
@@ -80,24 +80,21 @@ export default class MetadataEditor extends Component {
             format: format
         })
 
-        let status = _status ? _status : [ null, null, null ]
+        let status = _status ? _status : {}
 
         if (format && this.state.content) {
-            this.props.onFileAndStatusChange(
-                this.state.name,
-                this.state.content,
-                this.state.uri,
-                ...status,
-                format
-            )
+            let { name, content, uri } = this.state
+            this.props.onFileAndStatusChange({
+                name, content, uri, format,
+                ...status
+            })
         } else {
-            this.props.onStatusChange(
-                800,
-                this.state.name,
-                {
-                    message: 'No applicable file.'
-                }
-            )
+            let props = {
+                code: 800,
+                target: this.state.name,
+                message: 'No applicable file.'
+            }
+            this.props.onStatusChange(props)
         }
     }
 
@@ -107,39 +104,30 @@ export default class MetadataEditor extends Component {
         })
 
         if (name === '' && this.state.content) {
-            this.props.onFileAndStatusChange(
-                name,
-                this.state.content,
-                this.state.uri,
-                400,
-                null,
-                {
-                    message: 'A filename is required'
-                },
-                this.state.format
-            )
+            let { content, uri, format } = this.state
+            let props = {
+                // file
+                name, content, uri, format,
+                // status
+                code: 400, message: 'A filename is required'
+            }
+
+            this.props.onFileAndStatusChange(props)
         } else {
-            this.props.onFileAndStatusChange(
-                name,
-                this.state.content,
-                this.state.uri,
-                null,
-                null,
-                null,
-                this.state.format
-            )
+            let { content, uri, format } = this.state
+            let props = { name, content, uri, format }
+            this.props.onFileAndStatusChange(props)
         }
     }
 
     updateFilenameStatus() {
         if (this.state.name && !this.state.content) {
-            this.props.onStatusChange(
-                800,
-                this.state.name,
-                {
-                    message: 'No file to name.'
-                }
-            )
+            let props = {
+                code: 800,
+                target: this.state.name,
+                message: 'No file to name.'
+            }
+            this.props.onStatusChange(props)
         }
     }
 
@@ -216,7 +204,7 @@ export default class MetadataEditor extends Component {
             <div className="row">
                 <div className="row-item">
                     <TextField
-                        value={this.props.file.name}
+                        value={this.state.name || ''}
                         placeholder="Enter a filename"
                         onChange={::this.updateFilename}
                         onSubmit={::this.updateFilenameStatus}>
@@ -225,7 +213,7 @@ export default class MetadataEditor extends Component {
                 </div>
                 <div className="row-item">
                     <SelectField
-                        value={this.props.file.format}
+                        value={this.state.format}
                         options={[ 'Swagger', 'RAML', 'Curl', 'Postman' ]}
                         placeholder="File format"
                         onSubmit={::this.updateFormat}>

@@ -14,7 +14,10 @@ export default class ResetExpansionButton extends Component {
             classes += ' ' + this.props.className
         }
         /* eslint-disable max-len */
-        return <svg onClick={::this.clicked} className={classes} height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        return <svg className={classes}
+            onClick={::this.clicked}
+            style={this.props.style}
+            height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <title>{this.props.title}</title>
             <path d="M0 0h24v24H0z" fill="none">
                 <title>{this.props.title}</title>

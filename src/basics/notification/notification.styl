@@ -2,6 +2,7 @@
 @require '../../principles/padding-mixins'
 
 .notification
+    z-index: 10
     background-color: $background700
     paddingAll()
     display: flex
@@ -10,10 +11,17 @@
     justify-content: space-between
     align-items: center
     position: fixed
+    @media (max-width: 960px)
+        left: 0px
+        width: 100%
+    @media (min-width: 960px) and (max-width: 1280px)
+        left: 25%
+        width: 50%
+    @media (min-width: 1280px)
+        width: inherit
     bottom: -64px
     max-height: 64px
     min-height: 64px
-    width: inherit
     transition-property: all
     transition-timing-function: ease-in-out
     transition-duration: 0.3s

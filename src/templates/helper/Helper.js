@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 
 import CollapseAllButton from 'crest/basics/buttons/CollapseAllButton'
 import ExpandAllButton from 'crest/basics/buttons/ExpandAllButton'
+import DownArrowImg from 'crest/basics/media/DownArrowImg'
+import UpArrowImg from 'crest/basics/media/UpArrowImg'
 import ResetExpansionButton from 'crest/basics/buttons/ResetExpansionButton'
 import Collapsible from 'crest/components/collapsible/Collapsible'
 
@@ -16,6 +18,7 @@ export default class Helper extends Component {
         super(props)
 
         this.state = {
+            helperOpened: window.innerWidth > 1280,
             expandPaw: true,
             expandPostman: true,
             expandRaml: false,
@@ -23,6 +26,46 @@ export default class Helper extends Component {
             expandRaml3: true,
             expandRaml4: false,
             expandRaml5: true
+        }
+    }
+
+    throttle(eventType, eventName) {
+        let running = false
+        let eventHandler = () => {
+            if (running) {
+                return
+            }
+            running = true
+            window.requestAnimationFrame(() => {
+                window.dispatchEvent(new CustomEvent(eventName))
+                running = false
+            })
+        }
+
+        this.eventHandler = eventHandler
+        window.addEventListener(eventType, this.eventHandler)
+    }
+
+    componentDidMount() {
+        this.throttle('resize', 'optmizedResize')
+        this.optimizedResize = ::this.onWindowResize
+        window.addEventListener('optmizedResize', this.optimizedResize)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.eventHandler)
+        window.removeEventListener('optimizedResize', this.optimizedResize)
+    }
+
+    onWindowResize() {
+        if (window.innerWidth <= 1280 && this.state.helperOpened) {
+            this.setState({
+                helperOpened: false
+            })
+        } else if (window.innerWidth > 1280 && !this.state.helperOpened) {
+            this.setState({
+                helperOpened: true
+            })
         }
     }
 
@@ -55,7 +98,33 @@ export default class Helper extends Component {
             state[key] = false
         })
 
+        delete state.helperOpened
+
         this.setState(state)
+    }
+
+    collapseHelper() {
+        this.setState({
+            helperOpened: false
+        })
+    }
+
+    expandHelper() {
+        this.setState({
+            helperOpened: true
+        })
+    }
+
+    renderExpandHelperButton() {
+        if (this.state.helperOpened) {
+            return <UpArrowImg
+                className="helper-control"
+                onClick={::this.collapseHelper}/>
+        } else {
+            return <DownArrowImg
+                className="helper-control"
+                onClick={::this.expandHelper}/>
+        }
     }
 
     render() {
@@ -64,14 +133,34 @@ export default class Helper extends Component {
             classes += ' ' + this.props.className
         }
 
-        return <div className={classes}>
+        let helperStyles
+        let controlStyles
+        if (this.state.helperOpened) {
+            controlStyles = {
+                display: 'flex'
+            }
+
+            helperStyles = {
+                right: 0
+            }
+        } else {
+            controlStyles = {
+                display: 'none'
+            }
+            helperStyles = {
+                right: -288
+            }
+        }
+
+        return <div className={classes} style={helperStyles}>
             <div className="controls">
                 <ResetExpansionButton className="img" title="Reset To Default"
-                    onClick={::this.resetExpand}/>
+                    onClick={::this.resetExpand} style={controlStyles}/>
                 <ExpandAllButton className="img" title="Expand All"
-                    onClick={::this.expandAll}/>
+                    onClick={::this.expandAll} style={controlStyles}/>
                 <CollapseAllButton className="img" title="Collapse All"
-                    onClick={::this.collapseAll}/>
+                    onClick={::this.collapseAll} style={controlStyles}/>
+                {this.renderExpandHelperButton()}
             </div>
             <Collapsible title="Importing from Paw"
                 expanded={this.state.expandPaw}>

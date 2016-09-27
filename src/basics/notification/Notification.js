@@ -21,6 +21,24 @@ export default class Notification extends Component {
         }
     }
 
+    clicked(ev) {
+        if (typeof this.props.onClick === 'function') {
+            this.props.onClick(ev)
+        }
+    }
+
+    mouseEntered(ev) {
+        if (typeof this.props.onMouseEnter === 'function') {
+            this.props.onMouseEnter(ev)
+        }
+    }
+
+    mouseLeft(ev) {
+        if (typeof this.props.onMouseLeave === 'function') {
+            this.props.onMouseLeave(ev)
+        }
+    }
+
     render() {
         let className = 'notification'
 
@@ -28,7 +46,10 @@ export default class Notification extends Component {
             className += ' active'
         }
 
-        return <div className={className}>
+        return <div className={className}
+            onClick={::this.clicked}
+            onMouseEnter={::this.mouseEntered}
+            onMouseLeave={::this.mouseLeft}>
             <div className="status">{this.renderStatus()}</div>
             <div className="message">{this.props.message}</div>
         </div>

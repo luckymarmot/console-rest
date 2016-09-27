@@ -10,7 +10,7 @@ export default class Notifier extends Component {
     }
 
     static defaultProps = {
-        dismissAfter: 5000,
+        dismissAfter: 3000,
         transitionDuration: 300,
         maxPendingNotification: 2
     }
@@ -116,6 +116,27 @@ export default class Notifier extends Component {
         return null
     }
 
+    reset() {
+        this.hold()
+        this.release()
+    }
+
+    hold() {
+        clearTimeout(this.hideTimeout)
+        clearTimeout(this.dismissTimeout)
+    }
+
+    release() {
+        this.hideTimeout = setTimeout(
+            ::this.hide,
+            this.props.dismissAfter - this.props.transitionDuration
+        )
+        this.dismissTimeout = setTimeout(
+            ::this.dismissed,
+            this.props.dismissAfter
+        )
+    }
+
     componentWillUnmount() {
         clearTimeout(this.hideTimeout)
         clearTimeout(this.dismissTimeout)
@@ -128,7 +149,11 @@ export default class Notifier extends Component {
         }
 
         return <div className={classes}>
+            {this.props.children}
             <Notification
+                onClick={::this.reset}
+                onMouseEnter={::this.hold}
+                onMouseLeave={::this.release}
                 hide={this.state.hideCurrent}
                 status={this.state.current.status}
                 message={this.state.current.message}/>
