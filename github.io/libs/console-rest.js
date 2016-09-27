@@ -3951,7 +3951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                outer.id = outer.className = "openinpaw-outer";
 	                document.getElementsByTagName("body")[0].appendChild(outer);
 	            }
-	            console.log('_openInPawHTML', _openInPawHTML(document_name, pawlink, _webUrl()))
+
 	            outer.innerHTML = _openInPawHTML(document_name, pawlink, _webUrl());
 	            outer.getElementsByClassName('openinpaw')[0].className = "openinpaw fadein";
 	            outer.style.opacity = 1;
