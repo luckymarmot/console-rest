@@ -50,9 +50,9 @@ export default class TextArea extends Component {
                 onChange={::this.resizeArea}
                 placeholder={this.props.placeholder}
                 tabIndex="1" onKeyDown={::this.keyPressed}/>
-            <button className="input-button"
+            <div className="input-button"
                 onClick={::this.submit}
-                tabIndex="1">{this.props.children}</button>
+                tabIndex="1">{this.props.children}</div>
         </div>
     }
 }

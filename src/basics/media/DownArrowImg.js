@@ -15,7 +15,10 @@ export default class SuccessImg extends Component {
             classes += ' ' + this.props.className
         }
         /* eslint-disable max-len */
-        return <svg onClick={::this.clicked} className={classes} height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        return <svg className={classes}
+            onClick={::this.clicked}
+            style={this.props.style}
+            height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <title>{this.props.title}</title>
             <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z">
                 <title>{this.props.title}</title>

@@ -112,9 +112,9 @@ export default class SelectField extends Component {
                     })}
                 </div>
             </div>
-            <button className="input-button"
+            <div className="input-button"
                 onClick={::this.toggle}
-                tabIndex="1">{this.renderIcon()}</button>
+                tabIndex="1">{this.renderIcon()}</div>
         </div>
     }
 }

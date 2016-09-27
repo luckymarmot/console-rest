@@ -3,20 +3,43 @@
 @require '../../principles/padding-mixins'
 
 .helper
-        justify-content: flex-start
-        > *
-            min-height: min-content
-            max-height: min-content
+    z-index: 1
+    justify-content: flex-start
+    width: inherit
+    transition: all 0.2s ease-in-out
+    > *
+        flex-grow: 0
+        flex-shrink: 0
+
+    .controls
+        position: fixed
+        top: -16px
+        width: inherit
+        display: flex
+        flex-direction: row
+        justify-content: flex-end
+        align-items: center
+        gutterAll()
+        max-height: 64px
+        min-height: 64px
+        color: $background700
+        paddingHorizontal()
+        .img
+            fill: $background200
+
+        .helper-control
+            display: none
+
+
+    @media (max-width: 1280px)
+        position: fixed
+        overflow-y: scroll
+        background-color: $background200
+        box-shadow: 2px 4px 4px 4px rgba(0, 0, 0, 0.12)
+        height: calc(100vh - 64px)
+        width: 288px
 
         .controls
-            display: flex
-            flex-direction: row
-            justify-content: flex-end
-            align-items: center
-            gutterAll()
-            max-height: 64px
-            min-height: 64px
-            color: $background700
-            paddingHorizontal()
-            .img
-                fill: $background700
+            right: -16px
+            .helper-control
+                display: flex

@@ -7,11 +7,17 @@
     display: flex
     flex-direction: row
     min-height: 32px
+    max-height: 32px
     input
     textarea
+        padding: 0
+        margin: 0
+        appearance: inherit
         border: 1px solid $background700
         flex-grow:3
         font-size: 1rem
+        font-weight: 400
+        font-family: inherit
         paddingHorizontal()
         background-color: $background200
         &:focus
@@ -46,7 +52,6 @@
     .select
         font-weight: 400
         margin: 0
-        position: relative
         display: flex
         flex-direction: column
         align-items: stretch
@@ -78,12 +83,15 @@
 
         > .content
             width: 100%
-            position: absolute
+            flex-shrink: 0
+            z-index: 1
             display: none
             noPadding()
             background-color: $background200
             color: $background700
-            border: 1px solid $background700
+            border-left: 1px solid $background700
+            border-right: 1px solid $background700
+            border-bottom: 1px solid $background700
 
             .option
                 display: flex
