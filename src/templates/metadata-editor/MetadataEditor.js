@@ -12,6 +12,15 @@ export default class MetadataEditor extends Component {
     constructor(props) {
         super(props)
 
+        this.formats = [ 'Swagger', 'RAML', 'Curl', 'Postman v1', 'Postman v2' ]
+        this.formatMap = {
+            'postman-1': 'Postman v1',
+            'postman-2': 'Postman v2',
+            swagger: 'Swagger',
+            curl: 'Curl',
+            raml: 'RAML'
+        }
+
         if (props.file) {
             this.state = {
                 ...props.file.toJS()
@@ -77,7 +86,8 @@ export default class MetadataEditor extends Component {
 
     updateFormat(ev, format, _status) {
         this.setState({
-            format: format
+            format: format,
+            isFormatOk: !_status
         })
 
         let status = _status ? _status : {}
@@ -169,6 +179,9 @@ export default class MetadataEditor extends Component {
         let format = this.state.format
         let content = this.state.content
         /* eslint-disable no-extra-parens */
+        if (this.state.isFormatOk === false) {
+            return 800
+        }
         if (
             (!format && content) || (format && !content)
         ) {
@@ -213,8 +226,8 @@ export default class MetadataEditor extends Component {
                 </div>
                 <div className="row-item">
                     <SelectField
-                        value={this.state.format}
-                        options={[ 'Swagger', 'RAML', 'Curl', 'Postman' ]}
+                        value={this.formatMap[this.state.format]}
+                        options={this.formats}
                         placeholder="File format"
                         onSubmit={::this.updateFormat}>
                         {this.renderFileFormatStatus()}
