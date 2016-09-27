@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -140,19 +141,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Serializer6 = _interopRequireDefault(_Serializer5);
 
-	var _Serializer7 = __webpack_require__(1215);
+	var _Serializer7 = __webpack_require__(1216);
 
 	var _Serializer8 = _interopRequireDefault(_Serializer7);
 
-	var _ContextResolver = __webpack_require__(1216);
+	var _ContextResolver = __webpack_require__(1217);
 
 	var _ContextResolver2 = _interopRequireDefault(_ContextResolver);
 
-	var _BrowserEnvironment = __webpack_require__(1219);
+	var _BrowserEnvironment = __webpack_require__(1220);
 
 	var _BrowserEnvironment2 = _interopRequireDefault(_BrowserEnvironment);
 
-	var _Options = __webpack_require__(1221);
+	var _Options = __webpack_require__(1222);
 
 	var _Options2 = _interopRequireDefault(_Options);
 
@@ -1431,7 +1432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 63 */
 /***/ function(module, exports) {
 
-	
+
 
 /***/ },
 /* 64 */
@@ -2612,7 +2613,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var filterOtherFieldsOutFunc = function filterOtherFieldsOutFunc(bool) {
 	                return function (val) {
-	                    return bool !== (val || '').toLowerCase().startsWith('x-');
+	                    var _bool = (val || '').toLowerCase().indexOf('x-') === 0;
+	                    return bool !== _bool;
 	                };
 	            };
 
@@ -2785,7 +2787,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var ref = new _JSONSchema2.default();
 	            var refs = ref.resolve((0, _stringify2.default)(collection)).get('dependencies');
 
-	            console.log('&&&&&&&', (0, _stringify2.default)(refs, null, 2));
 	            return refs;
 	        }
 	    }, {
@@ -2801,11 +2802,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (collection.basePath && collection.basePath.length > 0) {
 	                basePath = collection.basePath;
-	                if (!basePath.startsWith('/')) {
+	                if (!(basePath.indexOf('/') === 0)) {
 	                    basePath = '/' + basePath;
 	                }
 
-	                if (basePath.endsWith('/')) {
+	                if (basePath.indexOf('/') === basePath.length - 1) {
 	                    basePath = basePath.substr(0, basePath.length - 1);
 	                }
 	            }
@@ -3178,9 +3179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (param.schema) {
 	                var currentURI = this.item.getPath();
-	                // console.log('#########', param.schema.$ref, currentURI)
 	                var uri = new _URL2.default(param.schema.$ref, currentURI).href();
-	                console.log('@uri', uri);
 	                value = new _JSONSchema2.default({
 	                    uri: uri,
 	                    relative: param.schema.$ref || ''
@@ -3321,7 +3320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if (paths.hasOwnProperty(path)) {
 	                    var nodes = path.split('/');
 
-	                    if (path.startsWith('/') === true) {
+	                    if (path.indexOf('/') === 0) {
 	                        nodes.splice(0, 1);
 	                    }
 
@@ -3874,7 +3873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var array = this._array;
 	      var maxIndex = array.length - 1;
 	      var ii = 0;
-	      return new Iterator(function() 
+	      return new Iterator(function()
 	        {return ii > maxIndex ?
 	          iteratorDone() :
 	          iteratorValue(type, ii, array[reverse ? maxIndex - ii++ : ii++])}
@@ -4345,7 +4344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    Repeat.prototype.__iterator = function(type, reverse) {var this$0 = this;
 	      var ii = 0;
-	      return new Iterator(function() 
+	      return new Iterator(function()
 	        {return ii < this$0.size ? iteratorValue(type, ii++, this$0._value) : iteratorDone()}
 	      );
 	    };
@@ -6529,7 +6528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return flipSequence;
 	      };
 	    }
-	    reversedSequence.get = function(key, notSetValue) 
+	    reversedSequence.get = function(key, notSetValue)
 	      {return iterable.get(useKeys ? key : -1 - key, notSetValue)};
 	    reversedSequence.has = function(key )
 	      {return iterable.has(useKeys ? key : -1 - key)};
@@ -6724,7 +6723,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.cacheResult().__iterate(fn, reverse);
 	      }
 	      var iterations = 0;
-	      iterable.__iterate(function(v, k, c) 
+	      iterable.__iterate(function(v, k, c)
 	        {return predicate.call(context, v, k, c) && ++iterations && fn(v, k, this$0)}
 	      );
 	      return iterations;
@@ -6915,7 +6914,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    interposedSequence.size = iterable.size && iterable.size * 2 -1;
 	    interposedSequence.__iterateUncached = function(fn, reverse) {var this$0 = this;
 	      var iterations = 0;
-	      iterable.__iterate(function(v, k) 
+	      iterable.__iterate(function(v, k)
 	        {return (!iterations || fn(separator, iterations++, this$0) !== false) &&
 	        fn(v, iterations++, this$0) !== false},
 	        reverse
@@ -23022,7 +23021,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/**
-	 * expands a token to a DiscontinuousRange of characters which has a 
+	 * expands a token to a DiscontinuousRange of characters which has a
 	 * length and an index function (for random selecting)
 	 *
 	 * @param {Object} token
@@ -23525,7 +23524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.strToChars = function(str) {
 	  var chars_regex = /(\[\\b\])|(\\)?\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;
 	  str = str.replace(chars_regex, function(s, b, lbs, a16, b16, c8, dctrl, eslsh) {
-	    
+
 	    if (lbs) {
 	      return s;
 	    }
@@ -23536,7 +23535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	               c8    ? parseInt(c8,   8) :
 	               dctrl ? CTRL.indexOf(dctrl) :
 	               eslsh ? SLSH[eslsh] : undefined;
-	    
+
 	    var c = String.fromCharCode(code);
 
 	    // Escape special regex characters.
@@ -27645,15 +27644,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            text, word_array = this.n(this.word, words);
 
 	        text = word_array.join(' ');
-	        
+
 	        // Capitalize first letter of sentence
 	        text = this.capitalize(text);
-	        
+
 	        // Make sure punctuation has a usable value
 	        if (punctuation !== false && !/^[\.\?;!:]$/.test(punctuation)) {
 	            punctuation = '.';
 	        }
-	        
+
 	        // Add punctuation mark
 	        if (punctuation) {
 	            text += punctuation;
@@ -27812,7 +27811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        options = initOptions(options, {nationality: 'en'});
 	        return this.pick(this.get("lastNames")[options.nationality.toLowerCase()]);
 	    };
-	    
+
 	    Chance.prototype.israelId=function(){
 	        var x=this.string({pool: '0123456789',length:8});
 	        var y=0;
@@ -28143,11 +28142,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * -> 0x
 	     * -> named color
 	     *
-	     * #Examples: 
+	     * #Examples:
 	     * ===============================================
 	     * * Geerate random hex color
 	     * chance.color() => '#79c157' / 'rgb(110,52,164)' / '0x67ae0b' / '#e2e2e2' / '#29CFA7'
-	     * 
+	     *
 	     * * Generate Hex based color value
 	     * chance.color({format: 'hex'})    => '#d67118'
 	     *
@@ -28155,14 +28154,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * chance.color({format: 'rgb'})    => 'rgb(110,52,164)'
 	     *
 	     * * Generate Ox based color value
-	     * chance.color({format: '0x'})     => '0x67ae0b' 
+	     * chance.color({format: '0x'})     => '0x67ae0b'
 	     *
 	     * * Generate graiscale based value
 	     * chance.color({grayscale: true})  => '#e2e2e2'
 	     *
 	     * * Return valide color name
 	     * chance.color({format: 'name'})   => 'red'
-	     * 
+	     *
 	     * * Make color uppercase
 	     * chance.color({casing: 'upper'})  => '#29CFA7'
 	     *
@@ -28177,7 +28176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        function rgb(hasAlpha) {
 
-	            var rgbValue    = (hasAlpha)    ? 'rgba' : 'rgb'; 
+	            var rgbValue    = (hasAlpha)    ? 'rgba' : 'rgb';
 	            var alphaChanal = (hasAlpha)    ? (',' + this.floating({min:0, max:1})) : "";
 	            var colorValue  = (isGrayscale) ? (gray(this.natural({max: 255}), ',')) : (this.natural({max: 255}) + ',' + this.natural({max: 255}) + ',' + this.natural({max: 255}));
 
@@ -28187,7 +28186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        function hex(start, end, withHash) {
 
 	            var simbol = (withHash) ? "#" : "";
-	            var expression  = (isGrayscale ? gray(this.hash({length: start})) : this.hash({length: end})); 
+	            var expression  = (isGrayscale ? gray(this.hash({length: start})) : this.hash({length: end}));
 	            return simbol + expression;
 	        }
 
@@ -28205,16 +28204,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else if (options.format === 'shorthex') {
 	            colorValue = hex.call(this, 1, 3, true);
-	        } 
+	        }
 	        else if (options.format === 'rgb') {
 	            colorValue = rgb.call(this, false);
-	        } 
+	        }
 	        else if (options.format === 'rgba') {
 	            colorValue = rgb.call(this, true);
-	        } 
+	        }
 	        else if (options.format === '0x') {
 	            colorValue = '0x' + hex.call(this, 2, 6);
-	        } 
+	        }
 	        else if(options.format === 'name') {
 	            return this.pick(this.get("colorNames"));
 	        }
@@ -28902,7 +28901,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    if (temp.length > 3) {
 	                        if (isLast) {
 	                            temp = temp.substr(0,3);
-	                        } else {                        
+	                        } else {
 	                            temp = temp[0] + temp.substr(2,2);
 	                        }
 	                    }
@@ -28920,7 +28919,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            date_generator = function(birthday, gender, that) {
 	                var lettermonths = ['A', 'B', 'C', 'D', 'E', 'H', 'L', 'M', 'P', 'R', 'S', 'T'];
 
-	                return  birthday.getFullYear().toString().substr(2) + 
+	                return  birthday.getFullYear().toString().substr(2) +
 	                        lettermonths[birthday.getMonth()] +
 	                        that.pad(birthday.getDate() + ((gender.toLowerCase() === "female") ? 40 : 0), 2);
 	            },
@@ -29113,71 +29112,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * =====================================================
 	     * Generate random file name with extention
 	     *
-	     * The argument provide extention type 
-	     * -> raster 
+	     * The argument provide extention type
+	     * -> raster
 	     * -> vector
 	     * -> 3d
 	     * -> document
 	     *
-	     * If noting is provided the function return random file name with random 
+	     * If noting is provided the function return random file name with random
 	     * extention type of any kind
 	     *
-	     * The user can validate the file name length range 
+	     * The user can validate the file name length range
 	     * If noting provided the generated file name is radom
 	     *
 	     * #Extention Pool :
-	     * * Currently the supported extentions are 
+	     * * Currently the supported extentions are
 	     *  -> some of the most popular raster image extentions
 	     *  -> some of the most popular vector image extentions
 	     *  -> some of the most popular 3d image extentions
 	     *  -> some of the most popular document extentions
-	     * 
+	     *
 	     * #Examples :
 	     * =====================================================
 	     *
 	     * Return random file name with random extention. The file extention
 	     * is provided by a predifined collection of extentions. More abouth the extention
 	     * pool can be fond in #Extention Pool section
-	     * 
-	     * chance.file()                        
+	     *
+	     * chance.file()
 	     * => dsfsdhjf.xml
 	     *
-	     * In order to generate a file name with sspecific length, specify the 
+	     * In order to generate a file name with sspecific length, specify the
 	     * length property and integer value. The extention is going to be random
-	     *  
-	     * chance.file({length : 10})           
+	     *
+	     * chance.file({length : 10})
 	     * => asrtineqos.pdf
 	     *
 	     * In order to geerate file with extention form some of the predifined groups
 	     * of the extention pool just specify the extenton pool category in fileType property
-	     *  
-	     * chance.file({fileType : 'raster'})   
+	     *
+	     * chance.file({fileType : 'raster'})
 	     * => dshgssds.psd
 	     *
 	     * You can provide specific extention for your files
-	     * chance.file({extention : 'html'})    
+	     * chance.file({extention : 'html'})
 	     * => djfsd.html
 	     *
 	     * Or you could pass custom collection of extentons bt array or by object
-	     * chance.file({extentions : [...]})    
+	     * chance.file({extentions : [...]})
 	     * => dhgsdsd.psd
-	     *  
+	     *
 	     * chance.file({extentions : { key : [...], key : [...]}})
 	     * => djsfksdjsd.xml
-	     * 
-	     * @param  [collection] options 
+	     *
+	     * @param  [collection] options
 	     * @return [string]
-	     * 
+	     *
 	     */
 	    Chance.prototype.file = function(options) {
-	        
+
 	        var fileOptions = options || {};
 	        var poolCollectionKey = "fileExtension";
 	        var typeRange   = Object.keys(this.get("fileExtension"));//['raster', 'vector', '3d', 'document'];
 	        var fileName;
 	        var fileExtention;
 
-	        // Generate random file name 
+	        // Generate random file name
 	        fileName = this.word({length : fileOptions.length});
 
 	        // Generate file by specific extention provided by the user
@@ -29196,7 +29195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return (fileName + '.' + fileExtention);
 	            }
 	            else if(fileOptions.extentions.constructor === Object) {
-	                
+
 	                var extentionObjectCollection = fileOptions.extentions;
 	                var keys = Object.keys(extentionObjectCollection);
 
@@ -29205,7 +29204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            throw new Error("Expect collection of type Array or Object to be passed as an argument ");
-	        } 
+	        }
 
 	        // Generate file extention based on specific file type
 	        if(fileOptions.fileType) {
@@ -29223,7 +29222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Generate random file name if no extenton options are passed
 	        fileExtention = this.pickone(this.get(poolCollectionKey)[this.pickone(typeRange)]);
 	        return (fileName + '.' + fileExtention);
-	    };     
+	    };
 
 	    var data = {
 
@@ -29379,7 +29378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                { name: "Verona", abbreviation: "VR", code: 23 },
 	                { name: "Vibo-Valentia", abbreviation: "VV", code: 102 },
 	                { name: "Vicenza", abbreviation: "VI", code: 24 },
-	                { name: "Viterbo", abbreviation: "VT", code: 56 }   
+	                { name: "Viterbo", abbreviation: "VT", code: 56 }
 	            ]
 	        },
 
@@ -29529,7 +29528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	           {name: 'Polish'},
 	           {name: 'Portuguese'},
 	           {name: 'Qatari'},
-	           {name: 'Romani'},          
+	           {name: 'Romani'},
 	           {name: 'Russian'},
 	           {name: 'Rwandan'},
 	           {name: 'Saint Lucian'},
@@ -29988,7 +29987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            {'code' : 'ZMW', 'name' : 'Zambia Kwacha'},
 	            {'code' : 'ZWD', 'name' : 'Zimbabwe Dollar'}
 	        ],
-	        
+
 	        // return the names of all valide colors
 	        colorNames : [  "AliceBlue", "Black", "Navy", "DarkBlue", "MediumBlue", "Blue", "DarkGreen", "Green", "Teal", "DarkCyan", "DeepSkyBlue", "DarkTurquoise", "MediumSpringGreen", "Lime", "SpringGreen",
 	            "Aqua", "Cyan", "MidnightBlue", "DodgerBlue", "LightSeaGreen", "ForestGreen", "SeaGreen", "DarkSlateGray", "LimeGreen", "MediumSeaGreen", "Turquoise", "RoyalBlue", "SteelBlue", "DarkSlateBlue", "MediumTurquoise",
@@ -29999,7 +29998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            "Crimson", "Gainsboro", "Plum", "BurlyWood", "LightCyan", "Lavender", "DarkSalmon", "Violet", "PaleGoldenRod", "LightCoral", "Khaki", "AliceBlue", "HoneyDew", "Azure", "SandyBrown", "Wheat", "Beige", "WhiteSmoke",
 	            "MintCream", "GhostWhite", "Salmon", "AntiqueWhite", "Linen", "LightGoldenRodYellow", "OldLace", "Red", "Fuchsia", "Magenta", "DeepPink", "OrangeRed", "Tomato", "HotPink", "Coral", "DarkOrange", "LightSalmon", "Orange",
 	            "LightPink", "Pink", "Gold", "PeachPuff", "NavajoWhite", "Moccasin", "Bisque", "MistyRose", "BlanchedAlmond", "PapayaWhip", "LavenderBlush", "SeaShell", "Cornsilk", "LemonChiffon", "FloralWhite", "Snow", "Yellow", "LightYellow"
-	        ],        
+	        ],
 
 	        fileExtension : {
 	            "raster"    : ["bmp", "gif", "gpl", "ico", "jpeg", "psd", "png", "psp", "raw", "tiff"],
@@ -30776,7 +30775,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 
 	function Fake (faker) {
-	  
+
 	  /**
 	   * Generator method for combining faker methods based on string input
 	   *
@@ -30869,12 +30868,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    res = str.replace('{{' + token + '}}', result);
 
 	    // return the response recursively until we are done finding all tags
-	    return fake(res);    
+	    return fake(res);
 	  }
-	  
+
 	  return this;
-	  
-	  
+
+
 	}
 
 	module['exports'] = Fake;
@@ -31751,7 +31750,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      faker.name.jobArea() + " " +
 	      faker.name.jobType();
 	  };
-	  
+
 	  /**
 	   * prefix
 	   *
@@ -31871,7 +31870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * order to build the city name.
 	   *
 	   * If no format string is provided one of the following is randomly used:
-	   * 
+	   *
 	   * * `{{address.cityPrefix}} {{name.firstName}}{{address.citySuffix}}`
 	   * * `{{address.cityPrefix}} {{name.firstName}}`
 	   * * `{{name.firstName}}{{address.citySuffix}}`
@@ -31970,7 +31969,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.streetSuffix = function () {
 	      return faker.random.arrayElement(faker.definitions.address.street_suffix);
 	  }
-	  
+
 	  /**
 	   * streetPrefix
 	   *
@@ -32057,7 +32056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.longitude = function () {
 	      return (faker.random.number(360 * 10000) / 10000.0 - 180.0).toFixed(4);
 	  }
-	  
+
 	  return this;
 	}
 
@@ -32074,10 +32073,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @namespace faker.company
 	 */
 	var Company = function (faker) {
-	  
+
 	  var self = this;
 	  var f = faker.fake;
-	  
+
 	  /**
 	   * suffixes
 	   *
@@ -32189,7 +32188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.bsNoun = function () {
 	      return faker.random.arrayElement(faker.definitions.company.bs_noun);
 	  }
-	  
+
 	}
 
 	module['exports'] = Company;
@@ -32555,7 +32554,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  self.transport = function (width, height, randomize) {
 	    return faker.image.imageUrl(width, height, 'transport', randomize);
-	  }  
+	  }
 	}
 
 	module["exports"] = Image;
@@ -32705,7 +32704,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var Hacker = function (faker) {
 	  var self = this;
-	  
+
 	  /**
 	   * abbreviation
 	   *
@@ -32779,7 +32778,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   return faker.helpers.mustache(phrase, data);
 
 	  };
-	  
+
 	  return self;
 	};
 
@@ -33470,7 +33469,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self.phoneFormats = function () {
 	    return faker.random.arrayElement(faker.definitions.phone_number.formats);
 	  };
-	  
+
 	  return self;
 
 	};
@@ -33609,9 +33608,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      return faker.random.arrayElement(source);
 	  };
-	  
+
 	  return self;
-	  
+
 	};
 
 	module['exports'] = _Date;
@@ -74926,7 +74925,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 654 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {module["exports"] = [  
+	/* WEBPACK VAR INJECTION */(function(module) {module["exports"] = [
 	  "##",
 	  "#"
 	];
@@ -104215,7 +104214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function _findReferences(obj) {
 	            var refs = new _immutable2.default.List();
 
-	            if (typeof obj === 'string' && obj.startsWith('::fileRef::')) {
+	            if (typeof obj === 'string' && obj.indexOf('::fileRef::') === 0) {
 	                var rel = obj.slice(11);
 	                var uri = _path2.default.resolve(_path2.default.dirname(this.item.getPath()), rel);
 	                return refs.push(new _Exotic2.default({
@@ -104251,7 +104250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: '_createJSONSchemaReference',
 	        value: function _createJSONSchemaReference(_rel, item) {
 	            var rel = _rel;
-	            if (rel.startsWith('::fileRef::')) {
+	            if (rel.indexOf('::fileRef::') === 0) {
 	                rel = rel.slice(11);
 	                var _uri = _path2.default.resolve(_path2.default.dirname(item.getPath()), rel);
 
@@ -104275,7 +104274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        },
 	                        resolved: true
 	                    });
-	                } else if (!rel.startsWith('#/')) {
+	                } else if (!(rel.indexOf('#/') === 0)) {
 	                    rel = '#/' + _rel;
 	                }
 	            }
@@ -104290,7 +104289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: '_replaceReferences',
 	        value: function _replaceReferences(obj) {
-	            if (typeof obj === 'string' && obj.startsWith('::fileRef::')) {
+	            if (typeof obj === 'string' && obj.indexOf('::fileRef::') === 0) {
 	                var rel = obj.slice(11);
 	                var uri = _path2.default.resolve(_path2.default.dirname(this.item.getPath()), rel);
 	                return new _Exotic2.default({
@@ -106589,11 +106588,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      '-', '?', ':', ',', '[', ']', '{', '}',
 	      '#', '&', '*', '!', '|', '>', '\'', '"',
 	      '%', '@', '`'.
-	    
+
 	    It may also start with
 	      '-', '?', ':'
 	    if it is followed by a non-space character.
-	    
+
 	    Note that we limit the last rule to the block context (except the '-'
 	    character) because we want the flow context to be space independent.
 	    */
@@ -106612,7 +106611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    The byte order mark is stripped if it's the first character in the stream.
 	    We do not yet support BOM inside the stream as the specification requires.
 	    Any such mark will be considered as a part of the document.
-	    
+
 	    TODO: We need to make tab handling rules more sane.  A good rule is
 	      Tabs cannot precede tokens BLOCK-SEQUENCE-START, BLOCK-MAPPING-START,
 	      BLOCK-END, KEY (block context), VALUE (block context), BLOCK-ENTRY
@@ -112874,15 +112873,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function isString (value) {
 	        return Object.prototype.toString.apply(value) === '[object String]';
 	    }
-	    
+
 	    function isNumber (value) {
 	        return Object.prototype.toString.apply(value) === '[object Number]';
 	    }
-	    
+
 	    function isBoolean (value) {
 	        return Object.prototype.toString.apply(value) === '[object Boolean]';
 	    }
-	    
+
 	    function join (arr, separator) {
 	        var
 	            result = '',
@@ -115187,7 +115186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1192 */
 /***/ function(module, exports) {
 
-	
+
 	// This is autogenerated with esprima tools, see:
 	// https://github.com/ariya/esprima/blob/master/esprima.js
 	//
@@ -118384,7 +118383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1201 */
 /***/ function(module, exports) {
 
-	
+
 
 /***/ },
 /* 1202 */
@@ -118996,29 +118995,36 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (this.references) {
 	                var keys = envs.keySeq();
-	                var _iteratorNormalCompletion3 = true;
-	                var _didIteratorError3 = false;
-	                var _iteratorError3 = undefined;
 
-	                try {
-	                    for (var _iterator3 = (0, _getIterator3.default)(keys), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	                        var key = _step3.value;
+	                if (keys.length === 0) {
+	                    envs = envs.set('defpostmanenv', new _Container2.default({
+	                        name: 'Default Postman Environment'
+	                    }).create(this.references));
+	                } else {
+	                    var _iteratorNormalCompletion3 = true;
+	                    var _didIteratorError3 = false;
+	                    var _iteratorError3 = undefined;
 
-	                        var container = envs.get(key);
-	                        container = container.create(this.references);
-	                        envs = envs.set(key, container);
-	                    }
-	                } catch (err) {
-	                    _didIteratorError3 = true;
-	                    _iteratorError3 = err;
-	                } finally {
 	                    try {
-	                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	                            _iterator3.return();
+	                        for (var _iterator3 = (0, _getIterator3.default)(keys), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	                            var key = _step3.value;
+
+	                            var container = envs.get(key);
+	                            container = container.create(this.references);
+	                            envs = envs.set(key, container);
 	                        }
+	                    } catch (err) {
+	                        _didIteratorError3 = true;
+	                        _iteratorError3 = err;
 	                    } finally {
-	                        if (_didIteratorError3) {
-	                            throw _iteratorError3;
+	                        try {
+	                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                                _iterator3.return();
+	                            }
+	                        } finally {
+	                            if (_didIteratorError3) {
+	                                throw _iteratorError3;
+	                            }
 	                        }
 	                    }
 	                }
@@ -119379,7 +119385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                auths.push(auth);
 	                            }
 	                        } else {
-	                            headerSet = headerSet.set(match[1], this._referenceEnvironmentVariable(match[2]));
+	                            headerSet = headerSet.set(match[1], match[2]);
 	                        }
 	                    }
 	                }
@@ -119577,18 +119583,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var param = this._extractParam('body', req.rawModeData || req.data);
 	                params.push(param);
 	            } else if (req.dataMode === 'urlencoded' || req.dataMode === 'params') {
-	                var contentType = this._extractContentType(headers);
-	                if (!contentType && req.dataMode === 'urlencoded') {
-	                    var header = this._extractParam('Content-Type', 'application/x-www-form-urlencoded');
-	                    contentType = 'application/x-www-form-urlencoded';
-	                    headers = headers.push(header);
-	                } else if (!contentType && req.dataMode === 'params') {
-	                    var _header = this._extractParam('Content-Type', 'multipart/form-data');
-	                    contentType = 'multipart/form-data';
-	                    headers = headers.push(_header);
-	                }
+	                if (req.data && req.data.length) {
+	                    var contentType = this._extractContentType(headers);
+	                    if (!contentType && req.dataMode === 'urlencoded') {
+	                        var header = this._extractParam('Content-Type', 'application/x-www-form-urlencoded');
+	                        contentType = 'application/x-www-form-urlencoded';
+	                        headers = headers.push(header);
+	                    } else if (!contentType && req.dataMode === 'params') {
+	                        var _header = this._extractParam('Content-Type', 'multipart/form-data');
+	                        contentType = 'multipart/form-data';
+	                        headers = headers.push(_header);
+	                    }
 
-	                if (req.data) {
 	                    var _iteratorNormalCompletion9 = true;
 	                    var _didIteratorError9 = false;
 	                    var _iteratorError9 = undefined;
@@ -120680,8 +120686,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: '_extractBodyParams',
 	        value: function _extractBodyParams(body, _headers) {
 	            var headers = _headers;
+
+	            if (!body) {
+	                return [new _immutable2.default.List(), headers];
+	            }
+
 	            var params = [];
 	            var contentType = this._extractContentType(headers);
+
 	            if (body.mode === 'raw') {
 	                var param = this._extractParam('body', body.raw || null);
 	                params.push(param);
@@ -121739,6 +121751,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _JSONSchema2 = _interopRequireDefault(_JSONSchema);
 
+	var _Auth = __webpack_require__(1158);
+
+	var _Auth2 = _interopRequireDefault(_Auth);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SwaggerSerializer = function (_BaseSerializer) {
@@ -122553,11 +122569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: '_formatSecurity',
 	        value: function _formatSecurity(context, request) {
-	            var securityMap = {
-	                BasicAuth: this._formatBasicAuth.bind(this),
-	                ApiKeyAuth: this._formatApiKeyAuth.bind(this),
-	                OAuth2Auth: this._formatOAuth2Auth.bind(this)
-	            };
+	            var _this6 = this;
 
 	            var _definitions = new _immutable2.default.Map();
 	            var _security = [];
@@ -122566,7 +122578,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if (!auth) {
 	                    _security.push(null);
 	                } else {
-	                    var rule = securityMap[auth.constructor.name];
+	                    var rule = null;
+
+	                    if (auth instanceof _Auth2.default.Basic) {
+	                        rule = _this6._formatBasicAuth.bind(_this6);
+	                    } else if (auth instanceof _Auth2.default.ApiKey) {
+	                        rule = _this6._formatApiKeyAuth.bind(_this6);
+	                    } else if (auth instanceof _Auth2.default.OAuth2) {
+	                        rule = _this6._formatOAuth2Auth.bind(_this6);
+	                    }
+
 	                    if (rule) {
 	                        var _rule = rule(context, auth);
 
@@ -122661,15 +122682,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: '_formatDefinitions',
 	        value: function _formatDefinitions(context) {
-	            var _this6 = this;
+	            var _this7 = this;
 
 	            var schemas = {};
 	            var references = context.get('references');
 	            references.forEach(function (container) {
 	                container.get('cache').forEach(function (cache, key) {
-	                    if (key && key.startsWith('#/')) {
+	                    if (key && key.indexOf('#/') === 0) {
 	                        var pathFragments = key.split('/').slice(1).map(function (fragment) {
-	                            return _this6._unescapeURIFragment(fragment);
+	                            return _this7._unescapeURIFragment(fragment);
 	                        });
 	                        // pointer assignement
 	                        // we're moving the subTree pointer to modify schemas
@@ -122713,7 +122734,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            });
 	                        } else {
 	                            // object assignement
-	                            ref = _this6._replaceRefs(ref);
+	                            ref = _this7._replaceRefs(ref);
 	                            if (typeof ref === 'string') {
 	                                subTree = ref;
 	                            } else {
@@ -122945,7 +122966,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'validate',
 	        value: function validate(text) {
 	            var lines = text.split('\n');
-	            if (!lines[0].startsWith('#%RAML 0.8')) {
+	            if (!(lines[0].indexOf('#%RAML 0.8') === 0)) {
 	                return 'Not a RAML file';
 	            }
 
@@ -123897,6 +123918,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.default = undefined;
 
+	var _keys = __webpack_require__(77);
+
+	var _keys2 = _interopRequireDefault(_keys);
+
 	var _slicedToArray2 = __webpack_require__(2);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -123936,6 +123961,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _JSONSchema = __webpack_require__(1167);
 
 	var _JSONSchema2 = _interopRequireDefault(_JSONSchema);
+
+	var _Auth = __webpack_require__(1158);
+
+	var _Auth2 = _interopRequireDefault(_Auth);
+
+	var _Base = __webpack_require__(1215);
+
+	var _Base2 = _interopRequireDefault(_Base);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -124069,7 +124102,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var parameters = request.get('parameters');
 	            var queries = this._formatQueries(parameters);
-	            var headers = this._formatHeaders(parameters);
+	            var headers = this._formatHeaders(parameters, request.get('auths'));
 	            var bodies = request.get('bodies');
 
 	            var _formatBody2 = this._formatBody(parameters, bodies);
@@ -124140,16 +124173,68 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }, {
 	        key: '_formatHeaders',
-	        value: function _formatHeaders(parameters) {
+	        value: function _formatHeaders(parameters, auths) {
 	            var headers = parameters.get('headers');
 
 	            var formatted = '';
 	            headers.forEach(function (header) {
 	                var generated = header.generate();
-	                formatted = header.get('key') + ': ' + generated + '\n';
+	                formatted += header.get('key') + ': ' + generated + '\n';
 	            });
 
+	            var authHeader = this._formatAuthHeader(auths);
+	            formatted += authHeader;
+
 	            return formatted;
+	        }
+	    }, {
+	        key: '_formatAuthHeader',
+	        value: function _formatAuthHeader(auths) {
+	            if (auths.size > 0) {
+	                var auth = auths.get(0);
+
+	                if (auth instanceof _Auth2.default.Basic) {
+	                    return this._formatBasicAuthHeader(auth);
+	                } else if (auth instanceof _Auth2.default.Digest) {
+	                    return this._formatDigestAuthHeader(auth);
+	                } else if (auth instanceof _Auth2.default.OAuth1) {
+	                    return this._formatOAuth1AuthHeader(auth);
+	                } else if (auth instanceof _Auth2.default.AWSSig4) {
+	                    return this._formatAWSSig4AuthHeader(auth);
+	                }
+	            }
+	        }
+	    }, {
+	        key: '_formatBasicAuthHeader',
+	        value: function _formatBasicAuthHeader(auth) {
+	            var authBlock = auth.get('username') + ':' + auth.get('password');
+	            var encoded = _Base2.default.encode(authBlock);
+	            return 'Authorization: Basic ' + encoded + '\n';
+	        }
+	    }, {
+	        key: '_formatDigestAuthHeader',
+	        value: function _formatDigestAuthHeader() {
+	            return 'Authorization: Digest\n';
+	        }
+	    }, {
+	        key: '_formatOAuth1AuthHeader',
+	        value: function _formatOAuth1AuthHeader(auth) {
+	            var oauth1Map = {
+	                consumer_key: auth.get('consumerKey') || '',
+	                oauth_signature_method: auth.get('algorithm') || '',
+	                oauth_version: '1.0'
+	            };
+
+	            var params = (0, _keys2.default)(oauth1Map).map(function (key) {
+	                return key + '="' + oauth1Map[key] + '"';
+	            }).join(', ');
+
+	            return 'Authorization: OAuth ' + params;
+	        }
+	    }, {
+	        key: '_formatAWSSig4AuthHeader',
+	        value: function _formatAWSSig4AuthHeader() {
+	            return 'Authorization: AWS4-HMAC-SHA256\n';
 	        }
 	    }, {
 	        key: '_formatBody',
@@ -124310,6 +124395,140 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _classCallCheck2 = __webpack_require__(81);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(82);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/* eslint-disable */
+
+	var Base64 = function () {
+	    function Base64() {
+	        (0, _classCallCheck3.default)(this, Base64);
+
+	        this._keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	    }
+
+	    (0, _createClass3.default)(Base64, [{
+	        key: "encode",
+	        value: function encode(e) {
+	            var t = "";
+	            var n, r, i, s, o, u, a;
+	            var f = 0;
+	            e = this._utf8_encode(e);
+	            while (f < e.length) {
+	                n = e.charCodeAt(f++);
+	                r = e.charCodeAt(f++);
+	                i = e.charCodeAt(f++);
+	                s = n >> 2;
+	                o = (n & 3) << 4 | r >> 4;
+	                u = (r & 15) << 2 | i >> 6;
+	                a = i & 63;
+	                if (isNaN(r)) {
+	                    u = a = 64;
+	                } else if (isNaN(i)) {
+	                    a = 64;
+	                }
+	                t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a);
+	            }
+	            return t;
+	        }
+	    }, {
+	        key: "decode",
+	        value: function decode(e) {
+	            var t = "";
+	            var n, r, i;
+	            var s, o, u, a;
+	            var f = 0;
+	            e = e.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+	            while (f < e.length) {
+	                s = this._keyStr.indexOf(e.charAt(f++));
+	                o = this._keyStr.indexOf(e.charAt(f++));
+	                u = this._keyStr.indexOf(e.charAt(f++));
+	                a = this._keyStr.indexOf(e.charAt(f++));
+	                n = s << 2 | o >> 4;
+	                r = (o & 15) << 4 | u >> 2;
+	                i = (u & 3) << 6 | a;
+	                t = t + String.fromCharCode(n);
+	                if (u != 64) {
+	                    t = t + String.fromCharCode(r);
+	                }
+	                if (a != 64) {
+	                    t = t + String.fromCharCode(i);
+	                }
+	            }
+	            t = this._utf8_decode(t);
+	            return t;
+	        }
+	    }, {
+	        key: "_utf8_encode",
+	        value: function _utf8_encode(e) {
+	            e = e.replace(/\r\n/g, "\n");
+	            var t = "";
+	            for (var n = 0; n < e.length; n++) {
+	                var r = e.charCodeAt(n);
+	                if (r < 128) {
+	                    t += String.fromCharCode(r);
+	                } else if (r > 127 && r < 2048) {
+	                    t += String.fromCharCode(r >> 6 | 192);
+	                    t += String.fromCharCode(r & 63 | 128);
+	                } else {
+	                    t += String.fromCharCode(r >> 12 | 224);
+	                    t += String.fromCharCode(r >> 6 & 63 | 128);
+	                    t += String.fromCharCode(r & 63 | 128);
+	                }
+	            }
+	            return t;
+	        }
+	    }, {
+	        key: "_utf8_decode",
+	        value: function _utf8_decode(e) {
+	            var t = "";
+	            var n = 0;
+	            var r = 0;
+	            var c1 = 0;
+	            var c2 = 0;
+	            while (n < e.length) {
+	                r = e.charCodeAt(n);
+	                if (r < 128) {
+	                    t += String.fromCharCode(r);
+	                    n++;
+	                } else if (r > 191 && r < 224) {
+	                    c2 = e.charCodeAt(n + 1);
+	                    t += String.fromCharCode((r & 31) << 6 | c2 & 63);
+	                    n += 2;
+	                } else {
+	                    c2 = e.charCodeAt(n + 1);
+	                    c3 = e.charCodeAt(n + 2);
+	                    t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
+	                    n += 3;
+	                }
+	            }
+	            return t;
+	        }
+	    }]);
+	    return Base64;
+	}();
+
+	var base64 = new Base64();
+	/* eslint-enable */
+	exports.default = base64;
+
+/***/ },
+/* 1216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -125035,6 +125254,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var headerType = arguments.length <= 1 || arguments[1] === undefined ? 4 : arguments[1];
 
+	            var headerStr = '';
+	            for (var i = 0; i < headerType; i += 1) {
+	                headerStr += '#';
+	            }
 	            var container = req.get('parameters');
 	            var bodies = req.get('bodies');
 	            if (bodies.size > 0) {
@@ -125077,27 +125300,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var formatted = [];
 	            if (hostDescriptions.length > 0) {
-	                var host = '#'.repeat(headerType) + ' Host Parameters\n\n' + hostDescriptions.join('\n');
+	                var host = headerStr + ' Host Parameters\n\n' + hostDescriptions.join('\n');
 	                formatted.push(host);
 	            }
 
 	            if (pathDescriptions.length > 0) {
-	                var path = '#'.repeat(headerType) + ' Path Parameters\n\n' + pathDescriptions.join('\n');
+	                var path = headerStr + ' Path Parameters\n\n' + pathDescriptions.join('\n');
 	                formatted.push(path);
 	            }
 
 	            if (queryDescriptions.length > 0) {
-	                var query = '#'.repeat(headerType) + ' Query Parameters\n\n' + queryDescriptions.join('\n');
+	                var query = headerStr + ' Query Parameters\n\n' + queryDescriptions.join('\n');
 	                formatted.push(query);
 	            }
 
 	            if (headerDescriptions.length > 0) {
-	                var header = '#'.repeat(headerType) + ' Header Parameters\n\n' + headerDescriptions.join('\n');
+	                var header = headerStr + ' Header Parameters\n\n' + headerDescriptions.join('\n');
 	                formatted.push(header);
 	            }
 
 	            if (bodyDescriptions.length > 0) {
-	                var body = '#'.repeat(headerType) + ' Body Parameters\n\n' + bodyDescriptions.join('\n');
+	                var body = headerStr + ' Body Parameters\n\n' + bodyDescriptions.join('\n');
 	                formatted.push(body);
 	            }
 
@@ -125482,7 +125705,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = CurlSerializer;
 
 /***/ },
-/* 1216 */
+/* 1217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -125512,11 +125735,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _ResolverOptions = __webpack_require__(1217);
+	var _ResolverOptions = __webpack_require__(1218);
 
 	var _ResolverOptions2 = _interopRequireDefault(_ResolverOptions);
 
-	var _ParameterResolver = __webpack_require__(1218);
+	var _ParameterResolver = __webpack_require__(1219);
 
 	var _ParameterResolver2 = _interopRequireDefault(_ParameterResolver);
 
@@ -125710,7 +125933,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ContextResolver;
 
 /***/ },
-/* 1217 */
+/* 1218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126031,7 +126254,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ResolverOptions;
 
 /***/ },
-/* 1218 */
+/* 1219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126061,7 +126284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
-	var _ResolverOptions = __webpack_require__(1217);
+	var _ResolverOptions = __webpack_require__(1218);
 
 	var _ResolverOptions2 = _interopRequireDefault(_ResolverOptions);
 
@@ -126264,7 +126487,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ParameterResolver;
 
 /***/ },
-/* 1219 */
+/* 1220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126298,7 +126521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _Environment2 = __webpack_require__(1220);
+	var _Environment2 = __webpack_require__(1221);
 
 	var _Environment3 = _interopRequireDefault(_Environment2);
 
@@ -126395,7 +126618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = BrowserEnvironment;
 
 /***/ },
-/* 1220 */
+/* 1221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126472,7 +126695,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Environment;
 
 /***/ },
-/* 1221 */
+/* 1222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126510,15 +126733,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
-	var _ParserOptions = __webpack_require__(1222);
+	var _ParserOptions = __webpack_require__(1223);
 
 	var _ParserOptions2 = _interopRequireDefault(_ParserOptions);
 
-	var _ResolverOptions = __webpack_require__(1217);
+	var _ResolverOptions = __webpack_require__(1218);
 
 	var _ResolverOptions2 = _interopRequireDefault(_ResolverOptions);
 
-	var _SerializerOptions = __webpack_require__(1223);
+	var _SerializerOptions = __webpack_require__(1224);
 
 	var _SerializerOptions2 = _interopRequireDefault(_SerializerOptions);
 
@@ -126558,7 +126781,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Options;
 
 /***/ },
-/* 1222 */
+/* 1223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126644,7 +126867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ParserOptions;
 
 /***/ },
-/* 1223 */
+/* 1224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -153,7 +154,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var themeId = 'oicThemeStylesheet';
 	    var sheet = document.getElementById(themeId);
-	    console.log('color  ->', color, theme.color, themeColor)
 	    var content = '\n' +
 	        '.oic .oic-button {\n' +
 	            'background-color: ' + color + ';\n' +
@@ -204,14 +204,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        pawButtons[i].className += ' oic-ready';
 	        pawButtons[i].onclick = (function(i) {
 	            return function(ev) {
-	                var target;
-	                var file = this.getAttribute('data-target');
+	                var target = this.getAttribute('data-target');
 	                var source = this.getAttribute('data-source');
-	                var raw = this.getAttribute('data-raw') || false;
+	                var mode = this.getAttribute('data-mode') || false;
 	                var name = this.getAttribute('data-name') || null;
 	                modalManager.setName(name);
-	                console.log('set manager to name', name);
-	                modalManager.show('selection', file, source, raw)
+	                modalManager.show('selection', target, source, mode)
 	            }
 	        }(i))
 	    }
@@ -263,7 +261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var fileName = _fileName || 'api-flow';
 	    this.sourceFormat = null;
 	    this.file = null;
-	    this.raw = null;
+	    this.mode = null;
 
 	    var _el = function(t, ens, cb, tout) {
 	        var _called = false;
@@ -305,10 +303,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        flow = _flow
 	    }
 
-	    this.setSource = function(file, source, raw) {
+	    this.setSource = function(file, source, mode) {
 	        self.file = file;
 	        self.sourceFormat = source;
-	        self.raw = raw;
+	        self.mode = mode;
 	    }
 
 	    this.dismiss = function() {
@@ -327,9 +325,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 
-	    this.show = function(name, file, source, raw){
-	        if (file && source && typeof raw === 'boolean') {
-	            this.setSource(file, source, raw)
+	    this.show = function(name, file, source, mode){
+	        if (file && source && ['text', 'remote', 'id'].indexOf(mode) >= 0) {
+	            this.setSource(file, source, mode)
 	        }
 	        var _showOuter = function() {
 	            var body = document.getElementsByTagName('body')[0];
@@ -372,16 +370,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else {
 	            _CSSIsLoaded = true;
-	            _loadCSS("http://fonts.googleapis.com/css?family=Roboto+Mono:100");
+	            _loadCSS("https://fonts.googleapis.com/css?family=Roboto+Mono:100");
 	            _loadCSS(modalCSSLink, function(){
 	                _showOuter();
 	            });
 	        }
 	    }
 
-	    this.generateDOM = function(id, name, file, source, raw){
-	        if (file && source && typeof raw === 'boolean') {
-	            this.setSource(file, source, raw)
+	    this.generateDOM = function(id, name, file, source, mode){
+	        if (file && source && ['text', 'remote', 'id'].indexOf(mode) >= 0) {
+	            this.setSource(file, source, mode)
 	        }
 
 	        var noHeaderBar = true
@@ -410,7 +408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else {
 	            _CSSIsLoaded = true;
-	            _loadCSS("http://fonts.googleapis.com/css?family=Roboto+Mono:100");
+	            _loadCSS("https://fonts.googleapis.com/css?family=Roboto+Mono:100");
 	            _loadCSS(modalCSSLink, function(){
 	                _showOuter();
 	            });
@@ -439,7 +437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            flow,
 	                            fileName,
 	                            self.file,
-	                            self.raw,
+	                            self.mode,
 	                            self.sourceFormat,
 	                            target,
 	                            options
@@ -465,7 +463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            flow,
 	                            fileName,
 	                            self.file,
-	                            self.raw,
+	                            self.mode,
 	                            self.sourceFormat,
 	                            target,
 	                            options
@@ -481,7 +479,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var target = _target
 	        if (!target) {
 	            var active = document.getElementsByClassName('oic-active-tab')[0];
-	            target = active.attributes['data-open-with'].value;
+	            if (active) {
+	                target = active.attributes['data-open-with'].value;
+	            }
+	            else {
+	                target = 'paw'
+	            }
 	        }
 
 	        var manager = managers[target];
@@ -490,7 +493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                flow,
 	                fileName,
 	                self.file,
-	                self.raw,
+	                self.mode,
 	                self.sourceFormat,
 	                target,
 	                options
@@ -725,7 +728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return self.displayContent(data, key, null, err);
 	    }
 
-	    this.generateContent = function(flow, name, file, raw, source, target, options) {
+	    this.generateContent = function(flow, name, file, mode, source, target, options) {
 	        var key = simpleHash(target + file + source + name);
 
 	        if (!file || !source) {
@@ -738,8 +741,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	            self.downloadContent();
 	        }
 	        else {
-	            var contentType = raw !== false ? 'raw' : 'remote';
-	            flow.transform(file, contentType, source, target, options, (function(_key) {
+	            var content = file
+	            var contentType = mode
+	            if (mode === 'id') {
+	                content = document.getElementById(id).innerHTML
+	                contentType = 'raw'
+	            }
+	            else if (mode === 'text') {
+	                contentType = 'raw'
+	            }
+	            flow.transform(content, contentType, source, target, options, (function(_key) {
 	                return function(err, data) {
 	                    if (!err) {
 	                        store[_key] = {
@@ -795,7 +806,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var self = this;
 	    this.generateContent = function(flow, name, file, raw, source, target, options) {
 	        var _target = document.getElementById('oic-' + target);
-	        _target.innerHTML = content(file, source, raw, iconURLs);
+	        if (_target) {
+	            _target.innerHTML = content(file, source, raw, iconURLs);
+	        }
 	    }
 	}
 
@@ -3938,7 +3951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                outer.id = outer.className = "openinpaw-outer";
 	                document.getElementsByTagName("body")[0].appendChild(outer);
 	            }
-	            console.log('_openInPawHTML', _openInPawHTML(document_name, pawlink, _webUrl()))
+
 	            outer.innerHTML = _openInPawHTML(document_name, pawlink, _webUrl());
 	            outer.getElementsByClassName('openinpaw')[0].className = "openinpaw fadein";
 	            outer.style.opacity = 1;
@@ -3955,7 +3968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else {
 	            _CSSIsLoaded = true;
-	            _loadCSS("http://fonts.googleapis.com/css?family=Open+Sans:400,300");
+	            _loadCSS("https://fonts.googleapis.com/css?family=Open+Sans:400,300");
 	            _loadCSS(pawCSSLink, function(){
 	                _showOuter();
 	            });
