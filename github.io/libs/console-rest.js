@@ -66,17 +66,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    color: "#00AAFF"
 	};
 	var iconURLs = {
-	    mainLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/console-rest-logo.svg',
-	    pawLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/paw-logo.svg',
-	    postmanLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/postman-logo-2.svg',
-	    swaggerLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/swagger-logo.png',
-	    ramlLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/raml-logo.svg',
-	    curlLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/curl-logo.svg',
-	    pawMiniLogo: 'https://luckymarmot.github.io/console-rest/github.io/assets/paw-icon.svg',
-	    pawScreen: 'https://luckymarmot.github.io/console-rest/github.io/assets/paw-screen.png'
+	    mainLogo: 'https://console.rest/github.io/assets/console-rest-logo.svg',
+	    pawLogo: 'https://console.rest/github.io/assets/paw-logo.svg',
+	    postmanLogo: 'https://console.rest/github.io/assets/postman-logo-2.svg',
+	    swaggerLogo: 'https://console.rest/github.io/assets/swagger-logo.png',
+	    ramlLogo: 'https://console.rest/github.io/assets/raml-logo.svg',
+	    curlLogo: 'https://console.rest/github.io/assets/curl-logo.svg',
+	    pawMiniLogo: 'https://console.rest/github.io/assets/paw-icon.svg',
+	    pawScreen: 'https://console.rest/github.io/assets/paw-screen.png'
 	}
-	var modalCSSLink = 'https://luckymarmot.github.io/console-rest/github.io/styles/oic.css';
-	var apiFlowURL = 'https://luckymarmot.github.io/console-rest/github.io/libs/api-flow.js';
+	var modalCSSLink = 'https://console.rest/github.io/styles/oic.css';
+	var apiFlowURL = 'https://console.rest/github.io/libs/api-flow.js';
 	var worker = null;
 	var ModalManager = __webpack_require__(2);
 	var modalManager = new ModalManager(modalCSSLink, iconURLs);
