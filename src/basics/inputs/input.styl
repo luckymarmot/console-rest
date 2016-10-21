@@ -3,27 +3,28 @@
 @require '../../principles/padding-mixins'
 
 .input-field
-    gutterVerticalSmall()
     display: flex
     flex-direction: row
-    min-height: 32px
-    max-height: 32px
+    min-height: 36px
+    max-height: 36px
     input
-    textarea
         padding: 0
         margin: 0
         appearance: inherit
-        border: 1px solid $background700
+        border: 2px solid $primary
         flex-grow:3
         font-size: 1rem
         font-weight: 400
         font-family: inherit
         paddingHorizontal()
-        background-color: $background200
+        background-color: $background700
+        color: $background200
         &:focus
-            border: 1px solid $primary
+            border: 2px solid $primary
             outline:none
-    .input-button
+    .input-suffix
+        user-select: none
+        font-size: 0.75rem;
         display: flex
         flex-direction: column
         justify-content: center
@@ -31,47 +32,55 @@
         outline: none
         border: 0
         padding: 0
-        background-color: $background700
+        background-color: $primary
         color: $background200
-        width: 32px
-        min-width: 32px
-        max-width: 32px
+        width: 36px
+        min-width: 36px
+        max-width: 36px
         cursor: pointer
-        &:hover
-            color: $primary
 
-    textarea
-        padding-top: 0.4rem
-        &.small
-            height: 2rem
-        &.medium
-            height: 9rem
-        &.large
-            height: 30rem
+    .input-prefix
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        padding: 0
+        border: 0
+        flex-grow: 0
+        user-select: none
+        paddingHorizontalSmall()
+        background-color: $primary
+        color: $background200
+        &:focus
+            outline: none
 
     .select
         font-weight: 400
         margin: 0
         display: flex
+        flex-grow: 0
+        min-width: 128px
         flex-direction: column
         align-items: stretch
         > .header
+            text-align: center
             display: flex
-            flex-direction: row
-            align-items: center
-            justify-content: flex-start
-            min-height: 32px
-            max-height: 32px
-            border: 1px solid $background700
+            flex-direction: column
+            align-items: stretch
+            justify-content: center
+            min-height: 36px
+            max-height: 36px
+            border: 0
             flex-grow: 0
             flex-shrink: 1
             font-size: 1rem
             noPadding()
             paddingHorizontal()
-            color: $background700
-            background-color: $background200
+            color: $background200
+            background-color: $primary
             &.placeholder
-                color: $background500
+                text-align: center
+                color: $background200
             &:focus
                 border: 1px solid $primary
                 outline:none
@@ -100,16 +109,48 @@
                 align-items: center
                 paddingHorizontal()
                 paddingVerticalVerySmall()
-                min-height: 32px
-                max-height: 32px
+                min-height: 36px
+                max-height: 36px
                 cursor: pointer
                 &:hover
-                    background-color: $primary
+                    background-color: $background300
 
 
         &.active > .content
             display: flex
             flex-direction: column
+
+    &.discreet
+        background-color: #0f0
+        height: 36px
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        input
+            text-align: center
+            height: inherit
+            appearance: inherit
+            padding: 0
+            margin: 0
+            border: none
+            font-size: 1rem
+            font-family: inherit
+            background-color: $background200
+            color: $background700
+        .input-suffix
+            user-select: none
+            background-color: $background200
+            width: 36px
+            height: inherit
+            &:focus
+                outline: none
+
+.discreet-select
+    .input-prefix
+        background-color: $background700
+    .select > .header
+        background-color: $background700
 
 ::-webkit-input-placeholder
     color: $background500

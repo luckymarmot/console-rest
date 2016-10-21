@@ -1,0 +1,64 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+@require '../../principles/gutter-mixins'
+
+.helper-content
+    .console-support
+        paddingVerticalSmall()
+    .paw-support
+        font-weight: 400
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        min-height: 180px
+        position: relative
+        .paw-logo
+            z-index:0
+            position: absolute
+            top:16px
+            height: calc(100% - 32px)
+            fill: $background300
+        .block
+            z-index: 1
+            text-align: center
+            flex-grow: 0
+            flex-shrink: 0
+        a
+            color: $background700
+            &:hover
+                color: $primary
+
+    .paw-action
+        text-align: center
+        background-color: $primary
+        color: $background200
+        paddingAll()
+        margin-bottom: 16px
+
+    .postman-tabs
+        padding-top: -16px
+
+    .postman-view li
+        gutterVerticalSmall()
+
+    .swagger-support
+        paddingVerticalSmall()
+        line-height: 1.5
+
+    .swagger-action
+        paddingVerticalSmall()
+        .action-row
+            padding-top: 8px
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            .action-row > *
+                flex-basis: 0
+                flex-grow: 1
+
+    .curl-support
+        paddingVerticalSmall()
+
+    .missing-support
+        paddingVerticalSmall()

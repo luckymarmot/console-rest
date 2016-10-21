@@ -3,43 +3,22 @@
 @require '../../principles/padding-mixins'
 
 .helper
+    align-self: flex-end
+    padding-top: 0px
+    width: 80%
+    max-width: 320px
     z-index: 1
-    justify-content: flex-start
-    width: inherit
+    flex-basis: 0
+    justify-content: center
+    height: calc(100vh - 64px)
     transition: all 0.2s ease-in-out
     > *
         flex-grow: 0
         flex-shrink: 0
 
-    .controls
-        position: fixed
-        top: -16px
-        width: inherit
-        display: flex
-        flex-direction: row
-        justify-content: flex-end
-        align-items: center
-        gutterAll()
-        max-height: 64px
-        min-height: 64px
-        color: $background700
-        paddingHorizontal()
-        .img
-            fill: $background200
-
-        .helper-control
-            display: none
-
-
     @media (max-width: 1280px)
-        position: fixed
+        position: absolute
+        top:64px
+        height: calc(100vh - 128px)
         overflow-y: scroll
-        background-color: $background200
-        box-shadow: 2px 4px 4px 4px rgba(0, 0, 0, 0.12)
-        height: calc(100vh - 64px)
-        width: 288px
-
-        .controls
-            right: -16px
-            .helper-control
-                display: flex
+        width: 320px

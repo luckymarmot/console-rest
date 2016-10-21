@@ -5,7 +5,9 @@ require('./button.styl')
 export default class EmptyButton extends Component {
 
     clicked(ev) {
-        this.props.onClick(ev)
+        if (typeof this.props.onClick === 'function') {
+            this.props.onClick(ev)
+        }
     }
 
     render() {

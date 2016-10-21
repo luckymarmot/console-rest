@@ -1,15 +1,25 @@
 @require '../../principles/colors'
+@require '../../principles/padding-mixins'
 @require '../../principles/gutter-mixins'
 
 .button
     cursor: pointer
     gutterHorizontal()
+    paddingSmall()
 
     &:hover
         fill: $primary !important
 
     &.empty
         cursor: auto
+
+    &.button-primary
+        background-color: $primary
+
+    &.button-small
+        margin: 0
+        flex-grow: 0
+        align-self: center
 
 .large-button
     cursor: pointer

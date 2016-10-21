@@ -1,9 +1,11 @@
 @require '../principles/colors'
 @require '../principles/font-mixins'
+@require '../principles/padding-mixins'
+@require '../principles/gutter-mixins'
 
 html
 body
-    SourceSansPro(200)
+    Lato()
     background-color: $background200
     color: $background700
     margin: 0
@@ -24,6 +26,21 @@ div
     justify-content flex-start
     .fill
         height: inherit
+
+    .block
+        display: block
+
+.row
+    paddingVerticalSmall()
+    display: flex
+    flex-direction: row
+    &.guttered-row
+        gutterHorizontal()
+
+.equal-split > *
+        flex-basis: 0
+        flex-grow: 1
+        flex-shrink: 0
 
 #root
     height: inherit

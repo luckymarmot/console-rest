@@ -1,19 +1,15 @@
 import React, { Component } from 'react'
 import Immutable from 'immutable'
 
-import Header from 'crest/components/header/Header'
-import Logo from 'crest/components/header/Logo'
-import Notifier from 'crest/components/notifications/Notifier'
-import Uploader from 'crest/templates/uploader/Uploader'
-import MetadataEditor from 'crest/templates/metadata-editor/MetadataEditor'
-import Helper from 'crest/templates/helper/Helper'
-import FlowPreview from 'crest/templates/flow-preview/FlowPreview'
+import Landing from 'crest/templates/landing/Landing'
+import StatusBar from 'crest/components/status-bar/StatusBar'
+import FlowPreview from 'crest/components/flow-preview/FlowPreview'
 import
     ButtonCustomization
-from 'crest/templates/button-customization/ButtonCustomization'
-import FlowSnippet from 'crest/templates/flow-snippet/FlowSnippet'
+from 'crest/components/button-customization/ButtonCustomization'
+import FlowSnippet from 'crest/components/flow-snippet/FlowSnippet'
 
-require('../../basics/layout/content.styl')
+require('./converter.styl')
 
 export default class Converter extends Component {
     constructor(props) {
@@ -35,7 +31,7 @@ export default class Converter extends Component {
         this.state = {
             file: file,
             status: this.noStatus,
-            theme: '#00AAFF',
+            theme: '#15AD9F',
             text: 'Open In Console'
         }
     }
@@ -72,7 +68,6 @@ export default class Converter extends Component {
 
     updateStatus(props) {
         let { code, target, message } = props
-
         this.setState({
             status: this.noFile.merge({ code, target, message })
         })
@@ -125,6 +120,58 @@ export default class Converter extends Component {
     }
 
     render() {
+        let classes = 'converter'
+        if (this.props.classes) {
+            classes += ' ' + this.props.classes
+        }
+
+        let mainClass = 'main'
+        if (this.state.file.get('content')) {
+            mainClass += ' active'
+        }
+
+        return <div className={classes}>
+            <Landing
+                onFileChange={::this.updateFile}
+                onStatusChange={::this.updateStatus}
+                onFileAndStatusChange={::this.updateFileAndStatus}/>
+            <StatusBar
+                name={this.state.file.get('name')}
+                uri={this.state.file.get('uri')}
+                content={this.state.file.get('content')}
+                format={this.state.file.get('format')}
+                onFileChange={::this.updateFile}
+                onStatusChange={::this.updateStatus}
+                onFileAndStatusChange={::this.updateFileAndStatus}/>
+            <hr/>
+            <div className={mainClass}>
+                <div className="section">
+                    <h2>You&#39;re Ready to Go</h2>
+                    <FlowPreview
+                        className="preview"
+                        content={this.state.file.get('content')}
+                        format={this.state.file.get('format')}
+                        name={this.state.file.get('name')}
+                        theme={this.state.theme}/>
+                </div>
+                <hr/>
+                <div className="section">
+                    <h2>Add this button to your API docs</h2>
+                    <ButtonCustomization
+                        className="customization"
+                        onTextChange={::this.updateText}
+                        onThemeChange={::this.updateTheme}/>
+                    <FlowSnippet
+                        name={this.state.file.get('name')}
+                        content={this.state.file.get('content')}
+                        url={this.state.file.get('url')}
+                        format={this.state.file.get('format')}
+                        theme={this.state.theme}
+                        text={this.state.text}/>
+                </div>
+            </div>
+        </div>
+        /*
         return <div className="col fill">
             <Header/>
             <div className="container">
@@ -173,5 +220,6 @@ export default class Converter extends Component {
                 </div>
             </div>
         </div>
+        */
     }
 }

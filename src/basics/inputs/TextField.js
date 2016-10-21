@@ -47,6 +47,15 @@ export default class TextField extends Component {
         }
     }
 
+    renderPrefix() {
+        if (this.props.title) {
+            return <div className="input-prefix"
+                tabIndex="1">{this.props.title}</div>
+        }
+
+        return null
+    }
+
     render() {
         let classes = 'input-field'
         if (this.props.className) {
@@ -54,13 +63,14 @@ export default class TextField extends Component {
         }
 
         return <div className={classes}>
+            {this.renderPrefix()}
             <input type="text"
                 ref="inputText"
                 placeholder={this.props.placeholder}
                 value={this.state.value || ''}
                 tabIndex="1" onKeyDown={::this.keyPressed}
                 onChange={::this.handleChange}/>
-            <div className="input-button"
+            <div className="input-suffix"
                 onClick={::this.submit}
                 tabIndex="1">{this.props.children}</div>
         </div>

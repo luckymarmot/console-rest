@@ -3,14 +3,12 @@ import Immutable from 'immutable'
 
 import DropArea from 'crest/basics/dragdrop/DropArea'
 import FilePicker from 'crest/basics/filepicker/FilePicker'
-import FileInfo from 'crest/basics/fileinfo/FileInfo'
 import TextField from 'crest/basics/inputs/TextField'
-import TextArea from 'crest/basics/inputs/TextArea'
+import GenericButton from 'crest/basics/buttons/GenericButton'
 
-import SuccessImg from 'crest/basics/media/SuccessImg'
-import FailureImg from 'crest/basics/media/FailureImg'
+import SuccessImg from 'crest/basics/media/status/SuccessImg'
+import FailureImg from 'crest/basics/media/status/FailureImg'
 
-require('../../basics/layout/content.styl')
 require('./uploader.styl')
 
 export default class Uploader extends Component {
@@ -33,11 +31,9 @@ export default class Uploader extends Component {
                 content: null,
                 status: null
             }),
-            paste: new Immutable.Map({
-                content: null
-            }),
             location: this.loadHashData(),
-            current: null
+            current: null,
+            enterURL: false
         }
     }
 
@@ -165,26 +161,6 @@ export default class Uploader extends Component {
         })
     }
 
-    // TODO Support state.local.status to trigger status information in FileInfo
-    renderDropHelper() {
-        let name = this.state.local.get('name')
-        if (!name) {
-            return <div className="drop-helper">
-                    <h4>Drag &amp; Drop your file here</h4>
-                    <FilePicker onFileUpload={::this.uploadFile}
-                    text="or browse"/>
-                </div>
-        } else {
-            // return <FileInfo file={this.state.file}/>
-            return <div className="drop-helper">
-                <FileInfo
-                    file={name}
-                    className="row"
-                    onDeleteFile={::this.deleteFile}/>
-            </div>
-        }
-    }
-
     renderQueryStatus() {
         let status = this.state.query.get('status')
         if (status === 200) {
@@ -245,17 +221,6 @@ export default class Uploader extends Component {
 
             this.props.onStatusChange(props)
         }
-    }
-
-    checkContent(ev, content) {
-        this.setState({
-            paste: new Immutable.Map({
-                content: content
-            }),
-            current: 'paste'
-        })
-
-        this.props.onFileChange({ content })
     }
 
     parseURLForName(url) {
@@ -366,6 +331,46 @@ export default class Uploader extends Component {
         }
     }
 
+    displayEnterURL() {
+        this.setState({
+            enterURL: true
+        })
+    }
+
+    hideEnterURL() {
+        this.setState({
+            enterURL: false
+        })
+    }
+
+    renderAction() {
+        if (this.state.enterURL) {
+            return <div className="row guttered-row">
+                <GenericButton className="button-small"
+                    onClick={::this.hideEnterURL}>
+                    &#x2573;
+                </GenericButton>
+                <TextField
+                    title="URL"
+                    placeholder="or type in a URL"
+                    onKeyDown={::this.checkURLonKeyDown}
+                    onSubmit={::this.checkURL}>
+                    {this.renderQueryStatus()}
+                </TextField>
+            </div>
+        } else {
+            return <div className="row equal-split">
+                <FilePicker className="button button-primary"
+                    onFileUpload={::this.uploadFile}
+                    text="Pick a File"/>
+                <GenericButton className="button-primary"
+                    onClick={::this.displayEnterURL}>
+                    Enter URL
+                </GenericButton>
+            </div>
+        }
+    }
+
     render() {
         let classes = 'uploader'
         if (this.props.className) {
@@ -373,30 +378,17 @@ export default class Uploader extends Component {
         }
 
         return <div className={classes}>
-            <h2>Import Your File</h2>
-            <DropArea onFileDrop={::this.uploadFile}>
-                <img src="basics/media/drop-area-img.svg"/>
-                {this.renderDropHelper()}
-            </DropArea>
-            <div className="row-inline">
-                console.rest supports file from the following formats: {' '}
+            <img src="basics/media/fileformats.svg"/>
+            <DropArea onFileDrop={::this.uploadFile}/>
+            <h3>Drop Any API File</h3>
+            <div className="support">
                 <a>Paw</a>, {' '}
                 <a>RAML</a>, {' '}
                 <a>Swagger/OAI</a>, {' '}
                 <a>Postman</a>, and {' '}
                 <a>curl</a>
             </div>
-            <TextField
-                placeholder="or type in a URL"
-                onKeyDown={::this.checkURLonKeyDown}
-                onSubmit={::this.checkURL}>
-                {this.renderQueryStatus()}
-            </TextField>
-            <TextArea
-                placeholder="or simply paste the content"
-                onSubmit={::this.checkContent}>
-                GO
-            </TextArea>
+            {this.renderAction()}
         </div>
     }
 }
