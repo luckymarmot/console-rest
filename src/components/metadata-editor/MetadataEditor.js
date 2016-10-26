@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import TextField from 'crest/basics/inputs/TextField'
-import SelectField from 'crest/basics/inputs/SelectField'
+import NestedSelect from 'crest/basics/inputs/NestedSelect'
 
 import SuccessImg from 'crest/basics/media/status/SuccessImg'
 import FailureImg from 'crest/basics/media/status/FailureImg'
@@ -12,6 +12,32 @@ import EmptyButton from 'crest/basics/buttons/EmptyButton'
 require('./editor.styl')
 
 export default class MetadataEditor extends Component {
+    static versions = [
+        {
+            value: { format: 'swagger', version: 'v2.0' },
+            name: 'Swagger v2.0'
+        },
+        {
+            value: { format: 'raml', version: 'v0.8' },
+            name: 'RAML v0.8'
+        },
+        {
+            value: { format: 'postman', version: 'v1.0' },
+            name: 'Postman v1.0'
+        },
+        {
+            value: { format: 'postman', version: 'v2.0' },
+            name: 'Postman v2.0'
+        }
+    ]
+
+    static versionMap = [
+        'swagger v2.0',
+        'raml v0.8',
+        'postman v1.0',
+        'postman v2.0'
+    ]
+
     constructor(props) {
         super(props)
 
@@ -25,9 +51,9 @@ export default class MetadataEditor extends Component {
         }
 
         if (props.name || props.content) {
-            let { uri, name, content, format } = this.props
+            let { uri, name, content, format, version } = this.props
             this.state = {
-                uri, name, content, format
+                uri, name, content, format, version
             }
             let promise = window.ConsoleRest.ready.then(cr => {
                 return cr.converter.detect('format', this.props.content)
@@ -37,6 +63,7 @@ export default class MetadataEditor extends Component {
             this.state = {
                 name: null,
                 format: null,
+                version: null,
                 isFormatOk: null
             }
         }
@@ -53,9 +80,9 @@ export default class MetadataEditor extends Component {
             })
             promise.then(::this.updateFormatFromScores)
         }
-        let { uri, name, content, format } = nextProps
+        let { uri, name, content, format, version } = nextProps
         this.setState({
-            uri, name, content, format
+            uri, name, content, format, version
         })
     }
 
@@ -97,8 +124,10 @@ export default class MetadataEditor extends Component {
 
     updateFormat(ev, format, _status) {
         let _format = (format || {}).format || null
+        let _version = (format || {}).version || null
         this.setState({
             format: _format,
+            version: _version,
             isFormatOk: !_status
         })
 
@@ -109,7 +138,34 @@ export default class MetadataEditor extends Component {
             this.props.onFileAndStatusChange({
                 name, content, uri,
                 format: _format,
+                version: _version,
                 ...status
+            })
+        } else {
+            let props = {
+                code: 800,
+                target: this.state.name,
+                message: 'No applicable file.'
+            }
+            this.props.onStatusChange(props)
+        }
+    }
+
+    updateFormatFromValue(option) {
+        let _format = (option.value || {}).format || null
+        let _version = (option.value || {}).version || null
+        this.setState({
+            format: _format,
+            version: _version,
+            isFormatOk: true
+        })
+
+        if (_format && this.state.content) {
+            let { name, content, uri } = this.state
+            this.props.onFileAndStatusChange({
+                name, content, uri,
+                format: _format,
+                version: _version
             })
         } else {
             let props = {
@@ -127,18 +183,18 @@ export default class MetadataEditor extends Component {
         })
 
         if (name === '' && this.state.content) {
-            let { content, uri, format } = this.state
+            let { content, uri, format, version } = this.state
             let props = {
                 // file
-                name, content, uri, format,
+                name, content, uri, format, version,
                 // status
                 code: 400, message: 'A filename is required'
             }
 
             this.props.onFileAndStatusChange(props)
         } else {
-            let { content, uri, format } = this.state
-            let props = { name, content, uri, format }
+            let { content, uri, format, version } = this.state
+            let props = { name, content, uri, format, version }
             this.props.onFileAndStatusChange(props)
         }
     }
@@ -210,7 +266,7 @@ export default class MetadataEditor extends Component {
     }
 
     renderFileFormatStatus() {
-        let status = this.getFormatStatus()
+        const status = this.getFormatStatus()
         if (status === 200) {
             return <SuccessImg title="Format Selected"/>
         } else if (status === 800) {
@@ -225,15 +281,15 @@ export default class MetadataEditor extends Component {
             classes += ' ' + this.props.className
         }
 
+        const index = MetadataEditor.versionMap.indexOf(
+            this.props.format + ' ' + this.props.version
+        )
+
         return <div className={classes}>
-            <SelectField
-                className="discreet-select"
-                value={this.formatMap[this.state.format]}
-                options={this.formats}
-                placeholder="File format"
-                onSubmit={::this.updateFormat}>
-            {this.renderFileFormatStatus()}
-            </SelectField>
+            <NestedSelect
+                default={MetadataEditor.versions[index]}
+                options={MetadataEditor.versions}
+                onValueChange={::this.updateFormatFromValue}/>
             <TextField
                 className="discreet"
                 value={this.state.name || ''}

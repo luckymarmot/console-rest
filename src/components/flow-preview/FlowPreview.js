@@ -24,30 +24,20 @@ export default class FlowPreview extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let formatMap = {
-            'postman v2': 'postman-2',
-            'postman v1': 'postman-1',
-            'postman-1': 'postman-1',
-            'postman-2': 'postman-2',
-            swagger: 'swagger',
-            raml: 'raml',
-            curl: 'curl',
-            paw: 'paw'
-        }
-
         if (props.content && props.format) {
-            let format = formatMap[props.format.toLowerCase()]
+            const format = props.format
+            const version = props.version
+
             window.ConsoleRest.ready.then(cr => {
                 cr.converter.set({
                     source: {
-                        format
+                        format,
+                        version
                     },
                     mode: 'text',
                     text: props.content
                 })
             })
-            // window.openInConsole.setName(props.name)
-            // window.openInConsole.generateContent()
             this.dismissError()
         }
     }

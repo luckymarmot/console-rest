@@ -19,7 +19,8 @@ export default class Converter extends Component {
             uri: null,
             name: null,
             content: null,
-            format: null
+            format: null,
+            version: null
         })
         this.noStatus = new Immutable.Map({
             code: null,
@@ -31,7 +32,7 @@ export default class Converter extends Component {
         this.state = {
             file: file,
             status: this.noStatus,
-            theme: '#15AD9F',
+            theme: '#E13046',
             text: 'Open In Console'
         }
     }
@@ -55,14 +56,14 @@ export default class Converter extends Component {
             setup.name = setup.name.split('.', 1)[0]
         }
 
-        let { uri, name, content, format } = setup
-        return this.noFile.merge({ uri, name, content, format })
+        let { uri, name, content, format, version } = setup
+        return this.noFile.merge({ uri, name, content, format, version })
     }
 
     updateFile(props) {
-        let { uri, name, content, format } = props
+        let { uri, name, content, format, version } = props
         this.setState({
-            file: this.noFile.merge({ uri, name, content, format })
+            file: this.noFile.merge({ uri, name, content, format, version })
         })
     }
 
@@ -74,18 +75,20 @@ export default class Converter extends Component {
     }
 
     updateFileAndStatus(props) {
-        let { uri, name, content, format, code, target, message } = props
+        let {
+            uri, name, content, format, version, code, target, message
+        } = props
 
         this.setState({
-            file: this.noFile.merge({ uri, name, content, format }),
+            file: this.noFile.merge({ uri, name, content, format, version }),
             status: this.noStatus.merge({ code, target, message })
         })
     }
 
-    updateFormat(format) {
+    updateFormat(format, version) {
         let file = this.state.file
         this.setState({
-            file: file.set('format', format),
+            file: file.set('format', format).set('version', version),
             status: this.noStatus
         })
     }
@@ -140,6 +143,7 @@ export default class Converter extends Component {
                 uri={this.state.file.get('uri')}
                 content={this.state.file.get('content')}
                 format={this.state.file.get('format')}
+                version={this.state.file.get('version')}
                 onFileChange={::this.updateFile}
                 onStatusChange={::this.updateStatus}
                 onFileAndStatusChange={::this.updateFileAndStatus}/>
@@ -151,6 +155,7 @@ export default class Converter extends Component {
                         className="preview"
                         content={this.state.file.get('content')}
                         format={this.state.file.get('format')}
+                        version={this.state.file.get('version')}
                         name={this.state.file.get('name')}
                         theme={this.state.theme}/>
                 </div>
@@ -171,55 +176,5 @@ export default class Converter extends Component {
                 </div>
             </div>
         </div>
-        /*
-        return <div className="col fill">
-            <Header/>
-            <div className="container">
-                <div className="aside">
-                    <Logo/>
-                    <Notifier
-                        status={this.state.status.get('code')}
-                        message={this.state.status.get('message')}/>
-                </div>
-                <div className="content">
-                    <div className="section">
-                        <h1>Run any API anywhere</h1>
-                    </div>
-                    <Uploader
-                        className="section"
-                        onFileChange={::this.updateFile}
-                        onStatusChange={::this.updateStatus}
-                        onFileAndStatusChange={::this.updateFileAndStatus}/>
-                    <MetadataEditor
-                        file={this.state.file}
-                        className="section"
-                        onFileChange={::this.updateFile}
-                        onStatusChange={::this.updateStatus}
-                        onFileAndStatusChange={::this.updateFileAndStatus}/>
-                    <FlowPreview
-                        className="section"
-                        content={this.state.file.get('content')}
-                        format={this.state.file.get('format')}
-                        name={this.state.file.get('name')}
-                        theme={this.state.theme}/>
-                    <ButtonCustomization
-                        className="section"
-                        onTextChange={::this.updateText}
-                        onThemeChange={::this.updateTheme}/>
-                    <FlowSnippet
-                        className="section"
-                        name={this.state.file.get('name')}
-                        content={this.state.file.get('content')}
-                        url={this.state.file.get('url')}
-                        format={this.state.file.get('format')}
-                        theme={this.state.theme}
-                        text={this.state.text}/>
-                </div>
-                <div className="aside">
-                    <Helper/>
-                </div>
-            </div>
-        </div>
-        */
     }
 }

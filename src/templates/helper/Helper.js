@@ -57,11 +57,11 @@ export default class Helper extends Component {
     }
 
     onWindowResize() {
-        if (window.innerWidth <= 1280 && this.state.helperOpened) {
+        if (false && window.innerWidth <= 1280 && this.state.helperOpened) {
             this.setState({
                 helperOpened: false
             })
-        } else if (window.innerWidth > 1280 && !this.state.helperOpened) {
+        } else if (false && window.innerWidth > 1280 && !this.state.helperOpened) {
             this.setState({
                 helperOpened: true
             })
@@ -117,9 +117,13 @@ export default class Helper extends Component {
             helperStyles = {
                 right: 0
             }
-        } else {
+        } else if (window.innerWidth > 600) {
             helperStyles = {
                 right: -336
+            }
+        } else {
+            helperStyles = {
+                right: -window.innerWidth - 16
             }
         }
 
@@ -132,6 +136,9 @@ export default class Helper extends Component {
         })
 
         return <div className="helper-container">
+            <div className="helper-controls">
+                {this.renderExpandHelperButton()}
+            </div>
             <div className={classes} style={helperStyles}>
                 {content.keySeq().map((title, index) => {
                     let handler = ::this.collapsibleClicked(index)

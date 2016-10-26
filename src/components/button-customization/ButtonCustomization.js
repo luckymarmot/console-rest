@@ -6,6 +6,7 @@ require('./customization.styl')
 
 export default class ButtonCustomization extends Component {
     static colors = [
+        '#E13046',
         '#D42C69',
         '#863CC6',
         '#2F78CD',
@@ -13,8 +14,7 @@ export default class ButtonCustomization extends Component {
         '#8BD143',
         '#E2D52C',
         '#EE9E1A',
-        '#EA6E30',
-        '#E13046'
+        '#EA6E30'
     ]
 
     constructor(props) {

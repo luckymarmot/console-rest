@@ -114,14 +114,15 @@ export default class StatusBar extends Component {
                     name={this.props.name}
                     content={this.props.content}
                     format={this.props.format}
+                    version={this.props.version}
                     onFileChange={::this.updateFile}
                     onStatusChange={::this.updateStatus}
                     onFileAndStatusChange={::this.updateFileAndStatus}/>
             </div>
-            <div className="promo">
+            <a href="https://paw.cloud" target="_blank" className="promo">
                 Made with <LoveImg className="promo-icon"/>
                 by Paw <PawLogo className="paw-logo"/>
-            </div>
+            </a>
         </div>
     }
 }
