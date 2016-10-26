@@ -2,23 +2,28 @@
 @require '../../principles/gutter-mixins'
 @require '../../principles/padding-mixins'
 
-.helper
-    align-self: flex-end
-    padding-top: 0px
-    width: 80%
-    max-width: 320px
-    z-index: 1
-    flex-basis: 0
-    justify-content: center
-    height: calc(100vh - 64px)
-    transition: all 0.2s ease-in-out
-    > *
-        flex-grow: 0
-        flex-shrink: 0
+.helper-container
+    display: flex
+    flex-direction: column
+    position: relative
+    overflow: hidden
+    .helper
+        align-self: flex-end
+        padding-top: 0px
+        width: 80%
+        max-width: 320px
+        z-index: 1
+        flex-basis: 0
+        justify-content: center
+        height: calc(100vh - 64px)
+        transition: all 0.2s ease-in-out
+        > *
+            flex-grow: 0
+            flex-shrink: 0
 
-    @media (max-width: 1280px)
-        position: absolute
-        top:64px
-        height: calc(100vh - 128px)
-        overflow-y: scroll
-        width: 320px
+        @media (max-width: 1280px)
+            position: absolute
+            top:64px
+            height: calc(100vh - 128px)
+            overflow-y: scroll
+            width: 320px

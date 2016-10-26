@@ -131,15 +131,17 @@ export default class Helper extends Component {
             'My favourite format is missing': <MissingHelper/>
         })
 
-        return <div className={classes} style={helperStyles}>
-            {content.keySeq().map((title, index) => {
-                let handler = ::this.collapsibleClicked(index)
-                return <Collapsible key={index} title={title}
-                    onHeaderClick={handler}
-                    expanded={this.state.helperIndex === index}>
-                        {content.get(title)}
-                    </Collapsible>
-            })}
+        return <div className="helper-container">
+            <div className={classes} style={helperStyles}>
+                {content.keySeq().map((title, index) => {
+                    let handler = ::this.collapsibleClicked(index)
+                    return <Collapsible key={index} title={title}
+                        onHeaderClick={handler}
+                        expanded={this.state.helperIndex === index}>
+                            {content.get(title)}
+                        </Collapsible>
+                })}
+            </div>
         </div>
     }
 }
