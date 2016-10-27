@@ -15,6 +15,10 @@ export default class StatusBar extends Component {
         this.state = {
             active: this.props.active || false
         }
+
+        if (this.props.content) {
+            this.moveForward()
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,6 +32,10 @@ export default class StatusBar extends Component {
             this.setState({
                 active: false
             })
+        }
+
+        if (nextProps.content !== this.props.content) {
+            this.moveForward()
         }
     }
 
@@ -49,12 +57,55 @@ export default class StatusBar extends Component {
         }
     }
 
+    scrollTo(frameCount, initial, target, maxFrameCount) {
+        if (frameCount <= 0) {
+            return
+        }
+
+        const diff = {
+            x: target.x - initial.x,
+            y: target.y - initial.y
+        }
+
+        return () => {
+            const coeff = (maxFrameCount - frameCount) / maxFrameCount
+            const step = {
+                x: -diff.x * coeff * (coeff - 2) + initial.x,
+                y: -diff.y * coeff * (coeff - 2) + initial.y
+            }
+
+            window.scrollTo(step.x, step.y)
+            if (frameCount > 1) {
+                window.requestAnimationFrame(
+                    this.scrollTo(
+                        frameCount - 1,
+                        initial,
+                        target,
+                        maxFrameCount
+                    )
+                )
+            }
+        }
+    }
+
     moveBack() {
-        window.scrollTo(0, 0)
+        this.scrollTo(30, {
+            x: window.pageXOffset,
+            y: window.pageYOffset
+        }, {
+            x: 0,
+            y: 0
+        }, 30)()
     }
 
     moveForward() {
-        window.scrollTo(0, window.innerHeight - 64)
+        this.scrollTo(60, {
+            x: window.pageXOffset,
+            y: window.pageYOffset
+        }, {
+            x: 0,
+            y: window.innerHeight - 64
+        }, 60)()
     }
 
     renderStatusBar() {

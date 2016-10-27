@@ -20,7 +20,7 @@ export default class PawHelper extends Component {
         }
 
         /* eslint-disable max-len */
-        return <div className={classes}>
+        return <div className={classes} draggable={false}>
             <div className="paw-support">
                 <PawLogo className="paw-logo"/>
                 <div className="block">
