@@ -1,0 +1,86 @@
+.select-container
+    margin: 8px
+    background-color: #ffffff
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: center
+
+    .simple-select
+        cursor: pointer
+        margin: 8px
+        color: rgb(61, 51, 85)
+        padding-top: 8px
+        padding-bottom: 8px
+        box-sizing: border-box
+        flex-shrink: 0
+        display: flex
+        flex-direction: row
+        justify-content: flex-start
+        align-items: stretch
+        position: relative
+        & > span
+            padding-left: 32px
+        & > span::before
+            content: ''
+            padding-left: 0px
+            width: 24px
+            height: 24px
+            position: absolute
+            left: 4px
+            top: 4px
+            background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIGZpbGw9JyMwMDAwMDAnIGhlaWdodD0nMjQnIHZpZXdCb3g9JzAgMCAyNCAyNCcgd2lkdGg9JzI0JyA+PHBhdGggZD0nTTcuNDEgMTUuNDFMMTIgMTAuODNsNC41OSA0LjU4TDE4IDE0bC02LTYtNiA2eicvPjxwYXRoIGQ9J00wIDBoMjR2MjRIMHonIGZpbGw9J25vbmUnLz48L3N2Zz4=") no-repeat
+        & > div
+            display: none
+        &:hover
+        &.active
+            & > div
+                box-sizing: border-box
+                border: 1px solid #ccc
+                background-color: rgba(255,255,255,1)
+                position: absolute
+                top: -1px
+                left: -1px
+                width: 100%
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: stretch
+                margin-bottom: 0px
+                & > span.select-option
+                    padding-top: 8px
+                    padding-bottom: 8px
+                    padding-left: 32px
+                    padding-right: 8px
+                    &:hover
+                        background-color: rgba(61, 51, 85, 0.1)
+                    &.selected
+                        position: relative
+                        &::before
+                            content: ''
+                            padding-left: 0px
+                            width: 24px
+                            height: 24px
+                            position: absolute
+                            left: 4px
+                            top: 4px
+                            background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIGZpbGw9JyMwMDAwMDAnIGhlaWdodD0nMjQnIHZpZXdCb3g9JzAgMCAyNCAyNCcgd2lkdGg9JzI0Jz48cGF0aCBkPSdNMCAwaDI0djI0SDB6JyBmaWxsPSdub25lJy8+PHBhdGggZD0nTTkgMTYuMTdMNC44MyAxMmwtMS40MiAxLjQxTDkgMTkgMjEgN2wtMS40MS0xLjQxeicvPjwvc3ZnPg==") no-repeat
+                    &.new
+                        position: relative
+                        &::before
+                            content: ''
+                            padding-left: 8px
+                            width: 24px
+                            height: 24px
+                            position: absolute
+                            left: 4px
+                            top: 4px
+                            background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHhtbG5zOnhsaW5rPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rJyBmaWxsPScjMDAwMDAwJyBoZWlnaHQ9JzI0JyB2aWV3Qm94PScwIDAgMjQgMjQnIHdpZHRoPScyNCc+PGRlZnM+PHBhdGggZD0nTTAgMGgyNHYyNEgwVjB6JyBpZD0nYScvPjwvZGVmcz48Y2xpcFBhdGggaWQ9J2InPjx1c2Ugb3ZlcmZsb3c9J3Zpc2libGUnIHhsaW5rOmhyZWY9JyNhJy8+PC9jbGlwUGF0aD48cGF0aCBjbGlwLXBhdGg9J3VybCgjYiknIGQ9J00yMCA0SDRjLTEuMTEgMC0xLjk5Ljg5LTEuOTkgMkwyIDE4YzAgMS4xMS44OSAyIDIgMmgxNmMxLjExIDAgMi0uODkgMi0yVjZjMC0xLjExLS44OS0yLTItMnpNOC41IDE1SDcuM2wtMi41NS0zLjVWMTVIMy41VjloMS4yNWwyLjUgMy41VjlIOC41djZ6bTUtNC43NEgxMXYxLjEyaDIuNXYxLjI2SDExdjEuMTFoMi41VjE1aC00VjloNHYxLjI2em03IDMuNzRjMCAuNTUtLjQ1IDEtMSAxaC00Yy0uNTUgMC0xLS40NS0xLTFWOWgxLjI1djQuNTFoMS4xM1Y5Ljk5aDEuMjV2My41MWgxLjEyVjloMS4yNXY1eicvPjwvc3ZnPg==") no-repeat
+
+                & > span.select-options-title
+                    padding-top: 8px
+                    padding-bottom: 8px
+                    color: #ddd
+                    cursor: default
+                    text-align: center
+                    border-bottom: 1px solid #eee

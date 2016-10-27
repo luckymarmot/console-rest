@@ -1,0 +1,19 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+@require '../../principles/gutter-mixins'
+
+.customization
+    flex-shrink: 0
+    @media (min-width: 600px)
+        flex-grow: 0
+    @media (max-width: 600px)
+        flex-grow: 1
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    text-align: center
+    padding-left: 32px
+    padding-right: 32px
+    padding-top: 8px
+    padding-bottom: 8px

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-import SelectedImg from 'crest/basics/media/SelectedImg'
+import SuccessImg from 'crest/basics/media/status/SuccessImg'
 
 require('./color-palette.styl')
 
@@ -44,7 +44,7 @@ export default class ColorPalette extends Component {
                 key={index}
                 onClick={::this.updateSelectedIndex(color, index)}
                 tabIndex="1" style={style}>
-                <SelectedImg
+                <SuccessImg
                     className="white"
                     onClick={this.updateSelectedIndex(color, index)}/>
             </button>

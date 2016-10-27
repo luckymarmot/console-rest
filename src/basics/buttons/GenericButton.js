@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 require('./button.styl')
 
-export default class EmptyButton extends Component {
+export default class GenericButton extends Component {
 
     clicked(ev) {
         if (typeof this.props.onClick === 'function') {
@@ -11,7 +11,7 @@ export default class EmptyButton extends Component {
     }
 
     render() {
-        let classes = 'large-button'
+        let classes = 'button'
         if (this.props.className) {
             classes += ' ' + this.props.className
         }

@@ -14,7 +14,23 @@
         margin: 0
         font-size: 1.5rem
 
+.uploader
+    z-index: 1
+    img
+        user-select: none
+    .support
+        display: block
+        font-size: 0.75rem
+
+    @media (max-width: 480px)
+        .drop-instructions
+        img
+            display: none
+
 .uploader .row
     display: flex
     flex-direction: row
+    flex-grow: 0
+    height: 52px
+    box-sizing: border-box
     gutterVerticalSmall()

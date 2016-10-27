@@ -1,0 +1,22 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+@require '../../principles/gutter-mixins'
+
+.tab-bar
+    display: flex
+    flex-direction: row
+    .tab-block
+        cursor: pointer
+        user-select: none
+        flex-basis: 0
+        flex-grow: 1
+        flex-shrink: 0
+        text-align: center
+        paddingVerticalSmall()
+        gutterHorizontal()
+        transition: all 0.2s ease-in-out
+        border-bottom: 1px solid rgba(0, 0, 0, 0)
+        &:hover
+            border-bottom: 1px solid $background200
+        &.active
+            border-bottom: 1px solid $primary

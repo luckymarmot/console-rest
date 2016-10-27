@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
-import UpArrowImg from 'crest/basics/media/UpArrowImg'
-import DownArrowImg from 'crest/basics/media/DownArrowImg'
+import UpArrowImg from 'crest/basics/media/arrows/UpArrowImg'
+import DownArrowImg from 'crest/basics/media/arrows/DownArrowImg'
 
 require('./input.styl')
 
@@ -96,6 +96,9 @@ export default class SelectField extends Component {
         }
 
         return <div className={classes}>
+            <div className="input-prefix"
+                onClick={::this.toggle}
+                tabIndex="1">{this.renderIcon()}</div>
             <div className={collapsible} ref="select">
                 <div className={selectedClass} onClick={::this.toggle}>
                     {selected}
@@ -112,9 +115,6 @@ export default class SelectField extends Component {
                     })}
                 </div>
             </div>
-            <div className="input-button"
-                onClick={::this.toggle}
-                tabIndex="1">{this.renderIcon()}</div>
         </div>
     }
 }

@@ -1,0 +1,83 @@
+@require '../../principles/colors'
+@require '../../principles/blocks'
+@require '../../principles/gutter-mixins'
+@require '../../principles/padding-mixins'
+
+.landing
+    box-sizing: border-box
+    height: calc(100vh - 64px)
+    background-color: $background700
+    color: $background200
+    display: flex
+    flex-direction: row
+    justify-content: space-around
+    align-items: flex-start
+    flex-shrink: 0
+    position: relative
+    overflow-x: hidden
+    overflow-y: hidden
+
+    > *
+        flex-basis: 0
+        flex-grow: 1
+        flex-shrink: 0
+
+    .left
+        height: 100%
+        background: url('http://localhost:8888/basics/media/starlights.svg')
+
+    .center
+        @media (min-width: 480px)
+            min-width: 480px
+            width: 480px
+            max-width: 480px
+        @media (max-width: 480px)
+            min-width: 100%
+            width: 100%
+            max-width: 100%
+        max-height: 100%
+        @media (max-width: 600px)
+            margin-top: 64px
+            height: calc(100vh - 128px)
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: stretch
+        align-self: center
+        text-align: center
+        > *
+            paddingHorizontal()
+            background-color: rgba(60, 50, 83, 0.5)
+
+    .right
+        height: 100%
+        background: url('http://localhost:8888/basics/media/starlights.svg')
+
+    .value-prop
+        z-index: 1
+        padding-bottom: $block
+        h1
+            margin: 0
+            font-size: 40px
+            gutterVertical()
+        h2
+            margin: 0
+            font-size: 20px
+            gutterVerticalSmall()
+        h3
+            margin: 0
+            font-size: 20px
+            font-weight:normal
+            gutterVerticalVerySmall()
+
+    .rocket
+        position: absolute
+        @media (min-width: 1600px)
+            width: 100%
+        @media (min-width: 960px) and (max-width: 1600px)
+            width: 110%
+        @media (max-width: 960px)
+            width: 300%
+        left: 0px
+        bottom:0px
+        padding: 0px
