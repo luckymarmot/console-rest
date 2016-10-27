@@ -352,7 +352,7 @@ export default class Uploader extends Component {
                 </GenericButton>
                 <TextField
                     title="URL"
-                    placeholder="or type in a URL"
+                    placeholder="Type in a URL"
                     onKeyDown={::this.checkURLonKeyDown}
                     onSubmit={::this.checkURL}>
                     {this.renderQueryStatus()}
@@ -378,9 +378,9 @@ export default class Uploader extends Component {
         }
 
         return <div className={classes}>
-            <img src="basics/media/fileformats.svg" draggable={false}/>
             <DropArea onFileDrop={::this.uploadFile}/>
-            <h3>Drop Any API File</h3>
+            <img src="basics/media/fileformats.svg" draggable={false}/>
+            <h3 className="drop-instructions">Drop Any API File</h3>
             <div className="support">
                 <a>Paw</a>, {' '}
                 <a>RAML</a>, {' '}

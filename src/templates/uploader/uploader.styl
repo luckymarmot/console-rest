@@ -22,7 +22,15 @@
         display: block
         font-size: 0.75rem
 
+    @media (max-width: 480px)
+        .drop-instructions
+        img
+            display: none
+
 .uploader .row
     display: flex
     flex-direction: row
+    flex-grow: 0
+    height: 52px
+    box-sizing: border-box
     gutterVerticalSmall()
