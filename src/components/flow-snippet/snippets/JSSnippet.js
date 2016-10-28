@@ -13,8 +13,9 @@ export default class JSSnippet extends Component {
             target = this.props.url
         }
 
+        /* eslint-disable max-len */
         return 'Add this link to your page:\n\n' +
-            '<script src="my-super-link.com/console-rest.js"></script>\n\n' +
+            '<script src="https://console.rest/github.io/libs/console-rest.js"></script>\n\n' +
             'Setting the theme\n' +
             '    data-theme="' + this.props.theme + '"\n' +
             '    data-target="' + target + '"\n' +
@@ -29,6 +30,7 @@ export default class JSSnippet extends Component {
                 '// paste your swagger / raml / curl / etc. here'
             ) + '\n' +
             '</script>'
+        /* eslint-enable max-len */
     }
 
     render() {

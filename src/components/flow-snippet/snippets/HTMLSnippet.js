@@ -13,6 +13,7 @@ export default class HTMLSnippet extends Component {
             target = this.props.url
         }
 
+        /* eslint-disable max-len */
         return '' +
             '<a className="oic-runner oic-theme"\n' +
             '    data-theme="' + this.props.theme + '"\n' +
@@ -22,13 +23,14 @@ export default class HTMLSnippet extends Component {
             '    data-source="' + (this.props.format || '') + '">' +
                 this.props.text +
             '</a>\n' +
-            '<script src="my-super-link.com/console-rest.js"></script>\n' +
+            '<script src="https://console.rest/github.io/libs/console-rest.js"></script>\n' +
             '<script id="oic-content">\n' +
             (
                 this.props.content ||
                 '// paste your swagger / raml / curl / etc. here'
             ) + '\n' +
             '</script>'
+        /* eslint-enable max-len */
     }
 
     render() {
