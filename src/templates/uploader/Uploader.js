@@ -3,14 +3,14 @@ import Immutable from 'immutable'
 
 import DropArea from 'crest/basics/dragdrop/DropArea'
 import FilePicker from 'crest/basics/filepicker/FilePicker'
-import FileInfo from 'crest/basics/fileinfo/FileInfo'
 import TextField from 'crest/basics/inputs/TextField'
-import TextArea from 'crest/basics/inputs/TextArea'
+import GenericButton from 'crest/basics/buttons/GenericButton'
 
-import SuccessImg from 'crest/basics/media/SuccessImg'
-import FailureImg from 'crest/basics/media/FailureImg'
+import SuccessImg from 'crest/basics/media/status/SuccessImg'
+import FailureImg from 'crest/basics/media/status/FailureImg'
 
-require('../../basics/layout/content.styl')
+import PawInterface from 'crest/basics/paw-interface/PawInterface'
+
 require('./uploader.styl')
 
 export default class Uploader extends Component {
@@ -28,17 +28,24 @@ export default class Uploader extends Component {
                 status: null
             }),
             query: new Immutable.Map({
-                url: null,
+                uri: null,
                 name: null,
                 content: null,
                 status: null
             }),
-            paste: new Immutable.Map({
-                content: null
+            location: new Immutable.Map({
+                uri: null,
+                name: null,
+                content: null,
+                format: null
             }),
-            location: this.loadHashData(),
-            current: null
+            current: null,
+            enterURL: false
         }
+    }
+
+    componentDidMount() {
+        this.loadHashData()
     }
 
     loadHashData() {
@@ -68,7 +75,14 @@ export default class Uploader extends Component {
                 code: 200,
                 message: 'file was successfully loaded from hash'
             }
+        } else if (uri) {
+            this.checkURL(null, uri)
+            this.setState({
+                location: new Immutable.Map({ uri, name, content, format })
+            })
+            return
         }
+
         setTimeout(() => {
             this.props.onFileAndStatusChange({
                 // file
@@ -77,13 +91,21 @@ export default class Uploader extends Component {
                 ...status
             })
         }, 100)
-        return new Immutable.Map({ uri, name, content, format })
+
+        this.setState({
+            location: new Immutable.Map({ uri, name, content, format })
+        })
     }
 
     uploadFile(file) {
         let reader = new FileReader()
         reader.onload = () => {
             let content = reader.result
+            if (content.slice(0, 20).indexOf('CoreData') >= 0) {
+                const pawUrl = PawInterface.getExportUrl()
+                window.location.href = pawUrl
+                return
+            }
             let name = this.removeExtension(file.name)
 
             this.setState({
@@ -165,26 +187,6 @@ export default class Uploader extends Component {
         })
     }
 
-    // TODO Support state.local.status to trigger status information in FileInfo
-    renderDropHelper() {
-        let name = this.state.local.get('name')
-        if (!name) {
-            return <div className="drop-helper">
-                    <h4>Drag &amp; Drop your file here</h4>
-                    <FilePicker onFileUpload={::this.uploadFile}
-                    text="or browse"/>
-                </div>
-        } else {
-            // return <FileInfo file={this.state.file}/>
-            return <div className="drop-helper">
-                <FileInfo
-                    file={name}
-                    className="row"
-                    onDeleteFile={::this.deleteFile}/>
-            </div>
-        }
-    }
-
     renderQueryStatus() {
         let status = this.state.query.get('status')
         if (status === 200) {
@@ -198,11 +200,11 @@ export default class Uploader extends Component {
         return 'GO'
     }
 
-    resetQueryStatus(url) {
+    resetQueryStatus(uri) {
         this.setState({
             query: new Immutable.Map({
                 status: null,
-                url: url,
+                uri,
                 content: null
             })
         })
@@ -219,7 +221,7 @@ export default class Uploader extends Component {
     checkURL(ev, content) {
         this.resetQueryStatus()
         try {
-            let url = new URL(content)
+            let uri = new URL(content)
             if (this.request instanceof XMLHttpRequest) {
                 this.request.abort()
             }
@@ -228,7 +230,7 @@ export default class Uploader extends Component {
             this.request.addEventListener('load', ::this.onFileLoaded)
             this.request.addEventListener('error', ::this.onFileErrored)
             this.request.addEventListener('abort', ::this.onFileAborted)
-            this.request.open('GET', url)
+            this.request.open('GET', uri)
             this.request.send()
             ev.preventDefault()
         } catch (e) {
@@ -247,19 +249,8 @@ export default class Uploader extends Component {
         }
     }
 
-    checkContent(ev, content) {
-        this.setState({
-            paste: new Immutable.Map({
-                content: content
-            }),
-            current: 'paste'
-        })
-
-        this.props.onFileChange({ content })
-    }
-
-    parseURLForName(url) {
-        let name = url.split('/').slice(-1)[0].split('?')[0].split('#')[0]
+    parseURLForName(uri) {
+        let name = uri.split('/').slice(-1)[0].split('?')[0].split('#')[0]
         return this.removeExtension(name) || null
     }
 
@@ -269,13 +260,13 @@ export default class Uploader extends Component {
 
     onFileLoaded(ev) {
         this.request = null
-        let url = ev.target.responseURL
-        let name = this.parseURLForName(url)
+        let uri = ev.target.responseURL
+        let name = this.parseURLForName(uri)
         if (ev.target.status >= 200 && ev.target.status < 400) {
             let content = ev.target.responseText
             this.setState({
                 query: new Immutable.Map({
-                    url,
+                    uri,
                     name,
                     content,
                     status: 200
@@ -286,7 +277,7 @@ export default class Uploader extends Component {
             let props = {
                 name,
                 content,
-                url,
+                uri,
                 code: 200,
                 target: name,
                 message: 'file was successfully downloaded'
@@ -295,7 +286,7 @@ export default class Uploader extends Component {
         } else if (ev.target.status >= 400) {
             this.setState({
                 query: new Immutable.Map({
-                    url: this.state.query.url,
+                    uri: this.state.query.uri,
                     status: 400,
                     content: null
                 })
@@ -312,11 +303,11 @@ export default class Uploader extends Component {
     }
 
     onFileErrored(ev) {
-        let name = this.parseURLForName(this.state.query.url || '')
+        let name = this.parseURLForName(this.state.query.uri || '')
         this.request = null
         this.setState({
             query: new Immutable.Map({
-                url: this.state.query.url,
+                uri: this.state.query.uri,
                 status: 400,
                 content: null
             })
@@ -366,6 +357,46 @@ export default class Uploader extends Component {
         }
     }
 
+    displayEnterURL() {
+        this.setState({
+            enterURL: true
+        })
+    }
+
+    hideEnterURL() {
+        this.setState({
+            enterURL: false
+        })
+    }
+
+    renderAction() {
+        if (this.state.enterURL) {
+            return <div className="row guttered-row">
+                <GenericButton className="button-small"
+                    onClick={::this.hideEnterURL}>
+                    &#x2573;
+                </GenericButton>
+                <TextField
+                    title="URL"
+                    placeholder="Type in a URL"
+                    onKeyDown={::this.checkURLonKeyDown}
+                    onSubmit={::this.checkURL}>
+                    {this.renderQueryStatus()}
+                </TextField>
+            </div>
+        } else {
+            return <div className="row equal-split">
+                <FilePicker className="button button-primary"
+                    onFileUpload={::this.uploadFile}
+                    text="Pick a File"/>
+                <GenericButton className="button-primary"
+                    onClick={::this.displayEnterURL}>
+                    Enter URL
+                </GenericButton>
+            </div>
+        }
+    }
+
     render() {
         let classes = 'uploader'
         if (this.props.className) {
@@ -373,30 +404,17 @@ export default class Uploader extends Component {
         }
 
         return <div className={classes}>
-            <h2>Import Your File</h2>
-            <DropArea onFileDrop={::this.uploadFile}>
-                <img src="basics/media/drop-area-img.svg"/>
-                {this.renderDropHelper()}
-            </DropArea>
-            <div className="row-inline">
-                console.rest supports file from the following formats: {' '}
+            <DropArea onFileDrop={::this.uploadFile}/>
+            <img src="basics/media/fileformats.svg" draggable={false}/>
+            <h3 className="drop-instructions">Drop Any API File</h3>
+            <div className="support">
                 <a>Paw</a>, {' '}
                 <a>RAML</a>, {' '}
                 <a>Swagger/OAI</a>, {' '}
                 <a>Postman</a>, and {' '}
                 <a>curl</a>
             </div>
-            <TextField
-                placeholder="or type in a URL"
-                onKeyDown={::this.checkURLonKeyDown}
-                onSubmit={::this.checkURL}>
-                {this.renderQueryStatus()}
-            </TextField>
-            <TextArea
-                placeholder="or simply paste the content"
-                onSubmit={::this.checkContent}>
-                GO
-            </TextArea>
+            {this.renderAction()}
         </div>
     }
 }

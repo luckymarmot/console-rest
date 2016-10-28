@@ -25,8 +25,8 @@ window.addEventListener('rejectionhandled', function(e) {
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Root from './Root'
+import Converter from 'crest/app/converter/Converter'
 
 require('./basics/body.styl')
 
-ReactDOM.render(<Root className="col"/>, document.getElementById('root'))
+ReactDOM.render(<Converter className="col"/>, document.getElementById('root'))

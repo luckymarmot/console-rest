@@ -2,44 +2,46 @@
 @require '../../principles/gutter-mixins'
 @require '../../principles/padding-mixins'
 
-.helper
-    z-index: 1
-    justify-content: flex-start
-    width: inherit
-    transition: all 0.2s ease-in-out
-    > *
-        flex-grow: 0
-        flex-shrink: 0
-
-    .controls
-        position: fixed
-        top: -16px
-        width: inherit
-        display: flex
-        flex-direction: row
-        justify-content: flex-end
-        align-items: center
-        gutterAll()
-        max-height: 64px
-        min-height: 64px
-        color: $background700
-        paddingHorizontal()
-        .img
-            fill: $background200
-
-        .helper-control
+.helper-container
+    display: flex
+    flex-direction: column
+    position: relative
+    .helper-controls
+        @media (min-width: 1280px)
             display: none
-
-
-    @media (max-width: 1280px)
-        position: fixed
-        overflow-y: scroll
-        background-color: $background200
-        box-shadow: 2px 4px 4px 4px rgba(0, 0, 0, 0.12)
+        position: absolute
+        top: 0
+        right: 0
+        height: 64px
+        box-sizing: border-box
+        display: flex
+        justify-content: center
+        padding: 16px
+    .helper
+        align-self: flex-end
+        width: 80%
+        max-width: 320px
+        z-index: 1
+        flex-basis: 0
+        padding-top: 80px
+        justify-content: flex-start
         height: calc(100vh - 64px)
-        width: 288px
+        transition: right 0.2s ease-in-out
+        > *
+            flex-grow: 0
+            flex-shrink: 0
 
-        .controls
-            right: -16px
-            .helper-control
-                display: flex
+        @media (max-width: 1280px)
+            position: absolute
+            padding-top: 16px
+            padding-bottom: 16px
+            box-sizing: border-box
+            top:64px
+            height: calc(100vh - 128px)
+            overflow-y: scroll
+            width: 320px
+            background-color: #f6f5f7
+
+        @media (max-width: 600px)
+            min-width: calc(100vw)
+            background-color: #f6f5f7

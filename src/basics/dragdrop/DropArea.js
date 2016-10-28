@@ -15,6 +15,25 @@ export default class DropArea extends Component {
         }
     }
 
+    componentDidMount() {
+        this.onDragEnter = ::this.cancel
+        this.onDragOver = ::this.cancel
+        this.onDragLeave = ::this.reset
+        this.onDrop = ::this.drop
+
+        document.body.addEventListener('dragenter', this.onDragEnter)
+        document.body.addEventListener('dragover', this.onDragOver)
+        document.body.addEventListener('dragleave', this.onDragLeave)
+        document.body.addEventListener('drop', this.onDrop)
+    }
+
+    componentWillUnmount() {
+        document.body.removeEventListener('dragenter', this.onDragEnter)
+        document.body.removeEventListener('dragover', this.onDragOver)
+        document.body.removeEventListener('dragleave', this.onDragLeave)
+        document.body.removeEventListener('drop', this.onDrop)
+    }
+
     cancel(ev) {
         this.setState({
             dragging: true
@@ -29,7 +48,7 @@ export default class DropArea extends Component {
         })
     }
 
-    onDrop(ev) {
+    drop(ev) {
         this.setState({
             dragging: false
         })
@@ -49,12 +68,6 @@ export default class DropArea extends Component {
             classes += ' active'
         }
 
-        return <div className={classes} ref="dropBox"
-            onDragEnter={::this.cancel}
-            onDragOver={::this.cancel}
-            onDragLeave={::this.reset}
-            onDrop={::this.onDrop}>
-            {this.props.children}
-        </div>
+        return <div className={classes}></div>
     }
 }

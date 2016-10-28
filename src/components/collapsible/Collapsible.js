@@ -19,6 +19,10 @@ export default class Collapsible extends Component {
         this.setState({
             expanded: !this.state.expanded
         })
+
+        if (typeof this.props.onHeaderClick === 'function') {
+            this.props.onHeaderClick(!this.state.expanded)
+        }
     }
 
     componentWillReceiveProps(nextProps) {
