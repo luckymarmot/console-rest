@@ -5,8 +5,27 @@ export default class MarkdownSnippet extends Component {
         className: PropTypes.string
     }
 
+    static colorMap = {
+        '#E13046': 'red',
+        '#D42C69': 'pink',
+        '#863CC6': 'purple',
+        '#2F78CD': 'blue',
+        '#26C29F': 'turquoise',
+        '#8BD143': 'green',
+        '#E2D52C': 'yellow',
+        '#EE9E1A': 'orange',
+        '#EA6E30': 'deep-orange'
+    }
+
     renderCode() {
-        let snippet = '[Open In Console.REST](https://console.rest/'
+        let themeUrl = 'https://console.rest/github.io/assets/buttons/run_with_'
+        let colorName = MarkdownSnippet.colorMap[this.props.theme] || 'red'
+
+        themeUrl += colorName + '.svg'
+
+        let snippet = '[![Run API With...](' +
+            themeUrl +
+            ')](https://console.rest/'
 
         let params = []
 
