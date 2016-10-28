@@ -23,7 +23,7 @@ export default class HTMLSnippet extends Component {
             '    data-source="' + (this.props.format || '') + '">' +
                 this.props.text +
             '</a>\n' +
-            '<script src="https://console.rest/github.io/libs/console-rest.js"></script>\n' +
+            '<script src="https://console.rest/github.io/libs/console-rest-visual.js"></script>\n' +
             '<script id="oic-content">\n' +
             (
                 this.props.content ||
