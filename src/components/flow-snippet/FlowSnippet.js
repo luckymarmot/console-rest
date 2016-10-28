@@ -60,6 +60,7 @@ export default class FlowSnippet extends Component {
                         content={this.props.content}
                         uri={this.props.uri}
                         format={this.props.format}
+                        theme={this.props.theme}
                         version={this.props.version}/>
                 </TabView>
             </TabViewer>
