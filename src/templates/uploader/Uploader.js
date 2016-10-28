@@ -405,7 +405,8 @@ export default class Uploader extends Component {
 
         return <div className={classes}>
             <DropArea onFileDrop={::this.uploadFile}/>
-            <img src="basics/media/fileformats.svg" draggable={false}/>
+            <img src="https://console.rest/github.io/assets/fileformats.svg"
+                draggable={false}/>
             <h3 className="drop-instructions">Drop Any API File</h3>
             <div className="support">
                 <a>Paw</a>, {' '}
