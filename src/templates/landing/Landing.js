@@ -4,9 +4,11 @@ import Rocket from 'crest/basics/media/Rocket'
 import Uploader from 'crest/templates/uploader/Uploader'
 import Helper from 'crest/templates/helper/Helper'
 
+import BetaBanner from 'crest/components/beta/Banner'
+
 require('./landing.styl')
 
-export default class Converter extends Component {
+export default class Landing extends Component {
 
     updateFile() {
         if (typeof this.props.onFileChange === 'function') {
@@ -40,7 +42,7 @@ export default class Converter extends Component {
                     <h1>Make APIs Universal</h1>
                     <h3>The ultimate API format converter.</h3>
                     <h3>One button to open every API.</h3>
-                    <h2>Watch demo</h2>
+                    <BetaBanner/>
                 </div>
                 <Uploader
                     onFileChange={::this.updateFile}

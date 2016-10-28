@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Immutable from 'immutable'
 
 import Notification from 'crest/basics/notification/Notification'
 
@@ -19,18 +20,21 @@ export default class Notifier extends Component {
         super(props)
 
         if (
-            typeof props.status === 'undefined' ||
-            props.status === null
+            typeof props.notification === 'undefined' ||
+            props.notification === null ||
+            typeof props.notification.get !== 'function' ||
+            typeof props.notification.get('code') === 'undefined' ||
+            props.notification.get('code') === null
         ) {
             this.state = {
                 hideCurrent: false,
-                current: {},
+                current: new Immutable.Map(),
                 pendingNotifications: []
             }
         } else {
             this.state = {
                 hideCurrent: false,
-                current: props,
+                current: props.notification,
                 pendingNotifications: []
             }
         }
@@ -38,15 +42,18 @@ export default class Notifier extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (
-            typeof nextProps.status === 'undefined' ||
-            nextProps.status === null
+            typeof nextProps.notification === 'undefined' ||
+            nextProps.notification === null ||
+            typeof nextProps.notification.get !== 'function' ||
+            typeof nextProps.notification.get('code') === 'undefined' ||
+            nextProps.notification.get('code') === null
         ) {
             return
         }
 
         if (
-            typeof this.state.current.status !== 'undefined' &&
-            this.state.current.status !== null
+            typeof this.state.current.get('code') !== 'undefined' &&
+            this.state.current.get('code') !== null
         ) {
             if (
                 this.state.pendingNotifications.length
@@ -56,20 +63,22 @@ export default class Notifier extends Component {
                 this.setState({
                     pendingNotifications: this.state.pendingNotifications
                         .concat([
-                            nextProps
+                            nextProps.notification
                         ])
                 })
             } else {
                 let pending = this.state.pendingNotifications.slice()
-                pending[pending.length - 1] = nextProps
+                pending[pending.length - 1] = nextProps.notification
                 this.setState({
                     pendingNotifications: pending
                 })
             }
+
+            this.reset()
         } else {
             this.setState({
                 hideCurrent: false,
-                current: nextProps
+                current: nextProps.notification
             })
 
             this.hideTimeout = setTimeout(
@@ -110,7 +119,7 @@ export default class Notifier extends Component {
         } else {
             this.setState({
                 hideCurrent: false,
-                current: {}
+                current: new Immutable.Map()
             })
         }
         return null
@@ -148,6 +157,13 @@ export default class Notifier extends Component {
             classes += ' ' + this.props.className
         }
 
+        let status = null
+        let message = null
+        if (this.state.current) {
+            status = this.state.current.get('code')
+            message = this.state.current.get('message')
+        }
+
         return <div className={classes}>
             {this.props.children}
             <Notification
@@ -155,8 +171,8 @@ export default class Notifier extends Component {
                 onMouseEnter={::this.hold}
                 onMouseLeave={::this.release}
                 hide={this.state.hideCurrent}
-                status={this.state.current.status}
-                message={this.state.current.message}/>
+                status={status}
+                message={message}/>
         </div>
     }
 }

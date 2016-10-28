@@ -28,46 +28,6 @@ export default class Helper extends Component {
         }
     }
 
-    throttle(eventType, eventName) {
-        let running = false
-        let eventHandler = () => {
-            if (running) {
-                return
-            }
-            running = true
-            window.requestAnimationFrame(() => {
-                window.dispatchEvent(new CustomEvent(eventName))
-                running = false
-            })
-        }
-
-        this.eventHandler = eventHandler
-        window.addEventListener(eventType, this.eventHandler)
-    }
-
-    componentDidMount() {
-        this.throttle('resize', 'optmizedResize')
-        this.optimizedResize = ::this.onWindowResize
-        window.addEventListener('optmizedResize', this.optimizedResize)
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.eventHandler)
-        window.removeEventListener('optimizedResize', this.optimizedResize)
-    }
-
-    onWindowResize() {
-        if (false && window.innerWidth <= 1280 && this.state.helperOpened) {
-            this.setState({
-                helperOpened: false
-            })
-        } else if (false && window.innerWidth > 1280 && !this.state.helperOpened) {
-            this.setState({
-                helperOpened: true
-            })
-        }
-    }
-
     collapsibleClicked(index) {
         return (value) => {
             if (value) {
