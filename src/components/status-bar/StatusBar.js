@@ -146,10 +146,10 @@ export default class StatusBar extends Component {
 
         if (this.state.active === false) {
             return <div className={classes}>
-                <div className="promo">
+                <a href="https://paw.cloud" target="_blank" className="promo">
                     Made with <LoveImg className="promo-icon"/>
                     by Paw <PawLogo className="paw-logo"/>
-                </div>
+                </a>
             </div>
         }
 
