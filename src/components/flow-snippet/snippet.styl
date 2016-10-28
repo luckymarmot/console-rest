@@ -1,0 +1,19 @@
+@require '../../principles/colors'
+@require '../../principles/padding-mixins'
+@require '../../principles/gutter-mixins'
+
+.snippet-container
+    width: 100%
+    min-width: 100%
+    flex-grow: 0
+    flex-shrink: 0
+    background-color: $background700
+    color: $background200
+
+.snippet
+    height: 176px
+    max-height: 50vh
+    @media (max-width: 600px)
+        height:auto
+    paddingAll()
+    overflow: scroll
