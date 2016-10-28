@@ -15,7 +15,7 @@ export default class JSSnippet extends Component {
 
         /* eslint-disable max-len */
         return 'Add this link to your page:\n\n' +
-            '<script src="https://console.rest/github.io/libs/console-rest.js"></script>\n\n' +
+            '<script src="https://console.rest/github.io/libs/console-rest-api.js"></script>\n\n' +
             'Setting the theme\n' +
             '    data-theme="' + this.props.theme + '"\n' +
             '    data-target="' + target + '"\n' +
