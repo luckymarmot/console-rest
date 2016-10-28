@@ -34,7 +34,7 @@ export default class StatusBar extends Component {
             })
         }
 
-        if (nextProps.content !== this.props.content) {
+        if (nextProps.content) {
             this.moveForward()
         }
     }

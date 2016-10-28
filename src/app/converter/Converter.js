@@ -9,6 +9,8 @@ import
 from 'crest/components/button-customization/ButtonCustomization'
 import FlowSnippet from 'crest/components/flow-snippet/FlowSnippet'
 
+import Notifier from 'crest/components/notifier/Notifier'
+
 require('./converter.styl')
 
 export default class Converter extends Component {
@@ -70,6 +72,7 @@ export default class Converter extends Component {
     updateStatus(props) {
         let { code, target, message } = props
         this.setState({
+            file: this.noFile,
             status: this.noFile.merge({ code, target, message })
         })
     }
@@ -169,12 +172,14 @@ export default class Converter extends Component {
                     <FlowSnippet
                         name={this.state.file.get('name')}
                         content={this.state.file.get('content')}
-                        url={this.state.file.get('url')}
+                        uri={this.state.file.get('uri')}
                         format={this.state.file.get('format')}
+                        version={this.state.file.get('version')}
                         theme={this.state.theme}
                         text={this.state.text}/>
                 </div>
             </div>
+            <Notifier notification={this.state.status}/>
         </div>
     }
 }

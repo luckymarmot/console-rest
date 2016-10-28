@@ -5,8 +5,9 @@ import Clipboard from 'clipboard'
 import TabViewer from 'crest/components/tabs/TabViewer'
 import TabView from 'crest/components/tabs/TabView'
 
-import HTMLSnippet from './HTMLSnippet'
+import HTMLSnippet from './snippets/HTMLSnippet'
 import JSSnippet from './snippets/JSSnippet'
+import MarkdownSnippet from './snippets/MarkdownSnippet'
 
 require('./snippet.styl')
 
@@ -17,14 +18,6 @@ export default class FlowSnippet extends Component {
         'as Markdown'
     ]
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            view: this.constructor.views[0]
-        }
-    }
-
     copy() {
         let copy = this.refs.rendered
         return copy.renderCode()
@@ -34,25 +27,6 @@ export default class FlowSnippet extends Component {
         this.clipboard = new Clipboard('.copy', {
             text: ::this.copy
         })
-    }
-
-    updateView(ev, view) {
-        this.setState({
-            view: view
-        })
-    }
-
-    renderView() {
-        if (this.state.view === 'as HTML') {
-            return <HTMLSnippet ref="rendered"
-                name={this.props.name}
-                content={this.props.content}
-                url={this.props.url}
-                format={this.props.format}
-                theme={this.props.theme}
-                text={this.props.text}/>
-        }
-        return null
     }
 
     render() {
@@ -66,7 +40,7 @@ export default class FlowSnippet extends Component {
                     <HTMLSnippet className="snippet" ref="rendered"
                         name={this.props.name}
                         content={this.props.content}
-                        url={this.props.url}
+                        uri={this.props.uri}
                         format={this.props.format}
                         theme={this.props.theme}
                         text={this.props.text}/>
@@ -75,30 +49,19 @@ export default class FlowSnippet extends Component {
                     <JSSnippet className="snippet" ref="rendered"
                         name={this.props.name}
                         content={this.props.content}
-                        url={this.props.url}
+                        uri={this.props.uri}
                         format={this.props.format}
                         theme={this.props.theme}
                         text={this.props.text}/>
                 </TabView>
-                <TabView title="Markdown"/>
+                <TabView title="Markdown">
+                    <MarkdownSnippet className="snippet" ref="rendered"
+                        name={this.props.name}
+                        content={this.props.content}
+                        uri={this.props.uri}
+                        format={this.props.format}
+                        version={this.props.version}/>
+                </TabView>
             </TabViewer>
-            /*
-            <div className={classes}>
-                <div className="row">
-                    <SelectField
-                        className="row-item"
-                        value={this.state.view}
-                        options={this.constructor.views}
-                        placeholder="Generate Snippet As"
-                        onSubmit={::this.updateView}/>
-                    <GenericButton className="row-item copy">
-                        Copy
-                    </GenericButton>
-                </div>
-                <div className="snippet">
-                    {this.renderView()}
-                </div>
-            </div>
-            */
     }
 }

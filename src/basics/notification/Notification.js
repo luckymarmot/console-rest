@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import SuccessImg from 'crest/basics/media/SuccessImg'
-import FailureImg from 'crest/basics/media/FailureImg'
-import WarnImg from 'crest/basics/media/WarnImg'
+import SuccessImg from 'crest/basics/media/status/SuccessImg'
+import FailureImg from 'crest/basics/media/status/FailureImg'
+import WarnImg from 'crest/basics/media/status/WarnImg'
 
 require('./notification.styl')
 
