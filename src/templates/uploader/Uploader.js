@@ -228,17 +228,10 @@ export default class Uploader extends Component {
             }
             this.request = new XMLHttpRequest()
 
-            if (open) {
-                this.request.addEventListener(
-                    'load',
-                    ::this.onFileLoaded(uri.href, open)
-                )
-            } else {
-                this.request.addEventListener(
-                    'load',
-                    ::this.onFileLoaded(uri.href)
-                )
-            }
+            this.request.addEventListener(
+                'load',
+                ::this.onFileLoaded(uri.href, open)
+            )
             this.request.addEventListener(
                 'error',
                 ::this.onFileErrored(uri.href)
@@ -324,9 +317,10 @@ export default class Uploader extends Component {
         }
     }
 
-    onFileErrored(uri) {
+    onFileErrored(_uri) {
         return (ev) => {
-            let name = this.parseURLForName(this.state.query.uri || '')
+            const uri = _uri || ''
+            let name = this.parseURLForName(uri)
             this.request = null
             this.setState({
                 query: new Immutable.Map({
