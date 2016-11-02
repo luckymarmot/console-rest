@@ -4,6 +4,7 @@ import Immutable from 'immutable'
 import Landing from 'crest/templates/landing/Landing'
 import StatusBar from 'crest/components/status-bar/StatusBar'
 import FlowPreview from 'crest/components/flow-preview/FlowPreview'
+import FlowWarning from 'crest/components/flow-warning/FlowWarning'
 import
     ButtonCustomization
 from 'crest/components/button-customization/ButtonCustomization'
@@ -27,39 +28,17 @@ export default class Converter extends Component {
         this.noStatus = new Immutable.Map({
             code: null,
             target: null,
-            message: null
+            message: null,
+            open: false,
+            byPass: false
         })
 
-        let file = this.loadHashData()
         this.state = {
-            file: file,
+            file: this.noFile,
             status: this.noStatus,
             theme: '#E13046',
             text: 'Open In Console'
         }
-    }
-
-    loadHashData() {
-        let setup = {}
-        let hash = window.location.hash.slice(2)
-        let kvPairs = hash.split('&')
-        kvPairs.forEach(kv => {
-            let [ key, value ] = kv.split('=')
-            let cleanKey = decodeURIComponent(key).toLowerCase()
-            setup[cleanKey] = decodeURIComponent(value)
-        })
-
-        if (setup.content) {
-            setup.content = atob(setup.content)
-        }
-
-        if (setup.name) {
-            // remove extension
-            setup.name = setup.name.split('.', 1)[0]
-        }
-
-        let { uri, name, content, format, version } = setup
-        return this.noFile.merge({ uri, name, content, format, version })
     }
 
     updateFile(props) {
@@ -71,20 +50,33 @@ export default class Converter extends Component {
 
     updateStatus(props) {
         let { code, target, message } = props
+
+        let byPass = false
+        if (code === 0) {
+            code = 400
+            byPass = true
+        }
+
         this.setState({
             file: this.noFile,
-            status: this.noFile.merge({ code, target, message })
+            status: this.noFile.merge({ code, target, message, byPass })
         })
     }
 
     updateFileAndStatus(props) {
         let {
-            uri, name, content, format, version, code, target, message
+            uri, name, content, format, version, code, target, message, open
         } = props
+
+        let byPass = false
+        if (code === 0) {
+            code = 400
+            byPass = true
+        }
 
         this.setState({
             file: this.noFile.merge({ uri, name, content, format, version }),
-            status: this.noStatus.merge({ code, target, message })
+            status: this.noStatus.merge({ code, target, message, open, byPass })
         })
     }
 
@@ -114,7 +106,9 @@ export default class Converter extends Component {
     updateTheme(color) {
         this.setState({
             theme: color,
-            status: this.noStatus
+            status: this.noStatus.merge({
+                byPass: this.state.status.get('byPass')
+            })
         })
     }
 
@@ -125,6 +119,27 @@ export default class Converter extends Component {
         })
     }
 
+    renderPreviewOrWarning() {
+        if (this.state.status.get('byPass')) {
+            return <div className="section">
+                <FlowWarning uri={this.state.file.get('uri')}
+                    theme={this.state.theme}/>
+            </div>
+        }
+
+        return <div className="section">
+            <h2>You&#39;re Ready to Go</h2>
+            <FlowPreview
+                className="preview"
+                open={this.state.status.get('open')}
+                content={this.state.file.get('content')}
+                format={this.state.file.get('format')}
+                version={this.state.file.get('version')}
+                name={this.state.file.get('name')}
+                theme={this.state.theme}/>
+        </div>
+    }
+
     render() {
         let classes = 'converter'
         if (this.props.classes) {
@@ -132,7 +147,7 @@ export default class Converter extends Component {
         }
 
         let mainClass = 'main'
-        if (this.state.file.get('content')) {
+        if (this.state.file.get('content') || this.state.status.get('byPass')) {
             mainClass += ' active'
         }
 
@@ -147,21 +162,14 @@ export default class Converter extends Component {
                 content={this.state.file.get('content')}
                 format={this.state.file.get('format')}
                 version={this.state.file.get('version')}
+                byPass={this.state.status.get('byPass')}
+                open={this.state.status.get('open')}
                 onFileChange={::this.updateFile}
                 onStatusChange={::this.updateStatus}
                 onFileAndStatusChange={::this.updateFileAndStatus}/>
             <hr/>
             <div className={mainClass}>
-                <div className="section">
-                    <h2>You&#39;re Ready to Go</h2>
-                    <FlowPreview
-                        className="preview"
-                        content={this.state.file.get('content')}
-                        format={this.state.file.get('format')}
-                        version={this.state.file.get('version')}
-                        name={this.state.file.get('name')}
-                        theme={this.state.theme}/>
-                </div>
+                {this.renderPreviewOrWarning()}
                 <hr/>
                 <div className="section">
                     <h2>Add this button to your API docs</h2>
