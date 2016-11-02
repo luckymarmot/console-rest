@@ -1,0 +1,42 @@
+.oic-view .oic-view-content.oic-postman-content
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: stretch
+    padding-top: 16px
+    padding-bottom: 16px
+    box-sizing: border-box
+    h3
+        color: rgb(61, 51, 85)
+        margin: 0
+        padding: 16px
+        font-size: 1.25em
+        font-weight: 400
+    .oic-postman-support
+        display: flex
+
+    @media (min-width: 960px)
+        .oic-postman-support
+            flex-direction: row
+            justify-content: center
+            padding-left: 32px
+            padding-right: 32px
+            .oic-postman-step
+                padding-top: 16px
+                padding-bottom: 16px
+                flex-basis: 0
+                flex-grow: 1
+                flex-shrink: 1
+        .oic-postman-video
+            justify-content:center
+            align-items: center
+            iframe
+                width: 456px
+                height: 256px
+
+    @media (max-width: 960px)
+        .oic-postman-support
+            flex-direction: column
+            .oic-postman-step
+                padding-top: 8px
+                padding-bottom: 8px

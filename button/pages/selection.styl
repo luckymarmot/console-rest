@@ -1,0 +1,100 @@
+.oic-page
+    .oic-container
+        height: calc(100% - 64px)
+        flex-grow: 0
+        flex-shrink: 1
+        display: flex
+        flex-direction: column
+        align-items: center
+        width: 100%
+        overflow: scroll
+        padding-top: 8px
+        padding-bottom: 8px
+        padding-left: 16px
+        padding-right: 16px
+        box-sizing: border-box
+    .oic-page-footer
+        border-top: 1px solid rgba(61, 51, 85, 0.5)
+        height: 48px
+        font-size: 0.9em
+        flex-shrink: 0
+        flex-grow: 0
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        .oic-footer-icon
+            height: 32px
+            box-sizing: border-box
+            padding-left: 4px
+            padding-right: 8px
+        a
+            text-decoration: none
+            border: 1px solid rgba(61, 51, 85, 0.5)
+            padding: 8px
+            color: rgb(61, 51, 85)
+
+    .oic-selection-wrapper
+        display: block
+        @media (min-width: 600px)
+            width: 70%
+        @media (max-width: 600px)
+            width: calc(100% - 32px)
+
+        .oic-selection-header
+            height: 48px
+            display: flex
+            flex-direction: row
+            justify-content: flex-start
+            align-items: center
+        .oic-block
+            display: flex
+            flex-wrap: wrap
+            padding-left: -8px
+            padding-right: -8px
+            box-sizing: border-box
+            @media (min-width: 960px)
+                flex-direction: row
+            @media (max-width: 960px)
+                flex-direction: column
+                padding-top: -8px
+                padding-bottom: -8px
+
+            .oic-target-block
+                cursor: pointer
+                margin-left: 8px
+                margin-right: 8px
+                @media (min-width: 960px)
+                    max-width: calc(50% - 16px)
+                @media (max-width: 960px)
+                    margin-top: 8px
+                    margin-bottom: 8px
+                box-sizing: border-box
+                border: 1px solid rgba(61, 51, 85, 0.5)
+                flex-basis: 0
+                flex-grow: 1
+                flex-shrink: 1
+                padding-left: 16px
+                padding-right: 16px
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: center
+                min-height: 128px
+                height: 128px
+                .oic-logo
+                    padding-top: 16px
+                    box-sizing: border-box
+                    flex-basis: 0
+                    flex-shrink: 1
+                    flex-grow: 1
+                .oic-brand
+                    flex-basis: 0
+                    flex-shrink: 1
+                    flex-grow: 1
+                    display: flex
+                    flex-direction: row
+                    justify-content: center
+                    align-items: center
+                &:hover
+                    border: 1px solid rgb(61, 51, 85)

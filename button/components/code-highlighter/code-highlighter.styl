@@ -1,0 +1,140 @@
+/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa // off-white
+mono-1:  #383a42 // dark-grey
+mono-2:  #686b77 // grey
+mono-3:  #a0a1a7 // light-grey
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+/*
+Updated hues
+
+cherry:    #D42C69
+purple:    #863CC6
+blue:      #2F78CD
+turquoise: #26C29F
+orange:    #EA6E30
+
+*/
+.oic
+    .hljs
+      display: block
+      overflow-x: auto
+      padding: 0.5em
+      color: #383a42
+      background: #fafafa
+
+
+    .hljs-comment
+    .hljs-quote
+      color: #a0a1a7
+      font-style: italic
+
+
+    .hljs-doctag
+    .hljs-keyword
+    .hljs-formula
+      color: #26C29F
+
+    .hljs-section
+    .hljs-name
+    .hljs-selector-tag
+    .hljs-deletion
+    .hljs-subst
+      color: #863CC6
+
+
+    .hljs-literal
+      color: #EA6E30
+
+
+    .hljs-string
+    .hljs-regexp
+    .hljs-addition
+    .hljs-attribute
+    .hljs-meta-string
+      color: #2F78CD
+
+
+    .hljs-built_in
+    .hljs-code
+    .hljs-class .hljs-title
+      color: #EA6E30
+
+
+    .hljs-attr
+    .hljs-variable
+    .hljs-template-variable
+    .hljs-type
+    .hljs-selector-class
+    .hljs-selector-attr
+    .hljs-selector-pseudo
+    .hljs-number
+      color: #D42C69
+
+
+    .hljs-symbol
+    .hljs-bullet
+    .hljs-link
+    .hljs-meta
+    .hljs-selector-id
+    .hljs-title
+      color: #2F78CD
+
+
+    .hljs-emphasis
+      font-style: italic
+
+
+    .hljs-strong
+      font-weight: bold
+
+
+    .hljs-link
+      text-decoration: underline
+
+    pre
+      background-image: none
+      border: none
+      overflow-x: visible
+      white-space pre-wrap
+      word-wrap break-word
+      padding 0
+      line-height 0
+      counter-reset line
+      margin 0
+      font-family: 'Roboto Mono', monospace;
+      span.line
+        display block
+        font-size 12px
+        line-height 16px
+        margin-left 15px
+        padding 0px 10px
+        position relative
+        color darken(#7F94A1, 30%)
+        &:first-child
+          padding-top 5px
+
+        &:before
+          counter-increment line
+          content counter(line)
+          position absolute
+          padding 0 .5em
+          color darken(#F3F5F6, 15%)
+          margin-left -89px
+          font-size 10px
+          user-select none
+          text-align right
+          width 70px
