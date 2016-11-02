@@ -46,15 +46,17 @@ export default class Uploader extends Component {
 
     componentDidMount() {
         this.loadHashData()
+        this.onHashChange = ::this.loadHashData
+        window.addEventListener('hashchange', this.onHashChange)
     }
 
     loadHashData() {
-        let setup = {}
-        let hash = window.location.hash.slice(2)
-        let kvPairs = hash.split('&')
+        const setup = {}
+        const hash = window.location.hash.slice(2)
+        const kvPairs = hash.split('&')
         kvPairs.forEach(kv => {
-            let [ key, value ] = kv.split('=')
-            let cleanKey = decodeURIComponent(key).toLowerCase()
+            const [ key, value ] = kv.split('=')
+            const cleanKey = decodeURIComponent(key).toLowerCase()
             setup[cleanKey] = decodeURIComponent(value)
         })
 
@@ -67,30 +69,29 @@ export default class Uploader extends Component {
             setup.name = this.removeExtension(setup.name)
         }
 
-        let { uri, name, content, format } = setup
+        const { uri, name, content, format } = setup
 
         let status = {}
         if (content) {
             status = {
                 code: 200,
-                message: 'file was successfully loaded from hash'
+                message: 'file was successfully loaded from hash',
+                open: true
             }
         } else if (uri) {
-            this.checkURL(null, uri)
+            this.checkURL(null, uri, true)
             this.setState({
                 location: new Immutable.Map({ uri, name, content, format })
             })
             return
         }
 
-        setTimeout(() => {
-            this.props.onFileAndStatusChange({
-                // file
-                uri, name, content, format,
-                // status
-                ...status
-            })
-        }, 100)
+        this.props.onFileAndStatusChange({
+            // file
+            uri, name, content, format,
+            // status
+            ...status
+        })
 
         this.setState({
             location: new Immutable.Map({ uri, name, content, format })
@@ -98,15 +99,15 @@ export default class Uploader extends Component {
     }
 
     uploadFile(file) {
-        let reader = new FileReader()
+        const reader = new FileReader()
         reader.onload = () => {
-            let content = reader.result
+            const content = reader.result
             if (content.slice(0, 20).indexOf('CoreData') >= 0) {
                 const pawUrl = PawInterface.getExportUrl()
                 window.location.href = pawUrl
                 return
             }
-            let name = this.removeExtension(file.name)
+            const name = this.removeExtension(file.name)
 
             this.setState({
                 local: new Immutable.Map({
@@ -117,9 +118,9 @@ export default class Uploader extends Component {
                 current: 'local'
             })
 
-            let props = {
-                name: name,
-                content: content,
+            const props = {
+                name,
+                content,
                 code: 200,
                 target: name,
                 message: 'file was successfully loaded'
@@ -129,16 +130,16 @@ export default class Uploader extends Component {
         }
 
         reader.onerror = (ev) => {
-            let name = this.removeExtension(file.name)
+            const name = this.removeExtension(file.name)
             this.setState({
                 local: new Immutable.Map({
-                    name: name,
+                    name,
                     content: null,
                     status: 400
                 })
             })
 
-            let props = {
+            const props = {
                 code: 400,
                 target: name,
                 message: ev.target.error.message || ev.target.error.name || null
@@ -148,17 +149,17 @@ export default class Uploader extends Component {
         }
 
         reader.onabort = (ev) => {
-            let name = this.removeExtension(file.name)
+            const name = this.removeExtension(file.name)
 
             this.setState({
                 local: new Immutable.Map({
-                    name: name,
+                    name,
                     content: null,
                     status: 600
                 })
             })
 
-            let props = {
+            const props = {
                 code: 600,
                 target: name,
                 message: ev.target.error.message || ev.target.error.name
@@ -188,7 +189,7 @@ export default class Uploader extends Component {
     }
 
     renderQueryStatus() {
-        let status = this.state.query.get('status')
+        const status = this.state.query.get('status')
         if (status === 200) {
             return <SuccessImg title="Request completed"/>
         } else if (status === 400) {
@@ -218,21 +219,39 @@ export default class Uploader extends Component {
         }
     }
 
-    checkURL(ev, content) {
+    checkURL(ev, content, open = false) {
         this.resetQueryStatus()
         try {
-            let uri = new URL(content)
+            const uri = new URL(content)
             if (this.request instanceof XMLHttpRequest) {
                 this.request.abort()
             }
             this.request = new XMLHttpRequest()
 
-            this.request.addEventListener('load', ::this.onFileLoaded)
-            this.request.addEventListener('error', ::this.onFileErrored)
-            this.request.addEventListener('abort', ::this.onFileAborted)
+            if (open) {
+                this.request.addEventListener(
+                    'load',
+                    ::this.onFileLoaded(uri.href, open)
+                )
+            } else {
+                this.request.addEventListener(
+                    'load',
+                    ::this.onFileLoaded(uri.href)
+                )
+            }
+            this.request.addEventListener(
+                'error',
+                ::this.onFileErrored(uri.href)
+            )
+            this.request.addEventListener(
+                'abort',
+                ::this.onFileAborted(uri.href)
+            )
             this.request.open('GET', uri)
             this.request.send()
-            ev.preventDefault()
+            if (ev) {
+                ev.preventDefault()
+            }
         } catch (e) {
             this.setState({
                 query: this.state.query
@@ -240,7 +259,7 @@ export default class Uploader extends Component {
                     .set('content', null)
             })
 
-            let props = {
+            const props = {
                 code: 400,
                 message: 'URL could not be parsed'
             }
@@ -250,7 +269,7 @@ export default class Uploader extends Component {
     }
 
     parseURLForName(uri) {
-        let name = uri.split('/').slice(-1)[0].split('?')[0].split('#')[0]
+        const name = uri.split('/').slice(-1)[0].split('?')[0].split('#')[0]
         return this.removeExtension(name) || null
     }
 
@@ -258,69 +277,77 @@ export default class Uploader extends Component {
         return name.split('.', 1)[0]
     }
 
-    onFileLoaded(ev) {
-        this.request = null
-        let uri = ev.target.responseURL
-        let name = this.parseURLForName(uri)
-        if (ev.target.status >= 200 && ev.target.status < 400) {
-            let content = ev.target.responseText
+    onFileLoaded(_uri, open) {
+        return ev => {
+            this.request = null
+            const uri = ev.target.responseURL || _uri
+            const name = this.parseURLForName(uri)
+            if (ev.target.status >= 200 && ev.target.status < 400) {
+                const content = ev.target.responseText
+                this.setState({
+                    query: new Immutable.Map({
+                        uri,
+                        name,
+                        content,
+                        status: 200
+                    }),
+                    current: 'query'
+                })
+
+                let props = {
+                    name,
+                    content,
+                    uri,
+                    code: 200,
+                    open,
+                    target: name,
+                    message: 'file was successfully downloaded'
+                }
+                this.props.onFileAndStatusChange(props)
+            } else if (ev.target.status >= 400) {
+                this.setState({
+                    query: new Immutable.Map({
+                        uri: this.state.query.uri,
+                        status: 400,
+                        content: null
+                    })
+                })
+
+                let props = {
+                    code: 400,
+                    target: name,
+                    message: ev.target.statusText
+                }
+
+                this.props.onStatusChange(props)
+            }
+        }
+    }
+
+    onFileErrored(uri) {
+        return (ev) => {
+            let name = this.parseURLForName(this.state.query.uri || '')
+            this.request = null
             this.setState({
                 query: new Immutable.Map({
                     uri,
-                    name,
-                    content,
-                    status: 200
-                }),
-                current: 'query'
-            })
-
-            let props = {
-                name,
-                content,
-                uri,
-                code: 200,
-                target: name,
-                message: 'file was successfully downloaded'
-            }
-            this.props.onFileAndStatusChange(props)
-        } else if (ev.target.status >= 400) {
-            this.setState({
-                query: new Immutable.Map({
-                    uri: this.state.query.uri,
                     status: 400,
                     content: null
                 })
             })
 
-            let props = {
-                code: 400,
-                target: name,
-                message: ev.target.statusText
+            let props
+            if (ev.target.status === 0 && !ev.target.statusText) {
+                props = {
+                    uri,
+                    code: 0,
+                    target: name,
+                    message: 'This resource is not accessible from console.rest'
+                }
+
+                return this.props.onFileAndStatusChange(props)
             }
 
-            this.props.onStatusChange(props)
-        }
-    }
-
-    onFileErrored(ev) {
-        let name = this.parseURLForName(this.state.query.uri || '')
-        this.request = null
-        this.setState({
-            query: new Immutable.Map({
-                uri: this.state.query.uri,
-                status: 400,
-                content: null
-            })
-        })
-
-        let props
-        if (ev.target.status === 0 && !ev.target.statusText) {
-            props = {
-                code: 400,
-                target: name,
-                message: 'This resource is not accessible from console.rest'
-            }
-        } else {
             props = {
                 code: 400,
                 target: name,
@@ -329,32 +356,36 @@ export default class Uploader extends Component {
             /* eslint-disable no-console */
             console.error(ev)
             /* eslint-enable no-console */
-        }
 
-        this.props.onStatusChange(props)
+            this.props.onStatusChange(props)
+        }
     }
 
     onFileAborted() {
-        this.request = null
-        this.setState({
-            query: new Immutable.Map({
-                status: 600,
-                content: null
+        return () => {
+            this.request = null
+            this.setState({
+                query: new Immutable.Map({
+                    status: 600,
+                    content: null
+                })
             })
-        })
 
-        let props = {
-            code: 600,
-            message: 'Request was cancelled by user'
+            let props = {
+                code: 600,
+                message: 'Request was cancelled by user'
+            }
+
+            this.props.onStatusChange(props)
         }
-
-        this.props.onStatusChange(props)
     }
 
     componentWillUnmount() {
         if (this.request instanceof XMLHttpRequest) {
             this.request.abort()
         }
+
+        window.removeEventListener('hashchange', this.onHashChange)
     }
 
     displayEnterURL() {
