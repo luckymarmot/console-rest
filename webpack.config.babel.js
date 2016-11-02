@@ -133,7 +133,7 @@ class DevBuild extends WebPackConfig {
 
   static devServer = Im({
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: './src',
+    contentBase: '.',
     __webpack_public_path__: 'http://localhost:8888',
     hot: true,
     publicPath: 'http://localhost:8888/build/',
@@ -142,6 +142,7 @@ class DevBuild extends WebPackConfig {
     inline: true,
     quiet: false,
     noInfo: false,
+    https: true,
     stats: {
       assets: true,
       colors: true,
