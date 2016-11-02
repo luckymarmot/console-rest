@@ -14,18 +14,18 @@ export default class FlowWarning extends Component {
     renderMessage() {
         if (this.props.uri.indexOf('http://') === 0) {
             return <div className="error-message">
-                The uri you tried to request could not be loaded from
-                Console.Rest, because it is using the unsafe http protocol. Use
-                https instead. If you are the resource owner, the snippets below
-                should still work when injected at the failing URL.
+                The URI you tried to request could not be loaded from
+                Console.REST, because it is using the unsafe HTTP protocol. Use
+                HTTPS instead. If you are the resource owner, the snippets below
+                should still work when injected at the failing URI.
             </div>
         } else {
             return <div className="error-message">
-                The uri you tried to request could not be loaded from
-                Console.Rest, because the resource owner does not
+                The URI you tried to request could not be loaded from
+                Console.REST, because the resource owner does not
                 allow Cross-Origin requests. If you are the resource owner,
                 the snippets below should still work when injected at the
-                failing URL.
+                failing URI.
             </div>
         }
     }
