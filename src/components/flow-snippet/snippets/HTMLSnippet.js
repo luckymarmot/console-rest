@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 
+import Colors from 'crest/principles/Colors'
+
 export default class HTMLSnippet extends Component {
     static propTypes = {
         className: PropTypes.string
     }
+
+    static colorMap = Colors.colorMap
 
     renderCode() {
         let mode = 'selector'
@@ -22,15 +26,21 @@ export default class HTMLSnippet extends Component {
             '</script>'
         }
 
+        const colorName = HTMLSnippet.colorMap[this.props.theme] || 'red'
+        const buttonUrl =
+            'https://console.rest/github.io/assets/buttons/run_with_' +
+            colorName + '.svg'
+
         /* eslint-disable max-len */
         return '' +
-            '<a className="oic-runner oic-theme"\n' +
+            '<a class="oic-button"\n' +
             '    data-theme="' + this.props.theme + '"\n' +
             '    data-mode="' + mode + '"\n' +
             modeLine +
             '    data-name="' + (this.props.name || '') + '"\n' +
-            '    data-source="' + (this.props.format || '') + '">' +
-                this.props.text +
+            '    data-source-format="' + (this.props.format || '') + '"\n' +
+            '    data-source-version="' + (this.props.version || '') + '">\n' +
+            '    <img src="' + buttonUrl + '" style="border: none;" />\n' +
             '</a>\n' +
             '<script src="https://console.rest/github.io/libs/console-rest.js"></script>' +
             contentLine
