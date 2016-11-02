@@ -1,30 +1,37 @@
-TEST = $(shell echo $$TEST)
-
-NVM_DIR = $(shell echo $$NVM_DIR)
-
-ifeq (${TEST},TRUE)
-		SOURCE = .
-else
-		SOURCE = source
-endif
-
-build:
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production npm run build
-
-install:
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm install
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && npm prune
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && npm install --dev
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && npm install --production
-
-test:
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && npm test
-
-lint:
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && ./node_modules/eslint/bin/eslint.js -c linting/dev.yaml src/
+# generic
+configure:
+	npm install
 
 clean:
 	rm -rf node_modules static
 
-run:
-	${SOURCE} ${NVM_DIR}/nvm.sh && nvm use && npm start
+dev-server:
+	./node_modules/.bin/webpack-dev-server --config ./configs/hot/webpack.config.babel.js
+
+# website
+test-website:
+	./node_modules/.bin/mocha --require mocha --compilers js:babel-core/register --reporter spec "src/**/__tests__/*-test.js"
+
+lint-website:
+	./node_modules/eslint/bin/eslint.js -c linting/prod.yaml src/
+
+prod-website:
+	NODE_ENV=production BUILD_ENV=build ./node_modules/.bin/webpack --config ./configs/website/webpack.config.babel.js
+
+# button
+lint-button:
+	./node_modules/eslint/bin/eslint.js -c linting/prod.yaml button/
+
+prod-button:
+	NODE_ENV=production BUILD_ENV=build ./node_modules/.bin/webpack --config ./configs/button/webpack.config.babel.js
+	cp ./button/index.js ./github.io/libs/console-rest.js
+
+test-button:
+	./node_modules/.bin/mocha --require mocha --compilers js:babel-core/register --reporter spec "button/**/__tests__/*-test.js"
+
+# all
+lint: lint-website lint-button
+
+test: test-website test-button
+
+prod: prod-website prod-button
