@@ -16,7 +16,7 @@ export default class StatusBar extends Component {
             active: this.props.active || false
         }
 
-        if (this.props.content) {
+        if (this.props.content || this.props.byPass) {
             this.moveForward()
         }
     }
@@ -34,7 +34,7 @@ export default class StatusBar extends Component {
             })
         }
 
-        if (nextProps.content) {
+        if (nextProps.content || nextProps.byPass) {
             this.moveForward()
         }
     }
@@ -51,13 +51,17 @@ export default class StatusBar extends Component {
         }
     }
 
-    updateFileAndStatus() {
+    updateFileAndStatus(props) {
         if (typeof this.props.onFileAndStatusChange === 'function') {
-            this.props.onFileAndStatusChange(...arguments)
+            this.props.onFileAndStatusChange({
+                ...props,
+                open: this.props.open
+            })
         }
     }
 
-    scrollTo(frameCount, initial, target, maxFrameCount) {
+    scrollTo(frameCount, initial, target, _maxFrameCount) {
+        const maxFrameCount = _maxFrameCount || frameCount
         if (frameCount <= 0) {
             return
         }
@@ -95,7 +99,7 @@ export default class StatusBar extends Component {
         }, {
             x: 0,
             y: 0
-        }, 30)()
+        })()
     }
 
     moveForward() {
@@ -105,7 +109,7 @@ export default class StatusBar extends Component {
         }, {
             x: 0,
             y: window.innerHeight - 64
-        }, 60)()
+        })()
     }
 
     renderStatusBar() {

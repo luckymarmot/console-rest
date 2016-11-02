@@ -4,7 +4,7 @@ export default class PawInterface {
     /* eslint-enable max-len */
 
     static getExportUrl() {
-        let callbackUrl = 'http://console.rest/#?format=swagger&' +
+        let callbackUrl = 'https://console.rest/#?format=swagger&' +
             'version=v2.0&name={{name}}&content={{content}}'
 
         let pawUrl = 'paw://current.document/export?' +

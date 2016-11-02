@@ -1,21 +1,12 @@
 import React, { Component } from 'react'
 
+import Colors from 'crest/principles/Colors'
 import ColorPalette from 'crest/components/color-palette/ColorPalette'
 
 require('./customization.styl')
 
 export default class ButtonCustomization extends Component {
-    static colors = [
-        '#E13046',
-        '#D42C69',
-        '#863CC6',
-        '#2F78CD',
-        '#26C29F',
-        '#8BD143',
-        '#E2D52C',
-        '#EE9E1A',
-        '#EA6E30'
-    ]
+    static colors = Colors.colorList
 
     constructor(props) {
         super(props)

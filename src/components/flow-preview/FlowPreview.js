@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 
+import Colors from 'crest/principles/Colors'
+
 require('./preview.styl')
 
 export default class FlowPreview extends Component {
+    static colorMap = Colors.colorMap
 
     constructor(props) {
         super(props)
@@ -37,6 +40,9 @@ export default class FlowPreview extends Component {
                     mode: 'text',
                     text: props.content
                 })
+                if (props.open) {
+                    this.refs.preview.click()
+                }
             })
             this.dismissError()
         }
@@ -54,11 +60,15 @@ export default class FlowPreview extends Component {
             classes += ' ' + this.props.className
         }
 
+        const colorName = FlowPreview.colorMap[this.props.theme] || 'red'
+        const buttonUrl =
+            'https://console.rest/github.io/assets/buttons/run_with_' +
+            colorName + '.svg'
+
         return <section className={classes}>
-            <div id="preview" className="button oic-button"
-                data-theme={this.props.theme}
-                style={{ backgroundColor: this.props.theme }}>
-                Download as ...
+            <div ref="preview" id="preview" className="button oic-button"
+                data-theme={this.props.theme}>
+                <img src={buttonUrl} width="200px"/>
             </div>
         </section>
     }

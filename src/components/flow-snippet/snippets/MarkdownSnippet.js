@@ -1,21 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 
+import Colors from 'crest/principles/Colors'
+
+
 export default class MarkdownSnippet extends Component {
     static propTypes = {
         className: PropTypes.string
     }
 
-    static colorMap = {
-        '#E13046': 'red',
-        '#D42C69': 'pink',
-        '#863CC6': 'purple',
-        '#2F78CD': 'blue',
-        '#26C29F': 'turquoise',
-        '#8BD143': 'green',
-        '#E2D52C': 'yellow',
-        '#EE9E1A': 'orange',
-        '#EA6E30': 'deep-orange'
-    }
+    static colorMap = Colors.colorMap
 
     renderCode() {
         let themeUrl = 'https://console.rest/github.io/assets/buttons/run_with_'
