@@ -92,7 +92,7 @@ export default class Helper extends Component {
             'Importing from Postman': <PostmanHelper/>,
             'Swagger / OAI / RAML': <SwaggerRAMLHelper/>,
             'What if I like curl': <CurlHelper/>,
-            'My favourite format is missing': <MissingHelper/>
+            'My favorite format is missing': <MissingHelper/>
         })
 
         return <div className="helper-container">

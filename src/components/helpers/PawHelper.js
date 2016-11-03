@@ -25,7 +25,7 @@ export default class PawHelper extends Component {
             <div className="paw-support">
                 <PawLogo className="paw-logo"/>
                 <div className="block">
-                    Console.rest is already bundled into <a href="https://paw.cloud">Paw</a>
+                    Console.REST is already bundled into <a href="https://paw.cloud">Paw</a>
                 </div>
             </div>
             <GenericButton className="paw-action" onClick={::this.actionClicked}>
