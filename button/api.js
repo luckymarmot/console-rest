@@ -43,9 +43,13 @@ function ApiFlow (worker) {
             _clearModeRelatedValues(obj.mode)
         }
 
+        if (obj.mode || obj.url || obj.text || obj.selector) {
+            _contentPromise = null
+        }
+
         for (let key in obj) {
             if (obj.hasOwnProperty(key) && _vars.indexOf(key) > -1) {
-                self[key] = obj[key]
+                this[key] = obj[key]
             }
         }
     }
@@ -55,31 +59,52 @@ function ApiFlow (worker) {
             _clearModeRelatedValues(value)
         }
 
+        if (['mode', 'url', 'text', 'selector'].indexOf(key) >= 0) {
+            _contentPromise = null
+        }
+
         if (_vars.indexOf(key) > -1) {
-            self[key] = value
+            this[key] = value
         }
     }
 
-    const _loadContent = function() {
-        self.content = null;
-        _contentPromise = null;
-        if (self.mode === 'text' && self.text) {
-            _contentPromise = new Promise(function(resolve, reject) {
-                self.content = self.text
-                resolve(self.text)
+    const _loadContent = function(_settings, saveAsContent) {
+        if (!saveAsContent) {
+            self.content = null;
+            _contentPromise = null;
+        }
+
+        const settings = _settings || {}
+        const mode = settings.mode || self.mode
+        const text = settings.text || self.text
+        const url = settings.url || self.url
+        const selector = settings.selector || self.selector
+
+        let contentPromise = null
+
+        if (mode === 'text' && text) {
+            contentPromise = new Promise(function(resolve, reject) {
+                if (saveAsContent) {
+                    self.content = text
+                }
+                resolve(text)
             })
         }
-        else if (self.mode === 'url' && self.url) {
-            _contentPromise = new Promise(function(resolve, reject) {
+        else if (mode === 'url' && url) {
+            contentPromise = new Promise(function(resolve, reject) {
                 let request = new XMLHttpRequest()
 
                 const onLoad = function () {
                     if (request.status >= 400) {
-                        self.content = null
+                        if (saveAsContent) {
+                            self.content = null
+                        }
                         reject(new Error(request.statusText))
                     }
                     else {
-                        self.content = request.responseText
+                        if (saveAsContent) {
+                            self.content = request.responseText
+                        }
                         resolve(self.content)
                     }
 
@@ -88,7 +113,9 @@ function ApiFlow (worker) {
                 }
 
                 const onError = function () {
-                    self.content = null
+                    if (saveAsContent) {
+                        self.content = null
+                    }
                     reject(new Error(request.statusText || 'Unknown Error'))
 
                     request.removeEventListener('error', onError)
@@ -96,7 +123,9 @@ function ApiFlow (worker) {
                 }
 
                 const onAbort = function () {
-                    self.content = null
+                    if (saveAsContent) {
+                        self.content = null
+                    }
                     reject(new Error(request.statusText || 'Unknown Error'))
 
                     request.removeEventListener('abort', onAbort)
@@ -107,30 +136,36 @@ function ApiFlow (worker) {
                 request.addEventListener('error', onError)
                 request.addEventListener('abort', onAbort)
 
-                request.open('GET', self.url)
+                request.open('GET', url)
                 request.send()
             })
         }
-        else if (self.mode === 'selector' && self.selector) {
-            _contentPromise = new Promise(function(resolve, reject) {
-                let matches = document.querySelectorAll(self.selector)
+        else if (mode === 'selector' && selector) {
+            contentPromise = new Promise(function(resolve, reject) {
+                let matches = document.querySelectorAll(selector)
                 let content = Array.prototype.slice.call(matches)
                     .map(function(match) {
                         return match.textContent
                     }).join('\n')
 
-                self.content = content
+                if (saveAsContent) {
+                    self.content = content
+                }
                 resolve(content)
             })
         }
 
-        if (!_contentPromise) {
-            _contentPromise = new Promise(function(_, reject) {
-                reject(new Error('unrecognized load mode ' + self.mode + '. use one of [ text, url, selector ]'))
+        if (!contentPromise) {
+            contentPromise = new Promise(function(_, reject) {
+                reject(new Error('unrecognized load mode ' + mode + '. use one of [ text, url, selector ]'))
             })
         }
 
-        return _contentPromise
+        if (saveAsContent) {
+            _contentPromise = contentPromise
+        }
+
+        return contentPromise
     }
 
     const _detectFormat = function(content) {
@@ -213,21 +248,24 @@ function ApiFlow (worker) {
         return self
     }
 
-    this.load = function() {
-        if (arguments.length) {
-            try {
-                self.set.apply(self, arguments)
+    this.load = function(settings) {
+        try {
+            let promise = null
+            if (_contentPromise && !settings.mode && !settings.url && !settings.text && !settings.selector) {
+                promise = _contentPromise
             }
-            catch (e) {
-                e.message = '.set called by .load raised error: "' + e.message + '"'
-
-                return new Promise(function(_, reject) {
-                    reject(e)
-                })
+            else {
+                promise = _loadContent(settings, true)
             }
+            return promise
         }
+        catch (e) {
+            e.message = '_loadContent failed with error: "' + e.message + '"'
 
-        return _loadContent()
+            return new Promise(function(_, reject) {
+                reject(e)
+            })
+        }
     }
 
     this.detect = function() {
@@ -258,7 +296,7 @@ function ApiFlow (worker) {
                     promise = _contentPromise
                 }
                 else {
-                    promise = _loadContent()
+                    promise = _loadContent(null, true)
                 }
 
                 return promise.then(function(content) {
@@ -293,39 +331,24 @@ function ApiFlow (worker) {
 
     }
 
-    this.convert = function() {
-        let params = {}
-        if (arguments.length) {
-            try {
-                self.set.apply(self, arguments)
-                params = {
-                    source: JSON.parse(JSON.stringify(self.source)),
-                    target: JSON.parse(JSON.stringify(self.target))
-                }
-            }
-            catch (e) {
-                e.message = '.set called by .convert raised error: "' + e.message + '"'
-                throw e
-            }
-        }
-
+    this.convert = function(settings) {
         let promise = null
-        if (_contentPromise) {
+        if (_contentPromise && !settings.mode && !settings.url && !settings.text && !settings.selector) {
             promise = _contentPromise
         }
         else {
-            promise = _loadContent()
+            promise = _loadContent(settings)
         }
 
+        const source = settings.source || self.source
+
         return promise.then(function(data) {
-            self.content = data;
-            params.content = data;
-            if (!params.source) {
+            settings.content = data;
+            if (!source) {
                 return self.detect('format', data).then(function(formats) {
                     let format = _findBestFormat(formats)
-                    self.source = format;
-                    params.source = format;
-                    return _convert(params)
+                    settings.source = format;
+                    return _convert(settings)
                 }, function(error) {
                     throw error
                 }).catch(function(fail) {
@@ -333,7 +356,7 @@ function ApiFlow (worker) {
                 })
             }
             else {
-                return _convert(params)
+                return _convert(settings)
             }
         })
     }
