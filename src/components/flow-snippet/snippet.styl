@@ -18,6 +18,14 @@
     paddingAll()
     overflow: scroll
     .snippet-action
+        flex-shrink: 0
+        display: flex
+        justify-content: center
+        align-items: center
+        text-decoration: none
         background-color: $primary
+        fill: $background200
         color: $background200
         paddingSmall()
+        > svg
+            gutterHorizontalSmall()
