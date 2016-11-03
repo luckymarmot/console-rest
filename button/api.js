@@ -109,7 +109,6 @@ function ApiFlow (worker) {
 
                 request.open('GET', self.url)
                 request.send()
-                // TODO Handle XMLHttpRequest failure
             })
         }
         else if (self.mode === 'selector' && self.selector) {
