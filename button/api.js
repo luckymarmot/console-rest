@@ -72,10 +72,41 @@ function ApiFlow (worker) {
         else if (self.mode === 'url' && self.url) {
             _contentPromise = new Promise(function(resolve, reject) {
                 let request = new XMLHttpRequest()
-                request.addEventListener('load', function() {
-                    self.content = request.responseText
-                    resolve(request.responseText)
-                })
+
+                const onLoad = function () {
+                    if (request.status >= 400) {
+                        self.content = null
+                        reject(new Error(request.statusText))
+                    }
+                    else {
+                        self.content = request.responseText
+                        resolve(self.content)
+                    }
+
+                    request.removeEventListener('load', onLoad)
+                    request = null
+                }
+
+                const onError = function () {
+                    self.content = null
+                    reject(new Error(request.statusText || 'Unknown Error'))
+
+                    request.removeEventListener('error', onError)
+                    request = null
+                }
+
+                const onAbort = function () {
+                    self.content = null
+                    reject(new Error(request.statusText || 'Unknown Error'))
+
+                    request.removeEventListener('abort', onAbort)
+                    request = null
+                }
+
+                request.addEventListener('load', onLoad)
+                request.addEventListener('error', onError)
+                request.addEventListener('abort', onAbort)
+
                 request.open('GET', self.url)
                 request.send()
                 // TODO Handle XMLHttpRequest failure
@@ -84,13 +115,13 @@ function ApiFlow (worker) {
         else if (self.mode === 'selector' && self.selector) {
             _contentPromise = new Promise(function(resolve, reject) {
                 let matches = document.querySelectorAll(self.selector)
-                let content = matches.map(function(match) {
-                    return match.textContent
-                }).join('\n')
+                let content = Array.prototype.slice.call(matches)
+                    .map(function(match) {
+                        return match.textContent
+                    }).join('\n')
 
                 self.content = content
                 resolve(content)
-                // TODO deal with cases where matches is empty
             })
         }
 
