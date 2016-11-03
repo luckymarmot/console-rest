@@ -69,7 +69,7 @@ function ApiFlow (worker) {
     }
 
     const _loadContent = function(_settings, saveAsContent) {
-        if (!saveAsContent) {
+        if (saveAsContent) {
             self.content = null;
             _contentPromise = null;
         }
@@ -105,7 +105,7 @@ function ApiFlow (worker) {
                         if (saveAsContent) {
                             self.content = request.responseText
                         }
-                        resolve(self.content)
+                        resolve(request.responseText)
                     }
 
                     request.removeEventListener('load', onLoad)
@@ -170,11 +170,6 @@ function ApiFlow (worker) {
 
     const _detectFormat = function(content) {
         const promise = self.worker.detectFormat(content)
-
-        promise.then(function(format) {
-            self.source = format
-        })
-
         return promise
     }
 
@@ -331,7 +326,9 @@ function ApiFlow (worker) {
 
     }
 
-    this.convert = function(settings) {
+    this.convert = function(_settings) {
+        const settings = _settings || {}
+
         let promise = null
         if (_contentPromise && !settings.mode && !settings.url && !settings.text && !settings.selector) {
             promise = _contentPromise
