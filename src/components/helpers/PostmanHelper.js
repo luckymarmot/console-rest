@@ -30,7 +30,7 @@ export default class PostmanHelper extends Component {
                     <li>Click on Export</li>
                     <li>Choose the format you prefer</li>
                     <li>Click on Export</li>
-                    <li>Drop the file in Console.rest</li>
+                    <li>Drop the file in Console.REST</li>
                 </ol>
             </TabView>
             <TabView title="Most data">
@@ -40,7 +40,7 @@ export default class PostmanHelper extends Component {
                     <li>Click on Settings</li>
                     <li>Click on Data</li>
                     <li>Click on Download</li>
-                    <li>Drop the file in Console.rest</li>
+                    <li>Drop the file in Console.REST</li>
                 </ol>
             </TabView>
         </TabViewer>

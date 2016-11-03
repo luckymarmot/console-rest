@@ -18,8 +18,15 @@ export default class CurlHelper extends Component {
 
         /* eslint-disable max-len */
         return <div className={classes}>
-            <div className="console-support">
-                Curl Statement
+            <div className="curl-support">
+                <span>
+                Console.REST can convert curl commands, but does not support
+                shell variables interpolation.
+                </span>
+                <span>
+                Console.REST also supports most
+                curl options, except for the fancier ones.
+                </span>
             </div>
         </div>
         /* eslint-enable max-len */

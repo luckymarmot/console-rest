@@ -16,6 +16,7 @@ export default class BetaBanner extends Component {
             <div className="small">
                 <BetaImg className="beta-icon"/>
                 <span>Beta</span>
+                <BetaImg className="beta-icon"/>
             </div>
         </div>
     }
