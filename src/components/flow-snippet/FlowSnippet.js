@@ -20,6 +20,14 @@ export default class FlowSnippet extends Component {
         'as Markdown'
     ]
 
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            feedback: false
+        }
+    }
+
     copy() {
         let copy = this.refs.rendered
         return copy.renderCode()
@@ -31,11 +39,36 @@ export default class FlowSnippet extends Component {
         })
     }
 
+    endFeedback() {
+        this.setState({
+            feedback: false
+        })
+    }
+
+    giveFeedback() {
+        if (this.feedbackTimer) {
+            clearTimeout(this.feedbackTimer)
+        }
+
+        this.setState({
+            feedback: true
+        })
+
+        this.feedbackTimer = setTimeout(::this.endFeedback, 300)
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.feedbackTimer)
+    }
+
     render() {
         let classes = 'snippet-container'
         if (this.props.className) {
             classes += ' ' + this.props.className
         }
+
+        const feedbackClass = 'snippet-copy-button copy' +
+            (this.state.feedback ? ' feedback' : '')
 
         return <TabViewer className={classes} default="HTML">
                 <TabView title="HTML">
@@ -46,7 +79,8 @@ export default class FlowSnippet extends Component {
                         format={this.props.format}
                         theme={this.props.theme}
                         text={this.props.text}/>
-                    <div className="snippet-copy-button copy">
+                    <div className={feedbackClass}
+                        onClick={::this.giveFeedback}>
                         <CopyImg/>
                     </div>
                 </TabView>
@@ -58,7 +92,8 @@ export default class FlowSnippet extends Component {
                         format={this.props.format}
                         theme={this.props.theme}
                         text={this.props.text}/>
-                    <div className="snippet-copy-button copy">
+                    <div className={feedbackClass}
+                        onClick={::this.giveFeedback}>
                         <CopyImg/>
                     </div>
                 </TabView>
@@ -70,7 +105,8 @@ export default class FlowSnippet extends Component {
                         format={this.props.format}
                         theme={this.props.theme}
                         version={this.props.version}/>
-                    <div className="snippet-copy-button copy">
+                    <div className={feedbackClass}
+                        onClick={::this.giveFeedback}>
                         <CopyImg/>
                     </div>
                 </TabView>
