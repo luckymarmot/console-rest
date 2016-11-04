@@ -60,6 +60,26 @@
 
     .curl-support
         paddingVerticalSmall()
+        display: flex
+        flex-direction: column
+        line-height: 1.5
+        > *
+            paddingVerticalSmall()
 
     .missing-support
         paddingVerticalSmall()
+        line-height: 1.5
+        word-wrap: break-word
+        a.action-row
+            background-color: $primary
+            fill: $background200
+            color: $background200
+            margin-top: 8px
+            paddingVerticalSmall()
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            text-decoration: none
+            > svg
+                gutterHorizontalSmall()
