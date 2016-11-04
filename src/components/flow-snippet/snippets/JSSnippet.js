@@ -8,6 +8,12 @@ export default class JSSnippet extends Component {
         className: PropTypes.string
     }
 
+    renderCode() {
+        return '<script ' +
+            'src="https://console.rest/github.io/libs/console-rest-api.js">' +
+        '</script>'
+    }
+
     render() {
         let classes = ''
         if (this.props.className) {
@@ -17,7 +23,7 @@ export default class JSSnippet extends Component {
         /* eslint-disable max-len */
         return <div className={classes}>
             <h5>Add this link to your page</h5>
-            <code>{'<script src="https://console.rest/github.io/libs/console-rest-api.js"></script>'}</code>
+            <code>{this.renderCode()}</code>
             <h5>To learn about how to use the Javascript Library, check out our github wiki</h5>
             <a href="https://github.com/luckymarmot/console-rest/wiki/using-the-js-library"
                 target="_blank"
