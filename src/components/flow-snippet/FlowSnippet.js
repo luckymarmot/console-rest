@@ -9,6 +9,8 @@ import HTMLSnippet from './snippets/HTMLSnippet'
 import JSSnippet from './snippets/JSSnippet'
 import MarkdownSnippet from './snippets/MarkdownSnippet'
 
+import CopyImg from 'crest/basics/media/icons/CopyImg'
+
 require('./snippet.styl')
 
 export default class FlowSnippet extends Component {
@@ -44,6 +46,9 @@ export default class FlowSnippet extends Component {
                         format={this.props.format}
                         theme={this.props.theme}
                         text={this.props.text}/>
+                    <div className="snippet-copy-button copy">
+                        <CopyImg/>
+                    </div>
                 </TabView>
                 <TabView title="Javascript">
                     <JSSnippet className="snippet" ref="rendered"
@@ -53,6 +58,9 @@ export default class FlowSnippet extends Component {
                         format={this.props.format}
                         theme={this.props.theme}
                         text={this.props.text}/>
+                    <div className="snippet-copy-button copy">
+                        <CopyImg/>
+                    </div>
                 </TabView>
                 <TabView title="Markdown">
                     <MarkdownSnippet className="snippet" ref="rendered"
@@ -62,6 +70,9 @@ export default class FlowSnippet extends Component {
                         format={this.props.format}
                         theme={this.props.theme}
                         version={this.props.version}/>
+                    <div className="snippet-copy-button copy">
+                        <CopyImg/>
+                    </div>
                 </TabView>
             </TabViewer>
     }

@@ -9,6 +9,10 @@
     flex-shrink: 0
     background-color: $background700
     color: $background200
+    & > *
+        position: relative
+        &:hover .snippet-copy-button
+            display: flex
 
 .snippet
     height: 176px
@@ -29,3 +33,16 @@
         paddingSmall()
         > svg
             gutterHorizontalSmall()
+
+.snippet-copy-button
+    display: none
+    position: absolute
+    right: 0px
+    top: 0px
+    fill: $background700
+    cursor: pointer
+    paddingSmall()
+    background-color: $background200
+    opacity: 0.5
+    &:hover
+        opacity: 1
