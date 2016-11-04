@@ -30,10 +30,17 @@ export default class Viewer extends Component {
 
     download() {
         const link = document.createElement('a')
-        let name = (this.props.name || 'api-flow') + '.' + this.extension
-        link.download = name
-        link.href = 'data:,' + encodeURIComponent(this.props.content)
-        link.click()
+
+        if ('download' in link) {
+            let name = (this.props.name || 'api-flow') + '.' + this.extension
+            link.download = name
+            link.href = 'data:,' + encodeURIComponent(this.props.content)
+            link.click()
+        } else {
+            link.href = 'data:application/octet-stream;base64,' +
+                btoa(this.props.content)
+            link.click()
+        }
     }
 
 
