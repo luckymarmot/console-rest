@@ -30,10 +30,21 @@ export default class Viewer extends Component {
 
     download() {
         const link = document.createElement('a')
-        let name = (this.props.name || 'api-flow') + '.' + this.extension
-        link.download = name
-        link.href = 'data:,' + encodeURIComponent(this.props.content)
-        link.click()
+        /* eslint-disable no-console */
+        console.log('new download system')
+        if ('download' in link) {
+            console.log('this supports download attr')
+            let name = (this.props.name || 'api-flow') + '.' + this.extension
+            link.download = name
+            link.href = 'data:,' + encodeURIComponent(this.props.content)
+            link.click()
+        } else {
+            console.log('this does not')
+            link.href = 'data:application/octet-stream;base64,' +
+                btoa(this.props.content)
+            link.click()
+        }
+        /* eslint-enable no-console */
     }
 
 
