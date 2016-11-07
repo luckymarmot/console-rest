@@ -191,20 +191,19 @@ function ApiFlow (worker) {
         }
 
         let best = {
-            source: null,
+            format: null,
+            version: null,
             score: -1
         }
+
         scores.forEach(function(kv) {
             if (kv.score >= best.score) {
-                let { format, version } = kv
-                best = {
-                    source: { format, version },
-                    score: scores[format]
-                }
+                best = kv
             }
         })
 
-        return best.source
+        const { format, version } = best
+        return { format, version }
     }
     /* end internals */
 

@@ -22,11 +22,11 @@ export default class MetadataEditor extends Component {
             name: 'RAML v0.8'
         },
         {
-            value: { format: 'postman', version: 'v1.0' },
+            value: { format: 'postman', version: 'v1' },
             name: 'Postman v1.0'
         },
         {
-            value: { format: 'postman', version: 'v2.0' },
+            value: { format: 'postman', version: 'v2' },
             name: 'Postman v2.0'
         }
     ]
@@ -34,21 +34,12 @@ export default class MetadataEditor extends Component {
     static versionMap = [
         'swagger v2.0',
         'raml v0.8',
-        'postman v1.0',
-        'postman v2.0'
+        'postman v1',
+        'postman v2'
     ]
 
     constructor(props) {
         super(props)
-
-        this.formats = [ 'Swagger', 'RAML', 'Curl', 'Postman v1', 'Postman v2' ]
-        this.formatMap = {
-            'postman-1': 'Postman v1',
-            'postman-2': 'Postman v2',
-            swagger: 'Swagger',
-            curl: 'Curl',
-            raml: 'RAML'
-        }
 
         if (props.name || props.content) {
             let { uri, name, content, format, version } = this.props
@@ -125,6 +116,7 @@ export default class MetadataEditor extends Component {
     updateFormat(ev, format, _status) {
         let _format = (format || {}).format || null
         let _version = (format || {}).version || null
+
         this.setState({
             format: _format,
             version: _version,
