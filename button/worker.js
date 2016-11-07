@@ -164,7 +164,7 @@ function FlowInterface(apiFlowURL) {
                 action: 'transform',
                 content: params.content,
                 mode: 'raw',
-                source: params.source,
+                source: JSON.parse(JSON.stringify(params.source)),
                 target: JSON.parse(JSON.stringify(params.target)),
                 resolutionOptions: resolutionOptions,
                 uuid: uuid
