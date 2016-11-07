@@ -42,10 +42,13 @@ export default class DropArea extends Component {
         ev.preventDefault()
     }
 
-    reset() {
+    reset(ev) {
         this.setState({
             dragging: false
         })
+
+        ev.stopPropagation()
+        ev.preventDefault()
     }
 
     drop(ev) {
