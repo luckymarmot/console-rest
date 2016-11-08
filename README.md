@@ -11,7 +11,7 @@ This project is open-source, and can be used in multiple ways:
 Console.REST uses the open-source library [API-Flow](https://github.com/luckymarmot/API-Flow) to convert between formats. As a standalone, API-Flow is available as a webworker, a web library, and a node module.
 
 ## Console.REST as a Service
-[Console.rest](https://console.rest) exposes a simple API that allows anyone to open it with a file to convert. You can find more information on the API in the [wiki](https://github.com/luckymarmot/console-rest/wiki/window.location.hash).
+[Console.REST](https://console.rest) exposes a simple API that allows anyone to open it with a file to convert. You can find more information on the API in the [wiki](https://github.com/luckymarmot/console-rest/wiki/window.location.hash).
 
 ## Console.REST as a Button
 Console.REST provides API providers with 2 snippets to plug into their API docs to allow their users to download them in their preferred format:
