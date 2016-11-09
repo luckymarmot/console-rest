@@ -24,6 +24,8 @@ The button looks like this
 
 [![Run API With...](https://console.rest/github.io/assets/buttons/run_with_red.svg)](https://console.rest/#?name=swagger&format=swagger&version=v2.0&uri=https%3A%2F%2Fapi.apis.guru%2Fv2%2Fspecs%2Fxkcd.com%2F1.0.0%2Fswagger.yaml)
 
+You can read more about how to use the button in your API documentation in the [wiki](https://github.com/luckymarmot/console-rest/wiki)
+
 ## URL Scheme
 
 [Console.REST](https://console.rest) exposes a simple API that allows anyone to open it with a file to convert. You can find more information on the API in the [wiki](https://github.com/luckymarmot/console-rest/wiki/window.location.hash).
