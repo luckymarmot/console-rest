@@ -1,6 +1,6 @@
 /* eslint-disable */
 'use strict';
-const config = require('./config.js');
+const config = require('api-config');
 const FlowWorker = require('./worker.js');
 
 function ApiFlow (worker) {

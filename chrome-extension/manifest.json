@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Console.REST Injector",
+  "version": "0.1.0",
+
+  "description": "Console.REST Injector helps you by adding the Run API With button to your API Pages",
+
+  "page_action": {
+    "default_icon": "assets/favicon_32.png",
+    "default_title": "Console.REST",
+    "default_popup": "index.html"
+  },
+  "background" : {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches":[ "<all_urls>" ],
+      "js": [ "injected.js" ]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "https://console.rest/github.io/libs/*.js"
+  ],
+  "web_accessible_resources": [
+    "local/api-urls.min.json"
+  ]
+}

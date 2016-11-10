@@ -19,7 +19,7 @@ const Im = Immutable.fromJS
 const production = process.env.NODE_ENV === 'production'
 const build = process.env.BUILD_ENV === 'build'
 
-const staticPath = '/github.io/libs/'
+const staticPath = '/chrome-extension/'
 
 
 class WebPackConfig {
@@ -52,8 +52,7 @@ class WebPackConfig {
 
   static target = 'web'
   static entry = Im({
-    'console-rest-api': [ './button/api.js' ],
-    'console-rest-visual': [ 'react-dom', './button/visual.js' ]
+    'console-rest-api': [ './button/api.js' ]
   })
   static output = Im(
     {
@@ -101,7 +100,7 @@ class WebPackConfig {
     extentions: ['', '.js', '.jsx', '.styl', '.css'],
     modules_directories: ['./button', 'node_modules'],
     alias: {
-        'api-config': path.join(__dirname, '../../', './button/config.js')
+        'api-config': path.join(__dirname, '../../', './button/config.extension.js')
     }
   })
 
@@ -124,68 +123,6 @@ class WebPackConfig {
   ])
 
   static postcss = [autoprefixer()]
-}
-
-
-class DevBuild extends WebPackConfig {
-
-  static devServer = Im({
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: './button',
-    __webpack_public_path__: 'http://localhost:8888',
-    hot: true,
-    publicPath: 'http://localhost:8888/build/',
-    port: 8888,
-    host: 'localhost',
-    inline: true,
-    quiet: false,
-    noInfo: false,
-    stats: {
-      assets: true,
-      colors: true,
-      version: false,
-      hash: false,
-      timings: true,
-      chunks: false,
-      chunkModules: false
-    },
-    historyApiFallback: true
-  })
-
-  static __webpack_public_path__ = 'http://localhost:8888'
-
-  static debug = true
-  static devtool = 'source-map'
-  static entry = WebPackConfig.entry.set('console-rest-visual', Im([
-    'webpack/hot/dev-server',
-    './button/visual.js'
-  ]))
-
-  static output = Im({
-    path: path.join(__dirname, 'build'),
-    publicPath: 'http://localhost:8888/build/',
-    filename: '[name].js',
-    libraryTarget: 'umd'
-  })
-
-  static eslint = Im({
-    configFile: path.join(__dirname, '../../', './linting/dev.yaml')
-  })
-
-  static module = WebPackConfig.module.setIn(['loaders', 1, 'loaders'],
-    Im(['react-hot', 'babel-loader'])).setIn(['loaders', 2, 'loader'],
-    'style-loader!css-loader!postcss-loader!stylus-loader')
-
-  static plugins = WebPackConfig.plugins.concat(Im(
-    [new webpack.HotModuleReplacementPlugin(), new webpack.NoErrorsPlugin(),
-      new webpack.DefinePlugin({
-        'process.env': {
-          STATIC_PATH: JSON.stringify('http://localhost:8888/build/'),
-          DEBUG: JSON.stringify(process.env.DEBUG),
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-        }
-      }),]
-  ))
 }
 
 class ProductionBuild extends WebPackConfig {
@@ -254,10 +191,6 @@ class ProductionBuild extends WebPackConfig {
 }
 
 let config
-if (production) {
-  config = new ProductionBuild().buildConfig()
-} else {
-  config = new DevBuild().buildConfig()
-}
+config = new ProductionBuild().buildConfig()
 
 module.exports = config

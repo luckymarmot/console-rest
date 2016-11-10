@@ -29,6 +29,10 @@ prod-button:
 test-button:
 	./node_modules/.bin/mocha --require mocha --compilers js:babel-core/register --reporter spec "button/**/__tests__/*-test.js"
 
+# chrome extension
+prod-extension:
+	NODE_ENV=production BUILD_ENV=build ./node_modules/.bin/webpack --config ./configs/extension/webpack.config.babel.js
+
 # all
 lint: lint-website lint-button
 
