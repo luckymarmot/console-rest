@@ -58,7 +58,7 @@ export default class MainPage extends Component {
             curl: null
         }
 
-        this.startGeneration(this.props.view)
+        this.startGeneration(this.props.view, this.props.format)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -73,17 +73,20 @@ export default class MainPage extends Component {
             stateUpdate.view = nextProps.view
         }
 
-
         if (Object.keys(stateUpdate).length) {
             this.setState({
                 ...stateUpdate
             })
 
-            this.startGeneration(nextProps.view, nextProps.content)
+            this.startGeneration(
+                nextProps.view,
+                nextProps.format,
+                nextProps.content
+            )
         }
     }
 
-    startGeneration(view, content) {
+    startGeneration(view, format, content) {
         if (
             view !== 'paw' &&
             (
@@ -191,7 +194,8 @@ export default class MainPage extends Component {
                 error={error}
                 converter={this.props.converter}
                 theme={this.props.theme}
-                name={this.props.name}/>
+                name={this.props.name}
+                source={this.props.source}/>
         }
 
         return <UnknownViewer className="oic-tab-content"/>

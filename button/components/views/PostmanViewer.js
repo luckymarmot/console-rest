@@ -41,6 +41,39 @@ export default class PostmanViewer extends Viewer {
         </div>
     }
 
+    renderRunInPostmanButton(collectionId) {
+        const buttonStyle = {
+            backgroundColor: '#ffffff'
+        }
+
+        const link = 'https://www.getpostman.com/run-collection/' + collectionId
+
+        return <div className="oic-action-button" style={buttonStyle}>
+            <a href={link} target="_blank">
+                <img src="https://run.pstmn.io/button.svg"
+                    alt="Run in Postman"/>
+            </a>
+        </div>
+    }
+
+    renderRunInPostmanButtonIfNeeded() {
+        if (this.props.source.format === 'postman') {
+            try {
+                const data = JSON.parse(this.props.converter.content)
+                const collectionId = data.id ||
+                    (data.info || {})._postman_id ||
+                    null
+                if (collectionId) {
+                    return this.renderRunInPostmanButton(collectionId)
+                }
+            } catch (e) {
+                return null
+            }
+        }
+
+        return null
+    }
+
     renderActionBar() {
         let buttonStyle = {}
         if (this.props.theme) {
@@ -50,6 +83,7 @@ export default class PostmanViewer extends Viewer {
         }
 
         return <div className="oic-action-bar">
+            {this.renderRunInPostmanButtonIfNeeded()}
             <div className="oic-action-button"
                 style={buttonStyle}
                 onClick={::this.download}>

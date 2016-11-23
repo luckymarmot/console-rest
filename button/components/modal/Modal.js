@@ -13,9 +13,12 @@ export default class Modal extends Component {
         this.state = {
             view: (this.props.converter.target || {}).format || 'selection',
             name: this.props.converter.name || null,
+            format: null,
             content: null
         }
+    }
 
+    componentDidMount() {
         this.updateContentIfNeeded(this.props.params)
     }
 
@@ -34,6 +37,14 @@ export default class Modal extends Component {
                         .then(name => {
                             this.setState({
                                 name
+                            })
+                        })
+
+                    this.props.converter.detect('format')
+                        .then(formats => {
+                            const format = this.findBestFormat(formats)
+                            this.setState({
+                                format
                             })
                         })
                 }, error => {
@@ -57,26 +68,61 @@ export default class Modal extends Component {
                     name: this.props.converter.name
                 })
             }
+
+            if (!this.props.converter.source) {
+                this.props.converter.detect('format').then(formats => {
+                    const format = this.findBestFormat(formats)
+
+                    this.setState({
+                        format
+                    })
+                })
+            } else {
+                this.setState({
+                    format: this.props.converter.source
+                })
+            }
         }
     }
 
     contentNeedsToBeLoaded(futureProps) {
-        let modeChange = futureProps &&
+        let contentNeedsToBeLoaded = !this.props.converter.content &&
+            this.props.converter.mode
+        let modeChange = futureProps && futureProps.mode &&
             this.props.converter.mode !== futureProps.mode
         let urlChange = futureProps &&
             this.props.converter.mode === 'url' &&
-            this.props.converter.url !== futureProps.url
+            (this.props.converter.url || null) !== (futureProps.url || null)
         let selectorChange = futureProps &&
             this.props.converter.mode === 'selector' &&
-            this.props.converter.selector !== futureProps.selector
+            futureProps.selector &&
+            (this.props.converter.selector || null)
+                !==
+            (futureProps.selector || null)
         let textChange = futureProps &&
             this.props.converter.mode === 'text' &&
-            this.props.converter.text !== futureProps.text
+            futureProps.url &&
+            (this.props.converter.text || null) !== (futureProps.text || null)
 
-        return modeChange ||
+        return contentNeedsToBeLoaded ||
+            modeChange ||
             urlChange ||
             selectorChange ||
             textChange
+    }
+
+    findBestFormat(formats) {
+        let best = {
+            score: -1
+        }
+
+        formats.forEach(format => {
+            if (format.score >= best.score) {
+                best = format
+            }
+        })
+
+        return best.format
     }
 
     updateView(view) {
@@ -106,7 +152,8 @@ export default class Modal extends Component {
             content={this.state.content}
             converter={this.props.converter}
             view={this.state.view}
-            name={this.state.name}/>
+            name={this.state.name}
+            source={this.state.format}/>
     }
 
     render() {
